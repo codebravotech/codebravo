@@ -1,11 +1,16 @@
 import cx from "classnames";
 
-import portfolio from "../../assets/icons/portfolio.svg?react";
-import contact from "../../assets/icons/portfolio.svg?react";
+import connect from "../assets/icons/connect.svg?react";
+import home from "../assets/icons/home.svg?react";
+import about from "../assets/icons/info.svg?react";
+import portfolio from "../assets/icons/portfolio.svg?react";
+import { IconType } from "../types/components";
 
 const componentMap = {
+  connect,
   portfolio,
-  contact,
+  home,
+  about,
 };
 
 export default function Icon({
@@ -13,7 +18,7 @@ export default function Icon({
   className = "",
   onClick = () => {},
 }: {
-  icon: "portfolio" | "contact";
+  icon: IconType;
   className?: string;
   onClick?: () => void;
 }) {
