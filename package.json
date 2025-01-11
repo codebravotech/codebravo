@@ -20,11 +20,12 @@
     "lodash": "^4.17.21",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.1.1",
-    "splitting": "^1.1.0"
+    "react-responsive": "^10.0.0",
+    "react-router-dom": "^7.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
+    "@trivago/prettier-plugin-sort-imports": "^5.2.1",
     "@types/lodash": "^4.17.14",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",

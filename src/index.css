@@ -7,10 +7,3 @@
   display: relative;
   font-family: "Raleway Variable", sans-serif;
 }
-
-@keyframes lettersAppear {
-  to {
-    opacity: 1;
-    top: 0;
-  }
-}

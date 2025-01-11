@@ -1,8 +1,8 @@
-import _ from "lodash";
-// import groq from "groq";
-import client from "../data/sanity";
-import { useEffect, useState } from "react";
 import { SanityDocument } from "@sanity/client";
+import _ from "lodash";
+import { useEffect, useState } from "react";
+
+import client from "../data/sanity";
 
 export const useHomepage = () => {
   const [homePage, setHomePage] = useState<SanityDocument | undefined>(

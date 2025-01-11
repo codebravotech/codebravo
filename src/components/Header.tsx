@@ -1,8 +1,9 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { navOptionsFactory } from "../config";
 import { Link } from "react-router-dom";
+
+import { navOptionsFactory } from "../config";
 
 export default function Header({ isHomePage }: { isHomePage: boolean }) {
   const navigate = useNavigate();
@@ -25,7 +26,9 @@ export default function Header({ isHomePage }: { isHomePage: boolean }) {
         )}
       >
         {navOptionsFactory(navigate).map((button) => (
-          <div onClick={button.action}>{button.label}</div>
+          <div key={button.label} onClick={button.action}>
+            {button.label}
+          </div>
         ))}
       </div>
     </motion.div>
