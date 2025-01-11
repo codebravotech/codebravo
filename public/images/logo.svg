@@ -1,0 +1,56 @@
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 234.01 429.32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#New_Gradient_Swatch_2);
+      }
+
+      .cls-2 {
+        fill: url(#New_Gradient_Swatch_2-2);
+      }
+
+      .cls-3 {
+        fill: url(#New_Gradient_Swatch_2-3);
+      }
+
+      .cls-4 {
+        fill: none;
+        stroke: url(#New_Gradient_Swatch_2-4);
+      }
+
+      .cls-4, .cls-6 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-5 {
+        fill: url(#New_Gradient_Swatch_2-5);
+      }
+
+      .cls-6 {
+        fill: url(#New_Gradient_Swatch_2-6);
+        stroke: url(#New_Gradient_Swatch_2-7);
+      }
+    </style>
+    <linearGradient id="New_Gradient_Swatch_2" data-name="New Gradient Swatch 2" x1="126.1" y1="250.84" x2="367.4" y2="250.84" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="0" stop-color="#d7d6d6"/>
+      <stop offset="1" stop-color="#6a6868"/>
+      <stop offset="1"/>
+    </linearGradient>
+    <linearGradient id="New_Gradient_Swatch_2-2" x1="210.8" y1="262.06" x2="269.23" y2="262.06" xlink:href="#New_Gradient_Swatch_2"/>
+    <linearGradient id="New_Gradient_Swatch_2-3" x1="115.97" y1="161.49" x2="64.62" y2="161.49" xlink:href="#New_Gradient_Swatch_2"/>
+    <linearGradient id="New_Gradient_Swatch_2-4" x1="63.94" y1="161.56" x2="116.72" y2="161.56" xlink:href="#New_Gradient_Swatch_2"/>
+    <linearGradient id="New_Gradient_Swatch_2-5" x1="280.56" y1="261.06" x2="222.12" y2="261.06" xlink:href="#New_Gradient_Swatch_2"/>
+    <linearGradient id="New_Gradient_Swatch_2-6" x1="120.98" y1="160.99" x2="169.34" y2="160.99" xlink:href="#New_Gradient_Swatch_2"/>
+    <linearGradient id="New_Gradient_Swatch_2-7" x1="169.96" y1="161.07" x2="120.43" y2="161.07" xlink:href="#New_Gradient_Swatch_2"/>
+  </defs>
+  <title>codebravoLogo</title>
+  <path class="cls-1" d="M246.5,465.5c-9.28-14.71-19.09-30.42-29.15-46.57S197,386,186.79,368.73s-20.3-35-29.84-53S138.3,279.42,130.4,261l-1.2-2.81,1.21-2.35,6.74-13.09L144,229.65l13.63-26.11q13.71-26.07,27.53-52.07c9.19-17.35,18.5-34.64,27.76-51.95l28-51.84,6.2-11.5,6.13,11.51,27.62,51.88c9.14,17.34,18.35,34.63,27.42,52s18.16,34.73,27.19,52.12l13.45,26.14,6.72,13.07L362.23,256l1,1.92-1,2.3c-7.87,18.44-16.93,36.7-26.41,54.74s-19.52,35.81-29.68,53.09-20.42,34.15-30.45,50.46S255.82,450.62,246.5,465.5Zm0,0,26.72-56.71c8.6-18.25,17-36,25.45-53.24s17.07-34.09,26.22-50.6,18.73-32.82,29.49-48.95v4.22l-7.26-12.78-7.19-12.82L325.56,209q-14.3-25.69-28.46-51.44c-9.48-17.15-18.83-34.37-28.24-51.56l-28-51.67h12.33l-27.94,51.85c-9.38,17.25-18.7,34.53-28.14,51.74s-18.88,34.44-28.37,51.63l-14.33,25.73-7.16,12.87L140,261v-5.16c10.65,16.06,20.09,32.3,29.11,48.79s17.47,33.26,25.81,50.55,16.59,35,25.09,53.36Z" transform="translate(-129.2 -36.18)"/>
+  <path class="cls-2" d="M263,333.66c-4.82-11.6-9.42-23.28-14-35l-6.82-17.55-6.65-17.6c-2.21-5.87-4.62-11.67-7-17.5a157.84,157.84,0,0,1-5.93-17.83q-2.44-9.09-4.21-18.4a144.44,144.44,0,0,1-2.42-19l1.14-.37a144.2,144.2,0,0,1,9.33,16.71c2.76,5.69,5.26,11.47,7.55,17.31a157.29,157.29,0,0,1,5.83,17.87c1.57,6.08,3.08,12.18,4.79,18.21l5.11,18.11,4.94,18.16c3.23,12.13,6.47,24.26,9.48,36.46Z" transform="translate(-129.2 -36.18)"/>
+  <g>
+    <polyline class="cls-3" points="110.94 152.29 115.97 160.91 72.69 174.58 64.62 156.34 89.76 148.4"/>
+    <polyline class="cls-4" points="110.94 152.29 115.97 160.91 72.69 174.58 64.62 156.34 89.76 148.4"/>
+  </g>
+  <path class="cls-5" d="M227.25,332.29c3-12.2,6.26-24.33,9.48-36.46l4.94-18.16,5.11-18.11c1.72-6,3.22-12.13,4.8-18.21a155.28,155.28,0,0,1,5.82-17.87q3.44-8.76,7.55-17.31a144.28,144.28,0,0,1,9.34-16.71l1.14.37a144.44,144.44,0,0,1-2.43,19c-1.16,6.21-2.58,12.34-4.2,18.4a159.92,159.92,0,0,1-5.94,17.83c-2.35,5.83-4.76,11.63-7,17.5l-6.65,17.6-6.82,17.55c-4.62,11.67-9.22,23.35-14,35Z" transform="translate(-129.2 -36.18)"/>
+  <polyline class="cls-6" points="122.02 152.29 120.98 160.91 163.26 174.58 169.34 155.34 145.19 147.4"/>
+</svg>
