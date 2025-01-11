@@ -1,6 +1,8 @@
 import cx from "classnames";
+
 import portfolio from "../../assets/icons/portfolio.svg?react";
 import contact from "../../assets/icons/portfolio.svg?react";
+
 const componentMap = {
   portfolio,
   contact,
