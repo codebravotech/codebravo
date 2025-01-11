@@ -33,7 +33,7 @@ export default function Header({ isHomePage }: { isHomePage: boolean }) {
             <div
               key={button.label}
               onClick={() => navigate(button.pathname)}
-              className="cursor-pointer text-lg hover:opacity-60"
+              className="underline-appear cursor-pointer text-lg"
             >
               {button.label}
             </div>

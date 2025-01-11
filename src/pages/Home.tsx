@@ -55,8 +55,8 @@ export default function Home() {
             <div>{tagline && <PopcornPortableText content={tagline} />}</div>
           )}
         </div>
-        <div className="flex flex-col items-center">
-          <img className="h-44" src={logo} />
+        <div className="flex flex-col items-center self-start">
+          <img className="h-40" src={logo} />
           <div className="font-fjalla mb-2 text-3xl tracking-wider ">
             CodeBRAVO
           </div>
@@ -71,7 +71,7 @@ export default function Home() {
                   <div
                     key={button.label}
                     onClick={() => navigate(button.pathname)}
-                    className="cursor-pointer text-2xl hover:text-3xl"
+                    className="underline-appear cursor-pointer text-2xl hover:scale-110"
                   >
                     {button.label}
                   </div>
