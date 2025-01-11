@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        namibia: "url('../public/images/namibiaDune.jpg')",
+        namibia: "url('/images/namibia.jpg')",
       },
       colors: {},
       fontFamily: {

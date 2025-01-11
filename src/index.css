@@ -8,6 +8,35 @@
   font-family: "Raleway Variable", sans-serif;
 }
 
+::selection {
+  background-color: #eca400;
+}
+
+.underline-appear {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.underline-appear::after {
+  content: "";
+  display: block;
+  height: 3px;
+  border-bottom: 2px solid #eca400;
+  width: 0;
+  transition: width 0.5s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+.underline-appear:hover::after {
+  width: 100%;
+  pointer-events: none;
+}
+
+.underline-appear:active::after {
+  width: 100%;
+  pointer-events: none;
+}
+
 .glass {
   position: relative;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
