@@ -1,19 +1,24 @@
-import { NavigateFunction } from "react-router-dom";
+import { NavOptions } from "./types/components";
 
-export const navOptionsFactory = (navigate: NavigateFunction) => [
+export const NAV_OPTIONS: Array<NavOptions> = [
+  {
+    label: "Home",
+    pathname: "/",
+    icon: "home",
+  },
   {
     label: "About",
-    action: () => navigate("/about"),
+    pathname: "/about",
     icon: "about",
   },
   {
-    label: "Our Work",
-    action: () => navigate("/portfolio"),
+    label: "Portfolio",
+    pathname: "/portfolio",
     icon: "portfolio",
   },
   {
     label: "Connect",
-    action: () => navigate("/connect"),
-    icon: "contact",
+    pathname: "/connect",
+    icon: "connect",
   },
 ];

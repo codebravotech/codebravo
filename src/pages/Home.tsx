@@ -2,18 +2,19 @@ import cx from "classnames";
 import { motion } from "framer-motion";
 import { get, isArray, isNumber } from "lodash";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import ArriveUpwardsStaggered from "../animations/ArriveUpwardsStaggered";
 import RotatingList from "../animations/RotatingList";
 import PopcornPortableText from "../components/PopcornPortableText";
-import { navOptionsFactory } from "../config";
+import { NAV_OPTIONS } from "../config";
 import { useDisplay } from "../hooks/display";
 import { useHomepage } from "../hooks/sanity";
 
 export default function Home() {
   const [skillIndex, setSkillIndex] = useState<number>(0);
   const [listAnimationComplete, setListAnimationComplete] = useState(false);
+  const { pathname } = useLocation();
   const navigate = useNavigate();
   const { isMobile } = useDisplay();
 
@@ -65,20 +66,22 @@ export default function Home() {
               staggerChildren={1}
               delayChildren={2}
             >
-              {navOptionsFactory(navigate).map((button) => (
-                <div
-                  key={button.label}
-                  className="cursor-pointer text-2xl hover:text-3xl"
-                  onClick={button.action}
-                >
-                  {button.label}
-                </div>
-              ))}
+              {NAV_OPTIONS.filter((button) => button.pathname !== pathname).map(
+                (button) => (
+                  <div
+                    key={button.label}
+                    onClick={() => navigate(button.pathname)}
+                    className="cursor-pointer text-2xl hover:text-3xl"
+                  >
+                    {button.label}
+                  </div>
+                ),
+              )}
             </ArriveUpwardsStaggered>
           )}
         </div>
       </div>
-      <div className="flex w-full flex-col items-center lg:items-end justify-center gap-1  h-1/2 ">
+      <div className="flex w-full flex-col items-center lg:items-end justify-center gap-1 md:h-1/2 ">
         <ArriveUpwardsStaggered
           className="w-full lg:w-[40vw] text-2xl lg:text-4xl flex flex-col gap-1 items-center lg:items-start"
           staggerChildren={1}

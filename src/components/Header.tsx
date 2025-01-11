@@ -3,34 +3,43 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-import { navOptionsFactory } from "../config";
+import { NAV_OPTIONS } from "../config";
+import { useDisplay } from "../hooks/display";
 
 export default function Header({ isHomePage }: { isHomePage: boolean }) {
   const navigate = useNavigate();
+  const { isMobile } = useDisplay();
   const logo = `/images/logo_black.svg`;
 
   return (
     <motion.div
       className={cx(
-        "mb-8 flex w-full flex-row items-start justify-between pt-4",
+        "mb-8 flex w-full flex-row items-start pt-4",
+        isMobile ? "justify-center" : "justify-between",
         isHomePage && "hidden",
       )}
     >
-      <Link className="h-20" to="/">
+      <Link className="h-20 pl-4" to="/">
         <img className="h-full w-full" src={logo} />
       </Link>
-      <div
-        className={cx(
-          "flex w-1/5 flex-row justify-evenly",
-          isHomePage ? "text-white" : "text-black",
-        )}
-      >
-        {navOptionsFactory(navigate).map((button) => (
-          <div key={button.label} onClick={button.action}>
-            {button.label}
-          </div>
-        ))}
-      </div>
+      {!isMobile && (
+        <div
+          className={cx(
+            "flex w-1/5 flex-row justify-evenly pt-2",
+            isHomePage ? "text-white" : "text-black",
+          )}
+        >
+          {NAV_OPTIONS.map((button) => (
+            <div
+              key={button.label}
+              onClick={() => navigate(button.pathname)}
+              className="cursor-pointer text-lg hover:opacity-60"
+            >
+              {button.label}
+            </div>
+          ))}
+        </div>
+      )}
     </motion.div>
   );
 }

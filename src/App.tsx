@@ -6,6 +6,9 @@ import {
 } from "react-router-dom";
 
 import Header from "./components/Header";
+import MobileMenu from "./components/MobileMenu";
+import { useDisplay } from "./hooks/display";
+import About from "./pages/About";
 import Connect from "./pages/Connect";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
@@ -14,11 +17,13 @@ import Portfolio from "./pages/Portfolio";
 // Layout component with Header
 const Layout = () => {
   const { pathname } = useLocation();
+  const { isMobile } = useDisplay();
   const isHomePage = pathname === "/";
   return (
     <>
       <Header isHomePage={isHomePage} />
       <Outlet />
+      {isMobile && <MobileMenu />}
     </>
   );
 };
@@ -30,6 +35,7 @@ const ROUTES = [
     element: <Layout />,
     children: [
       { path: "/", element: <Home /> },
+      { path: "/about", element: <About /> },
       { path: "/portfolio", element: <Portfolio /> },
       { path: "/connect", element: <Connect /> },
     ],
