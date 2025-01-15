@@ -19,13 +19,13 @@ export default function About() {
   }
 
   return (
-    <motion.div className="bg-stars-100 flex h-screen w-screen flex-col gap-10 overflow-scroll pt-6">
+    <motion.div className="bg-stars-100 font-raleway pb-42 flex h-screen w-screen flex-col gap-10 overflow-scroll pt-6">
       {content_blocks.map((content_block: Content_block, index: number) => (
         <ContentBlock
           key={`content_block_${index}`}
           content_block={content_block}
-          justified={index % 2 === 0 ? "right" : "left"}
-          // justified={index % 2 === 0 ? "left" : "right"}
+          // justified={index % 2 === 0 ? "right" : "left"}
+          justified={index % 2 === 0 ? "left" : "right"}
         />
       ))}
     </motion.div>

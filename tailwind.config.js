@@ -3,11 +3,16 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      spacing: {
+        18: "4.5rem",
+      },
+
       backgroundImage: {
         namibia: "url('/images/namibia.jpg')",
         "dune-gradient": "linear-gradient(to bottom left, #ECA400, #a35b1f)",
       },
       colors: {
+        "dune-gradient": "linear-gradient(to bottom left, #ECA400, #a35b1f)",
         stars: {
           100: "#F4EFE8",
           200: "#F9F5F0",
