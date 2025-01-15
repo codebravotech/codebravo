@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import { get, isArray, isNumber } from "lodash";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import ArriveUpwardsStaggered from "../animations/ArriveUpwardsStaggered";
+import PopcornText from "../animations/PopcornText";
 import RotatingList from "../animations/RotatingList";
 import PopcornPortableText from "../components/PopcornPortableText";
 import { NAV_OPTIONS } from "../config";
@@ -20,9 +22,11 @@ export default function Home() {
 
   const { homePage } = useHomepage();
   const tagline = get(homePage, "tagline", []);
+  const tagline_cta = get(homePage, "tagline_cta", "");
+  const tagline_path = get(homePage, "tagline_path", "");
   const skills = get(homePage, "skills", []);
 
-  const logo = `/images/logo_white.svg`;
+  const logo = `/images/logo_black.svg`;
 
   useEffect(() => {
     let timeout = null;
@@ -46,23 +50,33 @@ export default function Home() {
   return (
     <motion.div
       className={cx(
-        "flex h-screen w-screen flex-col bg-namibia bg-cover bg-fixed bg-center bg-no-repeat text-white",
+        "text-night-300 flex h-screen flex-col items-center pb-36 lg:pb-0",
+        "bg-[linear-gradient(to_bottom_left,#ECA400,#a35b1f)]",
       )}
     >
-      <div className="items-center flex w-full flex-col-reverse justify-evenly px-10 py-6 lg:h-1/2 lg:flex-row lg:justify-between">
-        <div className="flex flex-col items-center justify-center text-xl lg:text-3xl lg:basis-1/2 mt-10 lg:mt-0">
-          {!isMobile && (
-            <div>{tagline && <PopcornPortableText content={tagline} />}</div>
-          )}
+      <div className="flex w-full flex-col-reverse items-center py-6 pl-6 lg:flex-row lg:justify-between lg:px-10">
+        <div className="mt-8 flex flex-col flex-wrap text-xl lg:mt-10 lg:text-3xl">
+          {tagline && <PopcornPortableText content={tagline} />}
+          <motion.div
+            initial={{
+              color: "#202020",
+            }}
+            whileInView={{ color: "#F4EFE8" }}
+            transition={{ duration: 2, delay: 2 }}
+          >
+            <Link to={tagline_path} className="link-appear mr-auto">
+              {tagline_cta && <PopcornText text={tagline_cta} />}
+            </Link>
+          </motion.div>
         </div>
-        <div className="flex flex-col items-center self-start">
+        <div className="flex flex-col items-center lg:self-start">
           <img className="h-40" src={logo} />
-          <div className="font-fjalla mb-2 text-3xl tracking-wider ">
+          <div className="font-fjalla mb-2 mt-1 text-3xl tracking-wider">
             CodeBRAVO
           </div>
           {!isMobile && (
             <ArriveUpwardsStaggered
-              className="flex flex-col items-center"
+              className="flex flex-col items-center gap-1"
               staggerChildren={1}
               delayChildren={2}
             >
@@ -71,7 +85,7 @@ export default function Home() {
                   <div
                     key={button.label}
                     onClick={() => navigate(button.pathname)}
-                    className="underline-appear cursor-pointer text-2xl hover:scale-110"
+                    className="underline-appear-white cursor-pointer text-2xl hover:scale-110"
                   >
                     {button.label}
                   </div>
@@ -81,9 +95,9 @@ export default function Home() {
           )}
         </div>
       </div>
-      <div className="flex w-full flex-col items-center lg:items-end justify-center gap-1 md:h-1/2 ">
+      <div className="mt-10 flex w-full flex-col gap-1 lg:mt-0 lg:h-1/2 lg:items-end lg:justify-center">
         <ArriveUpwardsStaggered
-          className="w-full lg:w-[40vw] text-2xl lg:text-4xl flex flex-col gap-1 items-center lg:items-start"
+          className="flex w-full flex-col items-center gap-1 text-2xl lg:w-[40vw] lg:items-start lg:text-4xl"
           staggerChildren={1}
           delayChildren={isMobile ? 2 : 3}
           onAnimationComplete={() => {
@@ -93,12 +107,14 @@ export default function Home() {
           <div>Front End</div>
           <div>Back End</div>
           <div>Cloud</div>
-          <div className="w-full mt-2 text-lg lg:text-2xl flex flex-col lg:flex-row items-start flex-wrap">
+          <div className="mt-2 flex w-full flex-col flex-wrap items-start text-lg lg:flex-row lg:text-2xl">
             <div className="pr-2">
               {isAndMore ? skills[skillIndex] : "Innovative Solutions in"}
             </div>
             {listAnimationComplete && !isAndMore && (
-              <RotatingList list={skills} listIndex={skillIndex} />
+              <div className="text-white">
+                <RotatingList list={skills} listIndex={skillIndex} />
+              </div>
             )}
           </div>
         </ArriveUpwardsStaggered>
