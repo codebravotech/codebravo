@@ -78,7 +78,7 @@ export default function Home() {
             <ArriveUpwardsStaggered
               className="flex flex-col items-center gap-1"
               staggerChildren={1}
-              delayChildren={2}
+              delayChildren={1}
             >
               {NAV_OPTIONS.filter((button) => button.pathname !== pathname).map(
                 (button) => (

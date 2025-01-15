@@ -41,7 +41,7 @@ export default function ContentBlock({
   const justifiedRight = justified === "right";
   const isWideImage = imgWidth >= innerWidth / 2;
 
-  let copyStyle = {};
+  let copyStyle: React.CSSProperties = {};
   let imageStyle = {};
   if (justifiedLeft) {
     if (isWideImage) {
@@ -94,8 +94,6 @@ export default function ContentBlock({
     };
   }, []);
 
-  console.log(JSON.stringify({ content_block }));
-
   return (
     <motion.div
       className={cx(
@@ -139,22 +137,22 @@ export default function ContentBlock({
         />
       </div> */}
 
-      <div
-        className={cx("absolute -bottom-16 text-xl")}
-        ref={copyRef}
-        style={copyStyle}
-      >
-        <ArriveUpwards key={`content_block_copy_${_key}`} delay={1}>
-          {copy?.length > 0 && (
+      {_key && (
+        <div
+          className={cx("absolute -bottom-16 max-h-[50vh] text-xl")}
+          ref={copyRef}
+          style={copyStyle}
+        >
+          <ArriveUpwards keyBy={`content_block_copy_${_key}`} delay={1}>
             <div className="text-stars-300 bg-expanse-100 z-10 flex flex-col rounded-xl bg-opacity-[97%] px-8 py-5 shadow-lg">
               <PortableTextRegular content={copy as PortableTextBlock[]} />
               <CtaButton url={buttonUrl} variant="white_blue">
                 {buttonText}
               </CtaButton>
             </div>
-          )}
-        </ArriveUpwards>
-      </div>
+          </ArriveUpwards>
+        </div>
+      )}
     </motion.div>
   );
 }
