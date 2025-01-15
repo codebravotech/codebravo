@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import ArriveUpwardsStaggered from "../animations/ArriveUpwardsStaggered";
 import PopcornText from "../animations/PopcornText";
 import RotatingList from "../animations/RotatingList";
-import PopcornPortableText from "../components/PopcornPortableText";
+import PortableTextPopcorn from "../components/PortableTextPopcorn";
 import { NAV_OPTIONS } from "../config";
 import { useDisplay } from "../hooks/display";
 import { useSingleton } from "../hooks/sanity";
@@ -22,8 +22,9 @@ export default function Home() {
 
   const { singleton: homePage } = useSingleton("home_page");
   const tagline = get(homePage, "tagline", []);
-  const tagline_cta = get(homePage, "tagline_cta", "");
-  const tagline_path = get(homePage, "tagline_path", "");
+  const tagline_link = get(homePage, "tagline_link", "");
+  const url = get(tagline_link, "url", "");
+  const label = get(tagline_link, "label", "");
   const skills = get(homePage, "skills", []);
 
   const logo = `/images/logo_black.svg`;
@@ -50,12 +51,12 @@ export default function Home() {
   return (
     <motion.div
       className={cx(
-        "text-night-300 flex h-screen flex-col items-center pb-36 lg:pb-0",
+        "bg-dune-gradient text-night-300 flex h-screen flex-col items-center pb-36 lg:pb-0",
       )}
     >
       <div className="flex w-full flex-col-reverse items-center py-6 pl-6 lg:flex-row lg:justify-between lg:px-10">
         <div className="mt-8 flex flex-col flex-wrap text-xl lg:mt-10 lg:text-3xl">
-          {tagline && <PopcornPortableText content={tagline} />}
+          {tagline && <PortableTextPopcorn content={tagline} />}
           <motion.div
             initial={{
               color: "#202020",
@@ -63,8 +64,8 @@ export default function Home() {
             whileInView={{ color: "#F4EFE8" }}
             transition={{ duration: 2, delay: 2 }}
           >
-            <Link to={tagline_path} className="link-appear mr-auto">
-              {tagline_cta && <PopcornText text={tagline_cta} />}
+            <Link to={url} className="link-appear text-stars-100 mr-auto mt-2">
+              {label && <PopcornText text={label} />}
             </Link>
           </motion.div>
         </div>

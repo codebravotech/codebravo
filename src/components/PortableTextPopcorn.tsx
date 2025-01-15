@@ -1,7 +1,7 @@
 import {
   PortableText,
+  PortableTextBlock,
   PortableTextComponents,
-  ReactPortableTextList,
 } from "@portabletext/react";
 import React from "react";
 
@@ -14,12 +14,8 @@ const components: PortableTextComponents = {
   },
 };
 
-const PopcornPortableText = ({
-  content,
-}: {
-  content: ReactPortableTextList;
-}) => {
+const PortableTextPopcorn = ({ content }: { content: PortableTextBlock[] }) => {
   return <PortableText value={content} components={components} />;
 };
 
-export default PopcornPortableText;
+export default PortableTextPopcorn;

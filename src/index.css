@@ -28,13 +28,26 @@
   animation-delay: 2s;
 }
 
-@keyframes draw-border {
-  0% {
-    width: 0;
-  }
-  100% {
-    width: 100%;
-  }
+.link-highlight {
+  position: relative;
+  @apply text-dune-100 font-bold;
+}
+
+.link-highlight:hover {
+  animation: color_change 0.4s linear forwards;
+}
+
+.link-highlight:hover::before {
+  @apply bg-stars-100;
+  content: "";
+  position: absolute;
+  border-radius: 5px;
+  width: 100%;
+  left: 0;
+  height: 100%;
+  top: 0%;
+  z-index: -1;
+  animation: upward 0.2s linear forwards;
 }
 
 .underline-appear {
@@ -90,4 +103,30 @@
   height: 40%;
   top: 60%;
   z-index: -1;
+}
+@keyframes draw-border {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+@keyframes upward {
+  0% {
+    transform: translateY(25%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes color_change {
+  0% {
+    color: #eca400; /* Replace with text-dune-100 */
+  }
+  100% {
+    color: #2dbfd4; /* Replace with text-expanse-100 */
+  }
 }

@@ -14,7 +14,7 @@ export default function Header({ isHomePage }: { isHomePage: boolean }) {
   return (
     <motion.div
       className={cx(
-        "bg-stars-100 flex flex-row items-start pb-8 pt-4",
+        "bg-stars-100 flex flex-row items-start pb-4 pt-2",
         isMobile ? "justify-center" : "justify-between",
         isHomePage && "hidden",
       )}

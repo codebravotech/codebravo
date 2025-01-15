@@ -1,10 +1,12 @@
-import { PortableText } from "@portabletext/react";
 import cx from "classnames";
 import { motion } from "framer-motion";
 import { get } from "lodash";
 import { useEffect, useRef, useState } from "react";
 import CtaButton from "./CtaButton";
 import { Content_block } from "../types/sanity.types";
+import PortableTextRegular from "./PortableTextRegular";
+import { PortableTextBlock } from "@portabletext/types";
+import ArriveUpwards from "../animations/ArriveUpwards";
 
 export default function ContentBlock({
   content_block,
@@ -16,14 +18,15 @@ export default function ContentBlock({
   const imgRef = useRef<HTMLImageElement | null>(null);
   const copyRef = useRef<HTMLDivElement | null>(null);
   const [imgPosition, setImgPosition] = useState({ left: 0, right: 0 });
-  // const [copyDimensions, setCopyDimensions] = useState({ width: 0, height: 0 });
+  const [imgWidth, setImgWidth] = useState(0);
+  const _key = get(content_block, "_key", {});
   const cta_link = get(content_block, "cta_link", {});
   const file_link = get(content_block, "file_link", {});
   const buttonText = get(cta_link, "label", "") || get(file_link, "label", "");
   const fileAsset = get(content_block, "fileAsset");
   const buttonUrl = fileAsset
     ? get(fileAsset, "url", "")
-    : get(cta_link, "link_path", "");
+    : get(cta_link, "url", "");
 
   const image = get(content_block, "imageAsset", "");
   const src = get(image, "url", "");
@@ -34,36 +37,36 @@ export default function ContentBlock({
   const alt = get(content_block, "imageAlt", "");
   const copy = get(content_block, "copy", []);
   const paddingX = 25;
-  const imageWidth = Math.round(imgPosition.right - imgPosition.left);
   const justifiedLeft = justified === "left";
   const justifiedRight = justified === "right";
+  const isWideImage = imgWidth >= innerWidth / 2;
 
   let copyStyle = {};
   let imageStyle = {};
   if (justifiedLeft) {
-    if (imageWidth >= innerWidth / 2) {
+    if (isWideImage) {
       imageStyle = {
         left: paddingX,
       };
-      copyStyle = { width: imageWidth * 0.8 };
+      copyStyle = { width: imgWidth * 0.8 };
     } else {
       copyStyle = {
         left: paddingX * 2,
-        width: imageWidth * 1.5,
+        width: imgWidth * 1.5,
       };
     }
   } else if (justifiedRight) {
-    if (imageWidth >= innerWidth / 2) {
+    if (isWideImage) {
       imageStyle = {
         right: paddingX,
       };
       copyStyle = {
-        width: imageWidth * 0.8,
+        width: imgWidth * 0.8,
       };
     } else {
       copyStyle = {
         right: paddingX * 2,
-        width: imageWidth * 1.5,
+        width: imgWidth * 1.5,
       };
     }
   }
@@ -71,26 +74,27 @@ export default function ContentBlock({
   const updatePosition = () => {
     if (imgRef.current) {
       const { left, right } = imgRef.current.getBoundingClientRect();
+      const width = Math.round(right - left);
       setImgPosition({ left, right });
-    }
-
-    if (copyRef.current) {
-      const { offsetWidth: width, offsetHeight: height } = copyRef.current;
-      console.log("width", { width, height });
-      // setCopyDimensions({ width, height });
+      setImgWidth(width);
     }
   };
 
   useEffect(() => {
-    // Update size on initial render
     updatePosition();
 
-    // Update size on window resize
     window.addEventListener("resize", updatePosition);
+    window.addEventListener("load", updatePosition);
+    window.addEventListener("scroll", updatePosition);
 
-    // Cleanup listener on unmount
-    return () => window.removeEventListener("resize", updatePosition);
+    return () => {
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("load", updatePosition);
+      window.removeEventListener("scroll", updatePosition);
+    };
   }, []);
+
+  console.log(JSON.stringify({ content_block }));
 
   return (
     <motion.div
@@ -113,8 +117,8 @@ export default function ContentBlock({
         <img
           ref={imgRef}
           className={cx(
-            "relative rounded-2xl object-scale-down",
-            orientation === "portrait" && "max-h-[80vh] max-w-[50vw]",
+            "relative rounded-2xl object-scale-down shadow-lg",
+            orientation === "portrait" && "max-h-[75vh] max-w-[50vw]",
             orientation === "landscape" && "max-w-[70vw]",
           )}
           src={src}
@@ -122,7 +126,7 @@ export default function ContentBlock({
           style={imageStyle}
         />
       </motion.div>
-
+      {/* 
       <div className="flex w-full justify-center">
         <CtaButton
           url={buttonUrl}
@@ -133,19 +137,24 @@ export default function ContentBlock({
               : { marginRight: paddingX * 2 }
           }
         />
-      </div>
+      </div> */}
 
-      {imageWidth > 0 && (
-        <div
-          ref={copyRef}
-          className={cx("absolute bottom-2 text-xl")}
-          style={copyStyle}
-        >
-          <div className="text-stars-300 bg-expanse-300 z-10 rounded-xl bg-opacity-80 p-6">
-            <PortableText value={copy} />
-          </div>
-        </div>
-      )}
+      <div
+        className={cx("absolute -bottom-16 text-xl")}
+        ref={copyRef}
+        style={copyStyle}
+      >
+        <ArriveUpwards key={`content_block_copy_${_key}`} delay={1}>
+          {copy?.length > 0 && (
+            <div className="text-stars-300 bg-expanse-100 z-10 flex flex-col rounded-xl bg-opacity-[97%] px-8 py-5 shadow-lg">
+              <PortableTextRegular content={copy as PortableTextBlock[]} />
+              <CtaButton url={buttonUrl} variant="white_blue">
+                {buttonText}
+              </CtaButton>
+            </div>
+          )}
+        </ArriveUpwards>
+      </div>
     </motion.div>
   );
 }

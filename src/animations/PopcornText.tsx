@@ -30,12 +30,12 @@ export default function PopcornText({
         const letters = word.split("");
 
         return (
-          <span>
-            {letters.map((letter, index) => (
+          <span key={`${word}_${wordIndex}`}>
+            {letters.map((letter, letterIndex) => (
               <motion.span
                 // Ensure each letter animates independently
                 className={cx("inline", className)}
-                key={`${word}_${letter}_${index}`}
+                key={`${word}_${letter}_${letterIndex}`}
                 initial={{ opacity: 0, y: "0.5em" }}
                 animate={{
                   opacity: 1,
@@ -43,12 +43,12 @@ export default function PopcornText({
                   transition: {
                     duration: 1,
                     ease: "easeInOut",
-                    delay: getDelay(index),
+                    delay: getDelay(letterIndex),
                   },
                 }}
               >
                 {letter}
-                {index === word.length - 1 &&
+                {letterIndex === word.length - 1 &&
                   wordIndex !== words.length - 1 &&
                   "\u00A0"}
               </motion.span>
