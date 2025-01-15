@@ -11,20 +11,27 @@ export default function MobileMenu() {
   const isHomePage = pathname === "/";
 
   return (
-    <motion.div className="absolute bottom-3 w-full flex justify-center">
+    <motion.div className="absolute bottom-3 flex w-full justify-center">
       <div
         className={cx(
-          "flex gap-6 rounded-full p-3 justify-center mx-2 grow",
+          "mx-2 flex grow justify-center gap-6 rounded-full p-3",
           cx(
             isHomePage
-              ? "text-white bg-black bg-opacity-50"
-              : "text-black bg-black bg-opacity-10",
+              ? "text-stars-100 bg-night-100 bg-opacity-50"
+              : "text-night-100 bg-dune-100 bg-opacity-50",
           ),
         )}
       >
         {NAV_OPTIONS.map((button) => (
           <div key={button.label} onClick={() => navigate(button.pathname)}>
-            <Icon icon={button.icon} className="h-10 w-10" />
+            <Icon
+              icon={button.icon}
+              className={cx(
+                "h-10 w-10",
+                button.icon === "portfolio" && "relative bottom-[2px]",
+                button.icon === "connect" && "scale-[1.03]",
+              )}
+            />
           </div>
         ))}
       </div>

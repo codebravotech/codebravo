@@ -9,7 +9,32 @@
 }
 
 ::selection {
-  background-color: #eca400;
+  @apply bg-expanse-100;
+}
+
+.link-appear {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 4px;
+}
+
+.link-appear::after {
+  @apply bg-stars-100;
+  content: "";
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  animation: draw-border 1s ease-in-out forwards;
+  animation-delay: 2s;
+}
+
+@keyframes draw-border {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
 }
 
 .underline-appear {
@@ -17,11 +42,31 @@
   cursor: pointer;
 }
 
-.underline-appear::after {
+.underline-appear-white::after {
+  @apply border-stars-100 border-b-[1px];
   content: "";
   display: block;
-  height: 3px;
-  border-bottom: 2px solid #eca400;
+  height: 1px;
+  width: 0;
+  transition: width 0.5s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+.underline-appear-white:hover::after {
+  width: 100%;
+  pointer-events: none;
+}
+
+.underline-appear-white:active::after {
+  width: 100%;
+  pointer-events: none;
+}
+
+.underline-appear::after {
+  @apply border-dune-100 border-b-[2px];
+  content: "";
+  display: block;
+  height: 1px;
   width: 0;
   transition: width 0.5s ease;
   pointer-events: none;
@@ -37,24 +82,12 @@
   pointer-events: none;
 }
 
-.glass {
-  position: relative;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  background-color: rgba(251, 247, 240, 0.4);
-  z-index: -1;
-}
-
-.glass::before {
+.cta::before {
+  background: white;
   content: "";
-  display: inline-block;
   position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  height: 100%;
-  background-color: rgba(251, 247, 240, 0.4);
-  backdrop-filter: blur(45px);
-  -webkit-backdrop-filter: blur(45px);
+  height: 40%;
+  top: 60%;
   z-index: -1;
-  border-radius: 1000px;
 }

@@ -20,11 +20,11 @@ const Layout = () => {
   const { isMobile } = useDisplay();
   const isHomePage = pathname === "/";
   return (
-    <>
+    <div className="h-screen w-screen overflow-hidden">
       <Header isHomePage={isHomePage} />
       <Outlet />
       {isMobile && <MobileMenu />}
-    </>
+    </div>
   );
 };
 
