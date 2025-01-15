@@ -11,7 +11,7 @@ export default function MobileMenu() {
   const isHomePage = pathname === "/";
 
   return (
-    <motion.div className="absolute bottom-3 flex w-full justify-center">
+    <motion.div className="absolute bottom-3 z-50 flex w-full justify-center">
       <div
         className={cx(
           "mx-2 flex grow justify-center gap-6 rounded-full p-3",

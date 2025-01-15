@@ -19,7 +19,7 @@ export default function About() {
   }
 
   return (
-    <motion.div className="bg-stars-100 font-raleway pb-42 flex h-screen w-screen flex-col gap-10 overflow-scroll pt-6">
+    <motion.div className="bg-stars-100 font-raleway flex h-screen w-screen flex-col gap-10 overflow-scroll pb-44 pt-6 lg:pb-0">
       {content_blocks.map((content_block: Content_block, index: number) => (
         <ContentBlock
           key={`content_block_${index}`}

@@ -55,7 +55,7 @@ export default function Home() {
       )}
     >
       <div className="flex w-full flex-col-reverse items-center py-6 pl-6 lg:flex-row lg:justify-between lg:px-10">
-        <div className="mt-8 flex flex-col flex-wrap text-xl lg:mt-10 lg:text-3xl">
+        <div className="mt-8 flex flex-col flex-wrap text-xl lg:mt-10 lg:text-5xl">
           {tagline && <PortableTextPopcorn content={tagline} />}
           <motion.div
             initial={{
@@ -70,13 +70,13 @@ export default function Home() {
           </motion.div>
         </div>
         <div className="flex flex-col items-center lg:self-start">
-          <img className="h-40" src={logo} />
-          <div className="font-fjalla mb-2 mt-1 text-3xl tracking-wider">
+          <img className="h-48" src={logo} />
+          <div className="font-fjalla mb-2 mt-1 text-4xl tracking-wider">
             CodeBRAVO
           </div>
           {!isMobile && (
             <ArriveUpwardsStaggered
-              className="flex flex-col items-center gap-1"
+              className="flex flex-col items-center gap-2"
               staggerChildren={1}
               delayChildren={1}
             >
@@ -85,7 +85,7 @@ export default function Home() {
                   <div
                     key={button.label}
                     onClick={() => navigate(button.pathname)}
-                    className="underline-appear-white cursor-pointer text-2xl hover:scale-110"
+                    className="underline-appear-white cursor-pointer text-3xl hover:scale-110"
                   >
                     {button.label}
                   </div>
@@ -97,7 +97,7 @@ export default function Home() {
       </div>
       <div className="mt-10 flex w-full flex-col gap-1 lg:mt-0 lg:h-1/2 lg:items-end lg:justify-center">
         <ArriveUpwardsStaggered
-          className="flex w-full flex-col items-center gap-1 text-2xl lg:w-[40vw] lg:items-start lg:text-4xl"
+          className="flex w-full flex-col items-center gap-1 lg:mr-20 lg:w-[40vw] lg:items-start lg:text-6xl"
           staggerChildren={1}
           delayChildren={isMobile ? 2 : 3}
           onAnimationComplete={() => {
@@ -107,7 +107,7 @@ export default function Home() {
           <div>Front End</div>
           <div>Back End</div>
           <div>Cloud</div>
-          <div className="mt-2 flex w-full flex-col flex-wrap items-start text-lg lg:flex-row lg:text-2xl">
+          <div className="mt-2 flex w-full flex-col flex-wrap items-start text-lg lg:flex-row lg:text-4xl">
             <div className="pr-2">
               {isAndMore ? skills[skillIndex] : "Innovative Solutions in"}
             </div>

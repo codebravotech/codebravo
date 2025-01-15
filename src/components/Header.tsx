@@ -19,7 +19,7 @@ export default function Header({ isHomePage }: { isHomePage: boolean }) {
         isHomePage && "hidden",
       )}
     >
-      <Link className="h-20 pl-4" to="/">
+      <Link className="h-18 mb-2 pl-6" to="/">
         <img className="h-full w-full" src={logo} />
       </Link>
       {!isMobile && (
@@ -35,7 +35,7 @@ export default function Header({ isHomePage }: { isHomePage: boolean }) {
               onClick={() => navigate(button.pathname)}
               className="underline-appear cursor-pointer text-lg"
             >
-              {button.label}
+              {button.short_label}
             </div>
           ))}
         </div>

@@ -7,6 +7,7 @@ import { Content_block } from "../types/sanity.types";
 import PortableTextRegular from "./PortableTextRegular";
 import { PortableTextBlock } from "@portabletext/types";
 import ArriveUpwards from "../animations/ArriveUpwards";
+import { useDisplay } from "../hooks/display";
 
 export default function ContentBlock({
   content_block,
@@ -15,9 +16,10 @@ export default function ContentBlock({
   content_block: Content_block;
   justified: "left" | "right";
 }) {
+  const { isMobile } = useDisplay();
   const imgRef = useRef<HTMLImageElement | null>(null);
   const copyRef = useRef<HTMLDivElement | null>(null);
-  const [imgPosition, setImgPosition] = useState({ left: 0, right: 0 });
+  // const [imgPosition, setImgPosition] = useState({ left: 0, right: 0 });
   const [imgWidth, setImgWidth] = useState(0);
   const _key = get(content_block, "_key", {});
   const cta_link = get(content_block, "cta_link", {});
@@ -41,7 +43,7 @@ export default function ContentBlock({
   const justifiedRight = justified === "right";
   const isWideImage = imgWidth >= innerWidth / 2;
 
-  let copyStyle: React.CSSProperties = {};
+  let copyStyle: React.CSSProperties = { width: "50vw" };
   let imageStyle = {};
   if (justifiedLeft) {
     if (isWideImage) {
@@ -75,7 +77,7 @@ export default function ContentBlock({
     if (imgRef.current) {
       const { left, right } = imgRef.current.getBoundingClientRect();
       const width = Math.round(right - left);
-      setImgPosition({ left, right });
+      // setImgPosition({ left, right });
       setImgWidth(width);
     }
   };
@@ -84,21 +86,21 @@ export default function ContentBlock({
     updatePosition();
 
     window.addEventListener("resize", updatePosition);
-    window.addEventListener("load", updatePosition);
-    window.addEventListener("scroll", updatePosition);
+    // window.addEventListener("load", updatePosition);
+    // window.addEventListener("scroll", updatePosition);
 
     return () => {
       window.removeEventListener("resize", updatePosition);
-      window.removeEventListener("load", updatePosition);
-      window.removeEventListener("scroll", updatePosition);
+      // window.removeEventListener("load", updatePosition);
+      // window.removeEventListener("scroll", updatePosition);
     };
   }, []);
 
   return (
     <motion.div
       className={cx(
-        "relative mb-44 flex h-screen flex-row items-center",
-        justifiedRight && "flex-row-reverse",
+        "relative mb-10 flex h-screen flex-col items-center lg:mb-44 lg:flex-row",
+        justifiedRight && "lg:flex-row-reverse",
       )}
       style={{ paddingLeft: `${paddingX}px`, paddingRight: `${paddingX}px` }}
     >
@@ -115,13 +117,18 @@ export default function ContentBlock({
         <img
           ref={imgRef}
           className={cx(
-            "relative rounded-2xl object-scale-down shadow-lg",
-            orientation === "portrait" && "max-h-[75vh] max-w-[50vw]",
-            orientation === "landscape" && "max-w-[70vw]",
+            "rounded-2xl object-scale-down shadow-lg",
+            !isMobile && "relative",
+            !isMobile &&
+              orientation === "portrait" &&
+              "max-h-[75vh] max-w-[50vw]",
+            !isMobile && orientation === "landscape" && "max-w-[70vw]",
+            isMobile && "w-full",
           )}
           src={src}
           alt={alt}
           style={imageStyle}
+          onLoad={updatePosition}
         />
       </motion.div>
       {/* 
@@ -137,14 +144,17 @@ export default function ContentBlock({
         />
       </div> */}
 
-      {_key && (
+      {_key && imgWidth && (
         <div
-          className={cx("absolute -bottom-16 max-h-[50vh] text-xl")}
+          className={cx(
+            !isMobile && "max-h-[40vh] text-xl lg:absolute lg:-bottom-16",
+            isMobile && "relative mt-2 w-full bg-red-200",
+          )}
           ref={copyRef}
-          style={copyStyle}
+          style={isMobile ? {} : copyStyle}
         >
-          <ArriveUpwards keyBy={`content_block_copy_${_key}`} delay={1}>
-            <div className="text-stars-300 bg-expanse-100 z-10 flex flex-col rounded-xl bg-opacity-[97%] px-8 py-5 shadow-lg">
+          <ArriveUpwards keyBy={`content_block_copy_${_key}`} delay={0.5}>
+            <div className="text-stars-300 bg-expanse-100 z-10 flex flex-col items-stretch rounded-2xl bg-opacity-[97%] px-4 py-5 shadow-lg lg:items-start lg:px-8">
               <PortableTextRegular content={copy as PortableTextBlock[]} />
               <CtaButton url={buttonUrl} variant="white_blue">
                 {buttonText}

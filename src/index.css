@@ -30,7 +30,7 @@
 
 .link-highlight {
   position: relative;
-  @apply text-dune-100 font-bold;
+  @apply text-dune-100 bg-stars-100 my-[1px] rounded-md bg-opacity-50 font-bold;
 }
 
 .link-highlight:hover {
@@ -124,9 +124,9 @@
 }
 @keyframes color_change {
   0% {
-    color: #eca400; /* Replace with text-dune-100 */
+    color: #eca400;
   }
   100% {
-    color: #2dbfd4; /* Replace with text-expanse-100 */
+    color: #2dbfd4;
   }
 }

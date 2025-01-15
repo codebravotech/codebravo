@@ -14,7 +14,7 @@ export default function CtaButton({
   variant: "white_blue" | "dune_black";
 }) {
   const parentClass =
-    "font-fjalla   z-10 mt-6 self-end rounded-md px-4 py-2 text-4xl font-bold tracking-wider shadow-xl transition-all duration-300 ease-in-out";
+    "font-fjalla z-10 mt-5 lg:self-end rounded-full px-6 py-4 text-4xl font-bold tracking-wider shadow-xl transition-all duration-300 ease-in-out flex flex-col text-center leading-tight items-center";
 
   const colorClass = "bg-stars-100 text-expanse-100 hover:text-dune-100";
   switch (variant) {
