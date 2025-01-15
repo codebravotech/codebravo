@@ -24,8 +24,8 @@ export default function About() {
         <ContentBlock
           key={`content_block_${index}`}
           content_block={content_block}
-          justified={index % 2 === 0 ? "right" : "left"}
-          // justified={index % 2 === 0 ? "left" : "right"}
+          // justified={index % 2 === 0 ? "right" : "left"}
+          justified={index % 2 === 0 ? "left" : "right"}
         />
       ))}
     </motion.div>
