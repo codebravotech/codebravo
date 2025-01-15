@@ -11,7 +11,7 @@ import RotatingList from "../animations/RotatingList";
 import PopcornPortableText from "../components/PopcornPortableText";
 import { NAV_OPTIONS } from "../config";
 import { useDisplay } from "../hooks/display";
-import { useHomepage } from "../hooks/sanity";
+import { useSingleton } from "../hooks/sanity";
 
 export default function Home() {
   const [skillIndex, setSkillIndex] = useState<number>(0);
@@ -20,7 +20,7 @@ export default function Home() {
   const navigate = useNavigate();
   const { isMobile } = useDisplay();
 
-  const { homePage } = useHomepage();
+  const { singleton: homePage } = useSingleton("home_page");
   const tagline = get(homePage, "tagline", []);
   const tagline_cta = get(homePage, "tagline_cta", "");
   const tagline_path = get(homePage, "tagline_path", "");
@@ -51,7 +51,6 @@ export default function Home() {
     <motion.div
       className={cx(
         "text-night-300 flex h-screen flex-col items-center pb-36 lg:pb-0",
-        "bg-[linear-gradient(to_bottom_left,#ECA400,#a35b1f)]",
       )}
     >
       <div className="flex w-full flex-col-reverse items-center py-6 pl-6 lg:flex-row lg:justify-between lg:px-10">

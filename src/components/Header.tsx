@@ -14,7 +14,7 @@ export default function Header({ isHomePage }: { isHomePage: boolean }) {
   return (
     <motion.div
       className={cx(
-        "pb-8 flex flex-row items-start pt-4",
+        "bg-stars-100 flex flex-row items-start pb-8 pt-4",
         isMobile ? "justify-center" : "justify-between",
         isHomePage && "hidden",
       )}
@@ -25,8 +25,8 @@ export default function Header({ isHomePage }: { isHomePage: boolean }) {
       {!isMobile && (
         <div
           className={cx(
-            "flex flex-row justify-evenly pt-2 gap-4 pr-4",
-            isHomePage ? "text-white" : "text-night-400",
+            "flex flex-row justify-evenly gap-4 pr-4 pt-2",
+            isHomePage ? "text-stars-100" : "text-night-400",
           )}
         >
           {NAV_OPTIONS.map((button) => (

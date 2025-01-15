@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         namibia: "url('/images/namibia.jpg')",
+        "dune-gradient": "linear-gradient(to bottom left, #ECA400, #a35b1f)",
       },
       colors: {
         stars: {
