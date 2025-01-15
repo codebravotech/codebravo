@@ -105,6 +105,7 @@ export default function ContentBlock({
       style={{ paddingLeft: `${paddingX}px`, paddingRight: `${paddingX}px` }}
     >
       <motion.div
+        key={src}
         initial={{
           x: 100 * (justifiedLeft ? -1 : 1),
           opacity: 0,
@@ -144,11 +145,11 @@ export default function ContentBlock({
         />
       </div> */}
 
-      {_key && imgWidth && (
+      {_key && imgWidth > 0 && (
         <div
           className={cx(
             !isMobile && "max-h-[40vh] text-xl lg:absolute lg:-bottom-16",
-            isMobile && "relative mt-2 w-full bg-red-200",
+            isMobile && "relative mt-2 w-full",
           )}
           ref={copyRef}
           style={isMobile ? {} : copyStyle}
