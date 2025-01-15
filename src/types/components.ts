@@ -9,4 +9,5 @@ export interface NavOptions {
   label: string;
   pathname: ValidRoutes;
   icon: IconType;
+  short_label: string;
 }
