@@ -13,7 +13,7 @@ export default function ArriveUpwards({
   className = "",
   exit = false,
 }: {
-  key: string;
+  key?: string;
   disableAnimation?: boolean;
   distance?: number;
   delay?: number;
