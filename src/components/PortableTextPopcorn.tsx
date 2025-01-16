@@ -20,7 +20,7 @@ const PortableTextPopcorn = ({ content }: { content: PortableTextBlock[] }) => {
   return (
     <PortableText
       value={content}
-      components={merge(BaseComponents, components)}
+      components={merge(BaseComponents({}), components)}
     />
   );
 };
