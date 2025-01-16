@@ -1,9 +1,10 @@
+import "@fontsource-variable/raleway";
+import "@fontsource/fjalla-one";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
+
 import App from "./App.tsx";
-import "@fontsource/fjalla-one";
-import "@fontsource-variable/raleway";
+import "./index.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

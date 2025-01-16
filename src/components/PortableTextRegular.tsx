@@ -5,6 +5,14 @@ import {
 } from "@portabletext/react";
 
 const components: PortableTextComponents = {
+  listItem: {
+    bullet: ({ children }) => (
+      <li className="my-1.5 ml-8 list-disc">{children}</li>
+    ),
+    number: ({ children }) => (
+      <li className="my-2 ml-8 list-decimal">{children}</li>
+    ),
+  },
   marks: {
     link: ({ children, value }) => {
       if (!value) {

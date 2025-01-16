@@ -5,6 +5,7 @@ import {
   useLocation,
 } from "react-router-dom";
 
+import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MobileMenu from "./components/MobileMenu";
 import { useDisplay } from "./hooks/display";
@@ -20,10 +21,13 @@ const Layout = () => {
   const { isMobile } = useDisplay();
   const isHomePage = pathname === "/";
   return (
-    <div className="h-screen w-screen overflow-hidden">
+    <div className="h-full w-full bg-stars-100">
       <Header isHomePage={isHomePage} />
-      <Outlet />
+      <div className="min-h-[82%] w-[100vw] overflow-x-hidden overflow-y-scroll bg-stars-100 scrollbar-hide">
+        <Outlet />
+      </div>
       {isMobile && <MobileMenu />}
+      <Footer isHomePage={isHomePage} />
     </div>
   );
 };

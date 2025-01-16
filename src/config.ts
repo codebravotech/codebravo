@@ -1,5 +1,7 @@
 import { NavOptions } from "./types/components";
 
+export const IMAGE_SCALE_FACTOR = 0.8;
+
 export const NAV_OPTIONS: Array<NavOptions> = [
   {
     label: "Home",
