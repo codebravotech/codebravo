@@ -47,7 +47,8 @@ export default function ParallaxImage({
     <motion.img
       key={`image_${src}`}
       ref={ref}
-      className={cx("h-[100%] w-[100%]", className)}
+      // className={cx("h-[100%] w-[100%] object-contain", className)}
+      className={cx("img_scalable my-5 lg:mb-0", className)}
       src={src}
       alt={alt}
       style={{

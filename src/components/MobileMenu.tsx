@@ -11,14 +11,14 @@ export default function MobileMenu() {
   const isHomePage = pathname === "/";
 
   return (
-    <motion.div className="absolute bottom-3 z-50 flex w-full justify-center">
+    <motion.div className="fixed bottom-3 z-50 flex w-full justify-center">
       <div
         className={cx(
           "mx-2 flex grow justify-center gap-6 rounded-full p-3",
           cx(
             isHomePage
-              ? "text-stars-100 bg-night-100 bg-opacity-50"
-              : "text-night-100 bg-dune-100 bg-opacity-50",
+              ? "bg-night-100 bg-opacity-50 text-stars-100"
+              : "bg-dune-100 bg-opacity-50 text-night-100",
           ),
         )}
       >

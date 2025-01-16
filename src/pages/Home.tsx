@@ -51,11 +51,11 @@ export default function Home() {
   return (
     <motion.div
       className={cx(
-        "bg-dune-gradient text-night-300 flex h-screen flex-col items-center pb-36 lg:pb-0",
+        "flex h-screen flex-col items-center bg-dune-gradient pb-36 text-night-300 lg:pb-0",
       )}
     >
       <div className="flex w-full flex-col-reverse items-center py-6 pl-6 lg:flex-row lg:justify-between lg:px-10">
-        <div className="mt-8 flex flex-col flex-wrap text-xl lg:mt-10 lg:text-5xl">
+        <div className="mt-8 flex flex-col flex-wrap text-2xl lg:mt-10 lg:text-5xl">
           {tagline && <PortableTextPopcorn content={tagline} />}
           <motion.div
             initial={{
@@ -64,14 +64,14 @@ export default function Home() {
             whileInView={{ color: "#F4EFE8" }}
             transition={{ duration: 2, delay: 2 }}
           >
-            <Link to={url} className="link-appear text-stars-100 mr-auto mt-2">
+            <Link to={url} className="link-appear mr-auto mt-2 text-stars-100">
               {label && <PopcornText text={label} />}
             </Link>
           </motion.div>
         </div>
         <div className="flex flex-col items-center lg:self-start">
           <img className="h-48" src={logo} />
-          <div className="font-fjalla mb-2 mt-1 text-4xl tracking-wider">
+          <div className="mb-2 mt-1 font-fjalla text-4xl tracking-wider">
             CodeBRAVO
           </div>
           {!isMobile && (
@@ -95,9 +95,9 @@ export default function Home() {
           )}
         </div>
       </div>
-      <div className="mt-10 flex w-full flex-col gap-1 lg:mt-0 lg:h-1/2 lg:items-end lg:justify-center">
+      <div className="mt-4 flex w-full flex-col gap-1 lg:mt-0 lg:mt-10 lg:h-1/2 lg:items-end lg:justify-center">
         <ArriveUpwardsStaggered
-          className="flex w-full flex-col items-center gap-1 lg:mr-20 lg:w-[40vw] lg:items-start lg:text-6xl"
+          className="ml-6 flex w-full flex-col items-start gap-1 text-2xl lg:mr-20 lg:w-[40vw] lg:items-start lg:text-6xl"
           staggerChildren={1}
           delayChildren={isMobile ? 2 : 3}
           onAnimationComplete={() => {

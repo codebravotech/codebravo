@@ -1,7 +1,7 @@
 import { PortableTextBlock } from "@portabletext/types";
 import { motion } from "framer-motion";
 
-import ArriveUpwards from "../animations/ArriveUpwards";
+import ArriveDirectionally from "../animations/ArriveDirectionally";
 import ContactUs from "../components/ContactUs";
 import PortableTextRegular from "../components/PortableTextRegular";
 import { useSingleton } from "../hooks/sanity";
@@ -24,13 +24,13 @@ export default function Connect() {
   } = connectPage;
   return (
     <motion.div className="mb-10 flex h-full w-full flex-col-reverse gap-10 px-6 pt-4 lg:flex-row">
-      <ArriveUpwards
+      <ArriveDirectionally
         keyBy={"contact_form_copy"}
         className="mb-2 basis-1/2 text-2xl leading-snug lg:text-3xl"
       >
         <PortableTextRegular content={copy as PortableTextBlock[]} />
-      </ArriveUpwards>
-      <ArriveUpwards
+      </ArriveDirectionally>
+      <ArriveDirectionally
         keyBy={"contact_form_inputs"}
         className="flex basis-1/2 flex-col"
       >
@@ -42,7 +42,7 @@ export default function Connect() {
           email_placeholder={email_placeholder}
           message_placeholder={message_placeholder}
         />
-      </ArriveUpwards>
+      </ArriveDirectionally>
     </motion.div>
   );
 }

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { get, update } from "lodash";
 import { useEffect, useRef, useState } from "react";
 
-import ArriveUpwards from "../animations/ArriveUpwards";
+import ArriveDirectionally from "../animations/ArriveDirectionally";
 import ParallaxImage from "../animations/ParallaxImage";
 import { IMAGE_SCALE_FACTOR } from "../config";
 import { useDisplay } from "../hooks/display";
@@ -38,12 +38,12 @@ export default function ContentBlock({
   const orientation = height > width ? "portrait" : "landscape";
   const alt = get(content_block, "imageAlt", "");
   const copy = get(content_block, "copy", []);
-  const paddingX = 35;
+  const paddingX = !isMobile ? 35 : 0;
   const justifiedLeft = justified === "left";
   const justifiedRight = justified === "right";
   const isWideImage = imgWidth >= innerWidth / 2;
 
-  let copyStyle: React.CSSProperties = { width: "50vw" };
+  let copyStyle: React.CSSProperties = { width: "50vw", height: "30vh" };
   let imgContainerStyle = {};
   if (justifiedLeft) {
     if (isWideImage) {
@@ -84,7 +84,7 @@ export default function ContentBlock({
   return (
     <motion.div
       className={cx(
-        "relative flex h-screen flex-col items-center lg:flex-row lg:items-start",
+        "relative flex flex-col items-center lg:h-screen lg:flex-row lg:items-start",
         justifiedRight && "lg:flex-row-reverse",
       )}
       style={{ paddingLeft: `${paddingX}px`, paddingRight: `${paddingX}px` }}
@@ -92,26 +92,26 @@ export default function ContentBlock({
       <motion.div
         key={`container_${src}`}
         initial={{
-          x: 100 * (justifiedLeft ? -1 : 1),
+          x: isMobile ? 0 : 100 * (justifiedLeft ? -1 : 1),
           opacity: 0,
           filter: "blur(44px)",
         }}
         whileInView={{ x: 0, opacity: 1, filter: "blur(0px)" }}
-        transition={{ duration: 0.8, delay: 0.5 }}
+        transition={{ duration: 0.8, delay: 0 }}
         viewport={{ once: true }}
         className={cx(
-          "relative h-[75vh] overflow-hidden rounded-2xl bg-transparent object-scale-down",
+          "relative overflow-hidden bg-transparent lg:rounded-2xl",
           !isMobile && orientation === "portrait" && "h-[75vh] max-w-[50vw]",
           !isMobile && orientation === "landscape" && "max-w-[70vw]",
-          isMobile && "w-full",
+          isMobile && "w-screen",
         )}
-        style={imgContainerStyle}
+        style={isMobile ? {} : imgContainerStyle}
       >
         <ParallaxImage
           src={src}
           alt={alt}
           updatePosition={updatePosition}
-          className="rounded-2xl shadow-xl"
+          className="shadow-xl lg:rounded-2xl"
         />
       </motion.div>
       {/* 
@@ -127,22 +127,27 @@ export default function ContentBlock({
         />
       </div> */}
 
-      {_key && imgWidth > 0 && (
+      {_key && (
         <div
           className={cx(
-            !isMobile && "max-h-[40vh] text-xl lg:absolute lg:bottom-[15vh]",
+            !(imgWidth > 0) && "invisible",
+            !isMobile && "max-h-[40vh] text-xl lg:absolute lg:bottom-40",
             isMobile && "relative mt-2 w-full",
           )}
           style={isMobile ? {} : copyStyle}
         >
-          <ArriveUpwards keyBy={`content_block_copy_${_key}`} delay={0.5}>
+          <ArriveDirectionally
+            keyBy={`content_block_copy_${_key}`}
+            delay={0}
+            direction={"right"}
+          >
             <div className="z-10 flex flex-col items-stretch rounded-2xl bg-expanse-100 bg-opacity-[97%] px-4 py-5 text-stars-300 shadow-lg lg:items-start lg:px-8">
               <PortableTextRegular content={copy as PortableTextBlock[]} />
               <CtaButton url={buttonUrl} variant="white_blue">
                 {buttonText}
               </CtaButton>
             </div>
-          </ArriveUpwards>
+          </ArriveDirectionally>
         </div>
       )}
     </motion.div>

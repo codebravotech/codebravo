@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
 
-export default function ArriveUpwards({
+export default function ArriveDirectionally({
   keyBy,
-  distance = 30,
+  direction = "up",
+  distance = 50,
   delay = 1,
   duration = 1,
   children,
@@ -12,6 +13,7 @@ export default function ArriveUpwards({
   exit = false,
 }: {
   keyBy: string;
+  direction?: "up" | "right";
   distance?: number;
   delay?: number;
   duration?: number;
@@ -24,13 +26,25 @@ export default function ArriveUpwards({
     <motion.div
       key={keyBy}
       className={className}
-      initial={{ opacity: 0, y: distance }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{
+        opacity: 0,
+        y: direction === "up" ? distance : 0,
+        x: direction === "right" ? -1 * distance : 0,
+      }}
+      whileInView={{ opacity: 1, y: 0, x: 0 }}
       transition={{
         duration,
         delay,
       }}
-      exit={exit ? { opacity: 0, y: distance } : {}}
+      exit={
+        exit
+          ? {
+              opacity: 0,
+              y: direction === "up" ? distance : 0,
+              x: direction === "right" ? -1 * distance : 0,
+            }
+          : {}
+      }
       viewport={{ once }}
     >
       {children}
