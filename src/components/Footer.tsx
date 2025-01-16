@@ -10,9 +10,9 @@ export default function Footer({ isHomePage }: { isHomePage: boolean }) {
   return (
     <motion.div
       className={cx(
-        "flex items-start bg-stars-100 px-4 pb-32 text-sm lg:pb-2",
+        "flex bg-stars-100 px-4 pb-24 pt-10 text-sm lg:items-start lg:pb-0 lg:pb-2",
         isMobile
-          ? "flex-col justify-center"
+          ? "flex-col-reverse items-center"
           : "flex-row items-end justify-between",
         isHomePage && "hidden",
       )}

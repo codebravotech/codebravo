@@ -157,15 +157,19 @@ export type Home_page = {
   skills?: Array<string>
 }
 
+export type Link = {
+  _type: 'link'
+  label?: string
+  url?: string
+}
+
 export type Connect_page = {
   _id: string
   _type: 'connect_page'
   _createdAt: string
   _updatedAt: string
   _rev: string
-  name_placeholder?: string
-  email_placeholder?: string
-  message_placeholder?: Array<{
+  copy?: Array<{
     children?: Array<{
       marks?: Array<string>
       text?: string
@@ -183,13 +187,27 @@ export type Connect_page = {
     _type: 'block'
     _key: string
   }>
-  cta_link?: Link
-}
-
-export type Link = {
-  _type: 'link'
-  label?: string
-  link_path?: string
+  form_header?: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
+  name_placeholder?: string
+  email_placeholder?: string
+  message_placeholder?: string
 }
 
 export type About_page = {
@@ -325,8 +343,8 @@ export type AllSanitySchemaTypes =
   | Pdf
   | Portfolio_page
   | Home_page
-  | Connect_page
   | Link
+  | Connect_page
   | About_page
   | Project
   | SanityFileAsset
