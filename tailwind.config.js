@@ -36,6 +36,16 @@ module.exports = {
           300: "#202020",
           400: "#181818",
         },
+        success: {
+          100: "#6CC36D",
+          200: "#4CAF50",
+          300: "#388E3C",
+          400: "#2E7D32",
+        },
+        error: {
+          100: "#C62828",
+          200: "#B71C1C",
+        },
       },
       fontFamily: {
         fjalla: ['"Fjalla One"', "sans-serif"],

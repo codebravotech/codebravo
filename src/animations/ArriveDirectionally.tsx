@@ -5,7 +5,7 @@ export default function ArriveDirectionally({
   keyBy,
   direction = "up",
   distance = 50,
-  delay = 1,
+  delay = 0.3,
   duration = 1,
   children,
   once = true,

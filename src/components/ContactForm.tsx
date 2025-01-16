@@ -1,9 +1,12 @@
+import { PortableTextBlock } from "@portabletext/types";
 import cx from "classnames";
 import DOMPurify from "dompurify";
-import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { WEB3_FORMS_KEY } from "../config";
+import { PostResult } from "../types/components";
+import Icon from "./Icon";
+import PortableTextRegular from "./PortableTextRegular";
 
 export interface ContactFormBody {
   email: string;
@@ -11,24 +14,31 @@ export interface ContactFormBody {
   message: string;
 }
 
-export default function ContactUs({
+export default function ContactForm({
+  submitting,
+  postResult,
+  setSubmitting,
+  setPostResult,
   name_placeholder,
   email_placeholder,
   message_placeholder,
+  email_link,
 }: {
+  submitting: boolean;
+  postResult: PostResult;
+  setSubmitting: (submitting: boolean) => void;
+  setPostResult: (postResult: PostResult) => void;
   name_placeholder: string;
   email_placeholder: string;
   message_placeholder: string;
+  email_link: PortableTextBlock[];
 }) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ContactFormBody>();
-  const [submitting, setSubmitting] = useState<boolean>(false);
-  const [postResult, setPostResult] = useState<"SUCCESS" | "ERROR" | null>(
-    null,
-  );
 
   const onSubmit: SubmitHandler<ContactFormBody> = async (data) => {
     try {
@@ -54,11 +64,14 @@ export default function ContactUs({
         return formData.append(key, value.toString());
       });
       formData.append("access_key", WEB3_FORMS_KEY);
-
-      await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData,
-      });
+      if (window.location.hostname === "localhost") {
+        alert("Stubbed email form submission");
+      } else {
+        await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: formData,
+        });
+      }
 
       setSubmitting(false);
       setPostResult("SUCCESS");
@@ -70,16 +83,42 @@ export default function ContactUs({
   };
 
   if (postResult) {
+    const BackButton = () => (
+      <div
+        className="absolute right-4 top-2"
+        onClick={() => {
+          if (postResult === "SUCCESS") {
+            reset();
+          }
+          setSubmitting(false);
+          setPostResult(null);
+        }}
+      >
+        <Icon icon="refresh" className="h-8 w-8" />
+      </div>
+    );
+
+    const resultClassname =
+      "relative w-full rounded-3xl p-5 text-lg text-stars-100";
     if (postResult === "SUCCESS") {
       return (
-        <div className="w-full rounded-3xl bg-dune-100 p-5 text-stars-100">
-          Thanks for reaching out! <br /> We'll be in touch soon.
+        <div className={cx("bg-success-300", resultClassname)}>
+          Thanks for reaching out! <br /> I'll be in touch shortly.
+          <BackButton />
         </div>
       );
     } else if (postResult === "ERROR") {
       return (
-        <div className="w-full rounded-3xl bg-red-200 p-5 text-night-300">
-          Something went wrong, please try again later.
+        <div>
+          <div className={cx("bg-error-200 !text-stars-100", resultClassname)}>
+            Something went wrong, please try again later or reach out directly:
+            <BackButton />
+            <PortableTextRegular
+              content={email_link}
+              link_color="stars-100"
+              icon_color="stars-100"
+            />
+          </div>
         </div>
       );
     }
@@ -87,7 +126,7 @@ export default function ContactUs({
 
   const inputClasses =
     "rounded-3xl bg-dune-100 text-night-300 placeholder-stars-100 bg-opacity-95 py-5 pl-5 pr-2 text-md lg:text-lg";
-  const errorClass = "text-red-800";
+  const errorClass = "text-error-100 font-fjalla";
 
   return (
     <form
@@ -100,28 +139,26 @@ export default function ContactUs({
             {errors?.full_name?.message?.toString()}
           </div>
         )}
-        {/* <div>Preferred Name</div> */}
         <input
           disabled={submitting}
           className={cx("h-10 w-full", inputClasses)}
           placeholder={name_placeholder}
           {...register("full_name", {
-            required: "Required",
+            required: "REQUIRED",
           })}
         />
         {errors.email && (
           <div className={errorClass}>{errors?.email?.message?.toString()}</div>
         )}
-        {/* <div>Email</div> */}
         <input
           disabled={submitting}
           className={cx("h-10 w-full", inputClasses)}
           placeholder={email_placeholder}
           {...register("email", {
-            required: "Required",
+            required: "REQUIRED",
             pattern: {
               value: /\S+@\S+\.\S+/,
-              message: "Entered value does not match email format",
+              message: "Entered value does not match format for valid email",
             },
           })}
         />
@@ -139,14 +176,17 @@ export default function ContactUs({
             )}
             placeholder={message_placeholder}
             {...register("message", {
-              required: "Required",
+              required: "REQUIRED",
             })}
           />
           <div
-            className={cx("absolute bottom-4 right-4", submitting && "hidden")}
+            className={cx(
+              "bg-red absolute bottom-4 flex w-full flex-col items-stretch px-4 lg:items-end",
+              submitting && "hidden",
+            )}
           >
             <button
-              className="rounded-full border-4 border-expanse-100 p-2 font-fjalla text-xl text-stars-100 transition-all duration-300 ease-in-out hover:border-stars-100 hover:text-expanse-100"
+              className="mb-2 min-w-24 rounded-full bg-stars-100 p-2 font-fjalla text-xl text-expanse-100 shadow-xl transition-all duration-300 ease-in-out hover:bg-expanse-100 hover:text-stars-100"
               type="submit"
             >
               SUBMIT

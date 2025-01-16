@@ -1,9 +1,11 @@
+import cx from "classnames";
 import {
   Outlet,
   RouterProvider,
   createBrowserRouter,
   useLocation,
 } from "react-router-dom";
+import { Tooltip } from "react-tooltip";
 
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -20,6 +22,9 @@ const Layout = () => {
   const { pathname } = useLocation();
   const { isMobile } = useDisplay();
   const isHomePage = pathname === "/";
+  const tooltipClassname =
+    "mt-2 z-50 rounded-xl bg-opacity-50 px-2 py-1 font-raleway text-xs bg-night-100 text-stars-100";
+
   return (
     <div className="relative flex min-h-screen w-[100vw] flex-col overflow-x-hidden overflow-y-scroll bg-stars-100 scrollbar-hide">
       <Header isHomePage={isHomePage} />
@@ -30,6 +35,25 @@ const Layout = () => {
       </div>
 
       {isMobile && <MobileMenu />}
+
+      <Tooltip
+        id="mailto_link_tooltip"
+        arrowColor="transparent"
+        className={cx(tooltipClassname)}
+        disableStyleInjection={true}
+      />
+      <Tooltip
+        id="copy_email_tooltip"
+        arrowColor="transparent"
+        className={cx(tooltipClassname)}
+        disableStyleInjection={true}
+      />
+      <Tooltip
+        id="visit_special_links_tooltip"
+        arrowColor="transparent"
+        className={cx(tooltipClassname)}
+        disableStyleInjection={true}
+      />
     </div>
   );
 };
