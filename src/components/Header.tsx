@@ -14,12 +14,12 @@ export default function Header({ isHomePage }: { isHomePage: boolean }) {
   return (
     <motion.div
       className={cx(
-        "bg-stars-100 flex flex-row items-start pb-4 pt-2",
+        "flex flex-row items-start bg-stars-100 pt-2",
         isMobile ? "justify-center" : "justify-between",
         isHomePage && "hidden",
       )}
     >
-      <Link className="h-18 mb-2 pl-6" to="/">
+      <Link className="mb-2 h-24 pl-6" to="/">
         <img className="h-full w-full" src={logo} />
       </Link>
       {!isMobile && (

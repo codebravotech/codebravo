@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
-import { useQuery } from "../hooks/sanity";
-import { get } from "lodash";
-import ContentBlock from "../components/ContentBlock";
 import groq from "groq";
+import { get } from "lodash";
+
+import ContentBlock from "../components/ContentBlock";
+import { useQuery } from "../hooks/sanity";
 import { Content_block } from "../types/sanity.types";
 
 export default function About() {
@@ -19,7 +20,7 @@ export default function About() {
   }
 
   return (
-    <motion.div className="bg-stars-100 font-raleway flex h-screen w-screen flex-col gap-10 overflow-scroll pb-44 pt-6 lg:pb-0">
+    <motion.div className="flex flex-col gap-10 bg-stars-100 font-raleway">
       {content_blocks.map((content_block: Content_block, index: number) => (
         <ContentBlock
           key={`content_block_${index}`}
