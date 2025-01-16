@@ -30,11 +30,12 @@ const Layout = () => {
       <Header isHomePage={isHomePage} />
 
       <Outlet />
-      <div className="mt-auto">
+
+      <div className={cx("mt-auto", isMobile && !isHomePage && "mb-32")}>
         <Footer isHomePage={isHomePage} />
       </div>
 
-      {isMobile && <MobileMenu />}
+      {isMobile && <MobileMenu isHomePage={isHomePage} />}
 
       <Tooltip
         id="mailto_link_tooltip"

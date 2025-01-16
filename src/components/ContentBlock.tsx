@@ -141,7 +141,7 @@ export default function ContentBlock({
             delay={0}
             direction={"right"}
           >
-            <div className="z-10 flex flex-col items-stretch rounded-2xl bg-expanse-100 bg-opacity-[97%] px-4 py-5 text-stars-300 shadow-lg lg:items-start lg:px-8">
+            <div className="bg-expanse-gradient z-10 flex flex-col items-stretch rounded-2xl bg-opacity-[97%] px-4 py-5 text-stars-300 shadow-lg lg:items-start lg:px-8">
               <PortableTextRegular content={copy as PortableTextBlock[]} />
               <CtaButton url={buttonUrl} variant="white_blue">
                 {buttonText}
