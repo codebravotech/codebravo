@@ -10,6 +10,19 @@
   font-family: "Raleway Variable", sans-serif;
 }
 
+.image_class {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 20px;
+}
+
+:focus {
+  @apply outline-expanse-100;
+}
+
 ::selection {
   @apply bg-expanse-100;
 }

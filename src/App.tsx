@@ -23,7 +23,7 @@ const Layout = () => {
   return (
     <div className="h-full w-full bg-stars-100">
       <Header isHomePage={isHomePage} />
-      <div className="min-h-[82%] w-[100vw] overflow-x-hidden overflow-y-scroll bg-stars-100 scrollbar-hide">
+      <div className="min-h-[81%] w-[100vw] overflow-x-hidden overflow-y-scroll bg-stars-100 scrollbar-hide">
         <Outlet />
       </div>
       {isMobile && <MobileMenu />}
