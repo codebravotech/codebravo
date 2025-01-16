@@ -21,13 +21,14 @@ const Layout = () => {
   const { isMobile } = useDisplay();
   const isHomePage = pathname === "/";
   return (
-    <div className="h-full w-full bg-stars-100">
+    <div className="relative min-h-screen w-[100vw] overflow-x-hidden overflow-y-scroll bg-stars-100 scrollbar-hide">
       <Header isHomePage={isHomePage} />
-      <div className="min-h-[81%] w-[100vw] overflow-x-hidden overflow-y-scroll bg-stars-100 scrollbar-hide">
-        <Outlet />
+
+      <Outlet />
+      <div className="absolute bottom-0 w-full">
+        <Footer isHomePage={isHomePage} />
       </div>
       {isMobile && <MobileMenu />}
-      <Footer isHomePage={isHomePage} />
     </div>
   );
 };

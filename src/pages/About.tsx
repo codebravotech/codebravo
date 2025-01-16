@@ -20,7 +20,7 @@ export default function About() {
   }
 
   return (
-    <motion.div className="flex flex-col gap-10 bg-stars-100 font-raleway">
+    <motion.div className="flex flex-col gap-10 bg-stars-100 px-4 font-raleway lg:px-0">
       {content_blocks.map((content_block: Content_block, index: number) => (
         <ContentBlock
           key={`content_block_${index}`}

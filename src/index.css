@@ -9,6 +9,14 @@
   font-family: "Raleway Variable", sans-serif;
 }
 
+.img_scalable {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
 :focus {
   @apply outline-expanse-100;
 }
