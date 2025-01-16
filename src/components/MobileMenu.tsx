@@ -1,16 +1,32 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { NAV_OPTIONS } from "../config";
 import Icon from "./Icon";
 
-export default function MobileMenu() {
+export default function MobileMenu({ isHomePage = false }) {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   return (
-    <motion.div className="glass_menu fixed bottom-16 left-0 right-0 z-50 mx-4 mb-2 flex h-14 flex-row items-center justify-evenly rounded-full p-2 shadow-xl">
+    <motion.div
+      className={cx(
+        "glass_menu fixed bottom-4 left-0 right-0 z-50 mx-4 mb-2 flex flex-row items-center justify-evenly rounded-full p-2 shadow-xl",
+      )}
+    >
       {NAV_OPTIONS.map((button) => (
-        <div key={button.label} onClick={() => navigate(button.pathname)}>
+        <div
+          className={cx(
+            "relative rounded-full p-[10px]",
+            pathname === button.pathname
+              ? isHomePage
+                ? "border-[2px] border-night-300 bg-transparent p-[8px]"
+                : "bg-expanse-gradient"
+              : "border-transparent",
+          )}
+          key={button.label}
+          onClick={() => navigate(button.pathname)}
+        >
           <Icon
             icon={button.icon}
             className={cx(

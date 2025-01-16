@@ -23,7 +23,7 @@ export default function Header({ isHomePage }: { isHomePage: boolean }) {
             transition={{ animate: { duration: 1 }, exit: { duration: 0.5 } }}
             exit={{ opacity: 0 }}
             className={cx(
-              "flex flex-row items-start pb-10 pt-2 lg:w-[98%]",
+              "flex flex-row items-start pt-2 lg:w-[98%] lg:pb-10",
               isMobile ? "justify-center" : "justify-between",
               isHomePage && "hidden",
             )}
