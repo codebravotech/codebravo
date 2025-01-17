@@ -1,9 +1,9 @@
 // const LayoutContainer = () => {
 //   const { pathname } = useLocation();
-//   const { isMobile } = useDisplay();
-//   const isHomePage = pathname === "/";
-//   const tooltipClassname =
-//     "mt-2 z-50 rounded-xl bg-opacity-50 px-2 py-1 font-raleway text-xs bg-night-100 text-stars-100";
+// const { isMobile } = useDisplay();
+// const isHomePage = pathname === "/";
+// const tooltipClassname =
+//   "mt-2 z-50 rounded-xl bg-opacity-50 px-2 py-1 font-raleway text-xs bg-night-100 text-stars-100";
 // const [scope, animate] = useAnimate();
 // const [isPresent, safeToRemove] = usePresence();
 
@@ -50,24 +50,24 @@
 
 //       {isMobile && <MobileMenu isHomePage={isHomePage} />}
 
-//       <Tooltip
-//         id="mailto_link_tooltip"
-//         arrowColor="transparent"
-//         className={cx(tooltipClassname)}
-//         disableStyleInjection={true}
-//       />
-//       <Tooltip
-//         id="copy_email_tooltip"
-//         arrowColor="transparent"
-//         className={cx(tooltipClassname)}
-//         disableStyleInjection={true}
-//       />
-//       <Tooltip
-//         id="visit_special_links_tooltip"
-//         arrowColor="transparent"
-//         className={cx(tooltipClassname)}
-//         disableStyleInjection={true}
-//       />
+// <Tooltip
+//   id="mailto_link_tooltip"
+//   arrowColor="transparent"
+//   className={cx(tooltipClassname)}
+//   disableStyleInjection={true}
+// />
+// <Tooltip
+//   id="copy_email_tooltip"
+//   arrowColor="transparent"
+//   className={cx(tooltipClassname)}
+//   disableStyleInjection={true}
+// />
+// <Tooltip
+//   id="visit_special_links_tooltip"
+//   arrowColor="transparent"
+//   className={cx(tooltipClassname)}
+//   disableStyleInjection={true}
+// />
 //     </motion.div>
 //   );
 // };

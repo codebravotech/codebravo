@@ -29,7 +29,12 @@ const Page = () => {
   // const [didEnter, setDidEnter] = useState(false);
   const [scope, animate] = useAnimate();
   const [isPresent, safeToRemove] = usePresence();
+  const { isMobile } = useDisplay();
+  const isHomePage = pathname === "/";
+  const tooltipClassname =
+    "mt-2 z-50 rounded-xl bg-opacity-50 px-2 py-1 font-raleway text-xs bg-night-100 text-stars-100";
 
+  const initial = { opacity: 0 };
   useEffect(() => {
     if (isPresent) {
       console.log(`RUNNING ENTRY ANIMATION FOR ${pathname}`);
@@ -49,14 +54,35 @@ const Page = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
+      initial={initial}
       ref={scope}
-      // key={`${pathname.replace("/", "")}`}
+      className="relative flex min-h-screen w-[100vw] flex-col overflow-x-hidden overflow-y-scroll bg-stars-100 scrollbar-hide"
     >
-      <Header isHomePage={false} />
-      <div>THIS IS THE STUB IN PLACE OF PAGE CONTENTS!!!</div>
-      {/* EVENTUALY I WILL PUT THIS BACK TO THE "OUTLET" TO RENDER THE ACTUAL CONTENTS, BUT I NEED A SIMPLER EXAMPLE FOR NOW */}
-      {/* <Outlet /> */}
+      <Header isHomePage={isHomePage} />
+      <Outlet />
+
+      <div className={cx("mt-auto", isMobile && !isHomePage && "mb-32")}>
+        <Footer isHomePage={isHomePage} />
+      </div>
+      {isMobile && <MobileMenu isHomePage={isHomePage} />}
+      <Tooltip
+        id="mailto_link_tooltip"
+        arrowColor="transparent"
+        className={cx(tooltipClassname)}
+        disableStyleInjection={true}
+      />
+      <Tooltip
+        id="copy_email_tooltip"
+        arrowColor="transparent"
+        className={cx(tooltipClassname)}
+        disableStyleInjection={true}
+      />
+      <Tooltip
+        id="visit_special_links_tooltip"
+        arrowColor="transparent"
+        className={cx(tooltipClassname)}
+        disableStyleInjection={true}
+      />
     </motion.div>
   );
 };
