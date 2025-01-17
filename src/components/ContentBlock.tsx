@@ -131,7 +131,7 @@ export default function ContentBlock({
         <div
           className={cx(
             !(imgWidth > 0) && "invisible",
-            !isMobile && "max-h-[40vh] text-xl lg:absolute lg:bottom-40",
+            !isMobile && "max-h-[40vh] text-xl lg:absolute lg:bottom-32",
             isMobile && "relative mt-2 w-full",
           )}
           style={isMobile ? {} : copyStyle}

@@ -99,7 +99,7 @@ export default function Home() {
         <ArriveUpwardsStaggered
           className="ml-6 flex w-full flex-col items-start gap-1 text-2xl lg:mr-20 lg:w-[40vw] lg:items-start lg:text-6xl"
           staggerChildren={1}
-          delayChildren={isMobile ? 2 : 3}
+          delayChildren={isMobile ? 1 : 2}
           onAnimationComplete={() => {
             setListAnimationComplete(true);
           }}
