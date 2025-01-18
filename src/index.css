@@ -9,7 +9,6 @@
   font-family: "Raleway Variable", sans-serif;
   --dune-100: #eca400;
   --expanse-100: #2dbfd4;
-  /* background: var(--stars-100); */
   background: #f4efe8;
 }
 
@@ -135,11 +134,11 @@ button {
   z-index: -1;
 }
 
-.glass_menu {
+.glass-menu {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
 }
-.glass_menu::before {
+.glass-menu::before {
   content: "";
   position: absolute;
   top: 0;

@@ -15,7 +15,7 @@ export default function Header({ isHomePage }: { isHomePage: boolean }) {
       {!isHomePage && (
         <div
           className={cx(
-            "flex flex-row items-start pt-2 lg:w-[98%]",
+            "flex flex-row items-start pt-2 font-fjalla lg:w-[98%]",
             isMobile ? "justify-center" : "justify-between",
             isHomePage && "hidden",
           )}

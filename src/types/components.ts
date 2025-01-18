@@ -1,4 +1,4 @@
-export type ValidRoutes = "/about" | "/connect" | "/" | "/portfolio";
+export type ValidRoutes = "/expertise" | "/connect" | "/" | "/portfolio";
 export type IconType =
   | "about"
   | "clipboard"

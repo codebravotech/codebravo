@@ -12,16 +12,16 @@ export const NAV_OPTIONS: Array<NavOptions> = [
     short_label: "Home",
   },
   {
-    label: "My Work",
+    label: "Portfolio",
     pathname: "/portfolio",
     icon: "portfolio",
-    short_label: "Work",
+    short_label: "Portfolio",
   },
   {
-    label: "My Skills",
-    pathname: "/about",
+    label: "Expertise",
+    pathname: "/expertise",
     icon: "about",
-    short_label: "Skills",
+    short_label: "Expertise",
   },
   {
     label: "Connect",
