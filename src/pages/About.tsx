@@ -19,6 +19,8 @@ export default function About() {
     return null;
   }
 
+  // return <div>ABOUT</div>;
+
   return (
     <motion.div className="flex flex-col gap-10 bg-stars-100 px-4 font-raleway lg:px-0">
       {content_blocks.map((content_block: Content_block, index: number) => (

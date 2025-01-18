@@ -42,10 +42,12 @@ export default function Connect() {
 
   const conditionalViz = postResult ? "invisible" : "";
 
+  // return <div>Connect</div>;
+
   return (
     <motion.div className="mb-10 mt-4 flex w-full flex-col-reverse gap-4 px-4 pt-4 lg:h-full lg:flex-row lg:gap-10 lg:pl-6 lg:pr-10">
       <ArriveDirectionally
-        keyBy={"contact_form_copy"}
+        // keyBy={"contact_form_copy"}
         className="mb-2 flex flex-col gap-4 text-2xl leading-snug lg:basis-1/2 lg:gap-10 lg:text-3xl lg:leading-snug"
       >
         <div className={cx(conditionalViz)}>
@@ -62,7 +64,7 @@ export default function Connect() {
         </div>
       </ArriveDirectionally>
       <ArriveDirectionally
-        keyBy={"contact_form_inputs"}
+        // keyBy={"contact_form_inputs"}
         className="flex flex-col gap-4 lg:basis-1/2 lg:gap-10"
       >
         <div
