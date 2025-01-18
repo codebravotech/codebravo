@@ -6,13 +6,19 @@ import {
   usePresence,
 } from "framer-motion";
 import { ReactNode, useEffect } from "react";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  RouteObject,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 
+import ROUTES from "./Routes";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MobileMenu from "./components/MobileMenu";
-import { ROUTES } from "./config";
 import { useDisplay } from "./hooks/display";
 
 const Page = ({ children: pageContents }: { children: ReactNode }) => {
@@ -28,12 +34,16 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
   useEffect(() => {
     if (isPresent) {
       const entryAnimation = async () => {
-        await animate(scope.current, { opacity: 1 }, { duration: 1 });
+        await animate(scope.current, { x: 0 }, { duration: 0.3 });
+        await animate(scope.current, { scale: 1 }, { duration: 0.3 });
+        await animate(scope.current, { height: "auto" }, { duration: 0 });
       };
       entryAnimation();
     } else if (!isPresent && safeToRemove) {
       const exitAnimation = async () => {
-        await animate(scope.current, { opacity: 0 }, { duration: 1 });
+        await animate(scope.current, { height: "100vh" }, { duration: 0 });
+        await animate(scope.current, { x: "100%" }, { duration: 0.3 });
+        await animate(scope.current, { scale: 0.8 }, { duration: 0.3 });
         safeToRemove();
       };
       exitAnimation();
@@ -43,7 +53,7 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
   return (
     <motion.div
       ref={scope}
-      initial={{ opacity: 0 }}
+      initial={{ x: "-100%", scale: 0.8, height: "100vh" }}
       className="relative flex min-h-screen w-[100vw] flex-col overflow-x-hidden overflow-y-scroll bg-stars-100 scrollbar-hide"
     >
       <Header isHomePage={isHomePage} />
@@ -81,11 +91,11 @@ const AnimationWrapper = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        {ROUTES.map((route) => (
+        {ROUTES.map((route: RouteObject) => (
           <Route
             key={route.path}
             path={route.path}
-            element={<Page>{route.element()}</Page>}
+            element={<Page>{route.element}</Page>}
           />
         ))}
       </Routes>
