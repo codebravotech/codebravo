@@ -22,8 +22,8 @@ import MobileMenu from "./components/MobileMenu";
 import { useDisplay } from "./hooks/display";
 
 const Page = ({ children: pageContents }: { children: ReactNode }) => {
-  const [scope, animate] = useAnimate();
-  const [isPresent, safeToRemove] = usePresence();
+  // const [scope, animate] = useAnimate();
+  // const [isPresent, safeToRemove] = usePresence();
   const { pathname } = useLocation();
   const { isMobile } = useDisplay();
   const isHomePage = pathname === "/";
@@ -31,29 +31,44 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
   const tooltipClassname =
     "mt-2 z-50 rounded-xl bg-opacity-50 px-2 py-1 font-raleway text-xs bg-night-100 text-stars-100";
 
-  useEffect(() => {
-    if (isPresent) {
-      const entryAnimation = async () => {
-        await animate(scope.current, { x: 0 }, { duration: 0.3 });
-        await animate(scope.current, { scale: 1 }, { duration: 0.3 });
-        await animate(scope.current, { height: "auto" }, { duration: 0 });
-      };
-      entryAnimation();
-    } else if (!isPresent && safeToRemove) {
-      const exitAnimation = async () => {
-        await animate(scope.current, { height: "100vh" }, { duration: 0 });
-        await animate(scope.current, { x: "100%" }, { duration: 0.3 });
-        await animate(scope.current, { scale: 0.8 }, { duration: 0.3 });
-        safeToRemove();
-      };
-      exitAnimation();
-    }
-  }, [isPresent]);
+  // useEffect(() => {
+  //   if (isPresent) {
+  //     const entryAnimation = async () => {
+  //       await animate(scope.current, { x: 0 }, { duration: 0.3 });
+  //       await animate(scope.current, { scale: 1 }, { duration: 0.3 });
+  //       await animate(scope.current, { height: "auto" }, { duration: 0 });
+  //     };
+  //     entryAnimation();
+  //   } else if (!isPresent && safeToRemove) {
+  //     const exitAnimation = async () => {
+  //       await animate(scope.current, { height: "100vh" }, { duration: 0 });
+  //       await animate(scope.current, { x: "100%" }, { duration: 0.3 });
+  //       await animate(scope.current, { scale: 0.8 }, { duration: 0.3 });
+  //       safeToRemove();
+  //     };
+  //     exitAnimation();
+  //   }
+  // }, [isPresent]);
 
   return (
     <motion.div
-      ref={scope}
-      initial={{ x: "-100%", scale: 0.8, height: "100vh" }}
+      initial={{ opacity: 0, x: 20 }}
+      animate={{
+        x: 0,
+        opacity: 1,
+        // height: "auto",
+        transition: {
+          duration: 0.6,
+        },
+      }}
+      exit={{
+        x: -20,
+        // height: "100vh",
+        opacity: 0,
+        transition: {
+          duration: 0.3,
+        },
+      }}
       className="relative flex min-h-screen w-[100vw] flex-col overflow-x-hidden overflow-y-scroll bg-stars-100 scrollbar-hide"
     >
       <Header isHomePage={isHomePage} />
