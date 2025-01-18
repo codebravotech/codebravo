@@ -9,6 +9,8 @@
   font-family: "Raleway Variable", sans-serif;
   --dune-100: #eca400;
   --expanse-100: #2dbfd4;
+  /* background: var(--stars-100); */
+  background: #f4efe8;
 }
 
 /* Change the white to any color */

@@ -79,7 +79,7 @@ export default function Home() {
           {!isMobile && (
             <ArriveUpwardsStaggered
               className="flex flex-col items-center gap-2"
-              staggerChildren={1}
+              staggerChildren={0.5}
               delayChildren={1}
             >
               {NAV_OPTIONS.filter((button) => button.pathname !== pathname).map(
@@ -100,7 +100,7 @@ export default function Home() {
       <div className="mt-4 flex w-full flex-col gap-1 lg:mt-0 lg:mt-10 lg:h-1/2 lg:items-end lg:justify-center">
         <ArriveUpwardsStaggered
           className="ml-6 flex w-full flex-col items-start gap-1 text-2xl lg:mr-20 lg:w-[40vw] lg:items-start lg:text-6xl"
-          staggerChildren={1}
+          staggerChildren={0.8}
           delayChildren={isMobile ? 1 : 2}
           onAnimationComplete={() => {
             setListAnimationComplete(true);
