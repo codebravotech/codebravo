@@ -5,61 +5,49 @@ import {
   useAnimate,
   usePresence,
 } from "framer-motion";
-import { useEffect, useState } from "react";
-import {
-  Outlet,
-  RouterProvider,
-  createBrowserRouter,
-  useLocation,
-} from "react-router-dom";
+import { ReactNode, useEffect } from "react";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
 
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MobileMenu from "./components/MobileMenu";
+import { ROUTES } from "./config";
 import { useDisplay } from "./hooks/display";
-import About from "./pages/About";
-import Connect from "./pages/Connect";
-import Home from "./pages/Home";
-import NotFound from "./pages/NotFound";
-import Portfolio from "./pages/Portfolio";
 
-const Page = () => {
-  const { pathname } = useLocation();
-  // const [didEnter, setDidEnter] = useState(false);
+const Page = ({ children: pageContents }: { children: ReactNode }) => {
   const [scope, animate] = useAnimate();
   const [isPresent, safeToRemove] = usePresence();
+  const { pathname } = useLocation();
   const { isMobile } = useDisplay();
   const isHomePage = pathname === "/";
+
   const tooltipClassname =
     "mt-2 z-50 rounded-xl bg-opacity-50 px-2 py-1 font-raleway text-xs bg-night-100 text-stars-100";
 
-  const initial = { opacity: 0 };
   useEffect(() => {
     if (isPresent) {
-      console.log(`RUNNING ENTRY ANIMATION FOR ${pathname}`);
       const entryAnimation = async () => {
-        await animate(scope.current, { opacity: 1 }, { duration: 2 });
+        await animate(scope.current, { opacity: 1 }, { duration: 1 });
       };
       entryAnimation();
-    } else {
-      console.log(`RUNNING EXIT ANIMATION FOR ${pathname}`);
+    } else if (!isPresent && safeToRemove) {
       const exitAnimation = async () => {
         await animate(scope.current, { opacity: 0 }, { duration: 1 });
         safeToRemove();
       };
       exitAnimation();
     }
-  }, [isPresent, pathname]);
+  }, [isPresent]);
 
   return (
     <motion.div
-      initial={initial}
       ref={scope}
+      initial={{ opacity: 0 }}
       className="relative flex min-h-screen w-[100vw] flex-col overflow-x-hidden overflow-y-scroll bg-stars-100 scrollbar-hide"
     >
       <Header isHomePage={isHomePage} />
-      <Outlet />
+      {pageContents}
 
       <div className={cx("mt-auto", isMobile && !isHomePage && "mb-32")}>
         <Footer isHomePage={isHomePage} />
@@ -87,33 +75,30 @@ const Page = () => {
   );
 };
 
-const Layout = () => {
-  const { pathname } = useLocation();
+const AnimationWrapper = () => {
+  const location = useLocation();
 
   return (
     <AnimatePresence mode="wait">
-      <Page key={`page_${pathname.replace("/", "")}`} />
+      <Routes location={location} key={location.pathname}>
+        {ROUTES.map((route) => (
+          <Route
+            key={route.path}
+            path={route.path}
+            element={<Page>{route.element()}</Page>}
+          />
+        ))}
+      </Routes>
     </AnimatePresence>
   );
 };
 
-// Routes array
-const ROUTES = [
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      { path: "/", element: <Home /> },
-      { path: "/about", element: <About /> },
-      { path: "/portfolio", element: <Portfolio /> },
-      { path: "/connect", element: <Connect /> },
-    ],
-    errorElement: <NotFound />,
-  },
-];
-
-const router = createBrowserRouter(ROUTES);
-
-const App = () => <RouterProvider router={router} />;
+const App = () => {
+  return (
+    <BrowserRouter>
+      <AnimationWrapper />
+    </BrowserRouter>
+  );
+};
 
 export default App;

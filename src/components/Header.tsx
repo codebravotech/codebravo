@@ -1,6 +1,5 @@
 import cx from "classnames";
-import { AnimatePresence, animate, motion } from "framer-motion";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import { NAV_OPTIONS } from "../config";

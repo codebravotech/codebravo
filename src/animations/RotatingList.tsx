@@ -27,18 +27,16 @@ const RotatingList = ({
 
   return (
     <div className="relative">
-      <AnimatePresence>
-        <motion.div
-          key={list[listIndex]} // Ensure unique key for animation
-          variants={rollVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          className="absolute"
-        >
-          {list[listIndex]}
-        </motion.div>
-      </AnimatePresence>
+      <motion.div
+        key={list[listIndex]} // Ensure unique key for animation
+        variants={rollVariants}
+        initial="enter"
+        animate="center"
+        exit="exit"
+        className="absolute"
+      >
+        {list[listIndex]}
+      </motion.div>
     </div>
   );
 };

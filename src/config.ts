@@ -1,3 +1,7 @@
+import About from "./pages/About";
+import Connect from "./pages/Connect";
+import Home from "./pages/Home";
+import Portfolio from "./pages/Portfolio";
 import { NavOptions } from "./types/components";
 
 export const IMAGE_SCALE_FACTOR = 0.8;
@@ -29,4 +33,11 @@ export const NAV_OPTIONS: Array<NavOptions> = [
     icon: "connect",
     short_label: "Connect",
   },
+];
+
+export const ROUTES = [
+  { path: "/", element: Home },
+  { path: "/about", element: About },
+  { path: "/portfolio", element: Portfolio },
+  { path: "/connect", element: Connect },
 ];
