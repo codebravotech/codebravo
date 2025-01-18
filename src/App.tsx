@@ -52,7 +52,7 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20 }}
+      initial={{ opacity: 0, x: isHomePage ? 0 : 50 }}
       animate={{
         x: 0,
         opacity: 1,
@@ -62,8 +62,7 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
         },
       }}
       exit={{
-        x: -20,
-        // height: "100vh",
+        x: isHomePage ? 0 : -50,
         opacity: 0,
         transition: {
           duration: 0.3,

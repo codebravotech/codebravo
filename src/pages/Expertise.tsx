@@ -6,7 +6,7 @@ import ContentBlock from "../components/ContentBlock";
 import { useQuery } from "../hooks/sanity";
 import { Content_block } from "../types/sanity.types";
 
-export default function About() {
+export default function Expertise() {
   const query = groq`
     *[_id == $page_id]{ ..., content_blocks[]{ ..., "imageAlt": image.alt, "imageAsset": image.asset->{ ... }, "fileAsset": file_link.file.asset->{ ... } } }
   `;
@@ -18,8 +18,6 @@ export default function About() {
   if (!content_blocks && content_blocks.length) {
     return null;
   }
-
-  // return <div>ABOUT</div>;
 
   return (
     <motion.div className="flex flex-col gap-10 bg-stars-100 px-4 font-raleway lg:px-0">
