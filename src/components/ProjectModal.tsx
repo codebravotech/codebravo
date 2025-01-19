@@ -55,7 +55,7 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
       setTimeout(() => {
         setOpenProjectId(null);
       }, transitionDurationMs);
-    }, contentsDurationMs);
+    }, contentsDurationMs * 2);
   };
 
   if (!clickedCardBoundingBox) {
@@ -108,15 +108,15 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
               src={url}
               alt={thumbnailAlt}
               className={cx("h-full w-full", !didAnimateOpen && roundingClass)}
-              // initial={{ opacity: 0 }}
-              // animate={
-              //   didRenderModalCard
-              //     ? {
-              //         opacity: 1,
-              //         transition: { duration: transitionDuration },
-              //       }
-              //     : {}
-              // }
+              initial={didRenderModalCard ? { opacity: 0 } : {}}
+              animate={
+                didRenderModalCard
+                  ? {
+                      opacity: 1,
+                      transition: { duration: contentsDuration / 2 },
+                    }
+                  : {}
+              }
               exit={{
                 opacity: 0,
                 transition: {
