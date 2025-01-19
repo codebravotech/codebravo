@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 import { useSystemStore } from "../state/system";
 import { ProjectObject } from "../types/components";
@@ -35,6 +35,8 @@ export default function ProjectCard({ project }: { project: ProjectObject }) {
   };
   const roundingClass = "rounded-2xl";
 
+  useEffect(() => {});
+
   return (
     <motion.div
       ref={cardRef}
@@ -49,7 +51,7 @@ export default function ProjectCard({ project }: { project: ProjectObject }) {
     >
       {/* Image */}
       <motion.img
-        src={url}
+        src={`${url}?w=${innerWidth}&fit=clip&auto=format`}
         alt={thumbnailAlt}
         className="h-full w-full object-contain"
         variants={imageVariants}
