@@ -1,16 +1,22 @@
 import { motion } from "framer-motion";
 import React, { ReactNode } from "react";
 
-const ArriveUpwardsStaggered = ({
+const ArriveDirectionallyStaggered = ({
   children,
   className = "",
+  direction = "up",
+  distance = 50,
   staggerChildren,
   delayChildren,
+  duration = 1,
   onAnimationComplete = () => null,
 }: {
   children: ReactNode;
+  direction?: "up" | "right";
+  distance?: number;
   staggerChildren: number;
   delayChildren: number;
+  duration?: number;
   className?: string;
   onAnimationComplete?: () => void;
 }) => {
@@ -26,11 +32,15 @@ const ArriveUpwardsStaggered = ({
   };
 
   const itemVariant = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: {
+      opacity: 0,
+      y: direction === "up" ? distance : 0,
+      x: direction === "right" ? -1 * distance : 0,
+    },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { ease: "easeInOut", duration: 1 },
+      transition: { ease: "easeInOut", duration },
     },
   };
 
@@ -49,4 +59,4 @@ const ArriveUpwardsStaggered = ({
   );
 };
 
-export default ArriveUpwardsStaggered;
+export default ArriveDirectionallyStaggered;

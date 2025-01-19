@@ -10,9 +10,15 @@ import PopcornText from "../animations/PopcornText";
 import { BaseComponents } from "./PortableTextBaseComponents";
 
 const components: PortableTextComponents = {
-  block: ({ children }) => {
-    const text = React.Children.toArray(children).join("");
-    return <PopcornText text={text} />;
+  block: {
+    block: ({ children }) => {
+      const text = React.Children.toArray(children).join("");
+      return <PopcornText text={text} />;
+    },
+    h1: ({ children }) => {
+      const text = React.Children.toArray(children).join("");
+      return <PopcornText text={text} className="mb-2 font-fjalla text-6xl" />;
+    },
   },
 };
 

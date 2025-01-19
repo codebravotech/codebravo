@@ -12,7 +12,7 @@
 //       await animate(scope.current, { height: "auto" }, { duration: 0 });
 //     };
 //     entryAnimation();
-//   } else if (!isPresent && safeToRemove) {
+//   } else if (!isPresent) {
 //     const exitAnimation = async () => {
 //       safeToRemove();
 //       // await animate(scope.current, { height: "100vh" }, { duration: 0 });
