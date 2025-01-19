@@ -1,3 +1,5 @@
+import { Project } from "./sanity.types";
+
 export type ValidRoutes = "/expertise" | "/connect" | "/" | "/portfolio";
 export type IconType =
   | "about"
@@ -17,4 +19,9 @@ export interface NavOptions {
   pathname: ValidRoutes;
   icon: IconType;
   short_label: string;
+}
+
+export interface ProjectObject extends Project {
+  thumbnailAsset: { url: string };
+  thumbnailAlt: string;
 }

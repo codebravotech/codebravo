@@ -1,11 +1,6 @@
 import cx from "classnames";
-import {
-  AnimatePresence,
-  motion,
-  useAnimate,
-  usePresence,
-} from "framer-motion";
-import { ReactNode, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ReactNode } from "react";
 import {
   BrowserRouter,
   Route,
@@ -30,25 +25,6 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
 
   const tooltipClassname =
     "mt-2 z-50 rounded-xl bg-opacity-50 px-2 py-1 font-raleway text-xs bg-night-100 text-stars-100";
-
-  // useEffect(() => {
-  //   if (isPresent) {
-  //     const entryAnimation = async () => {
-  //       await animate(scope.current, { x: 0 }, { duration: 0.3 });
-  //       await animate(scope.current, { scale: 1 }, { duration: 0.3 });
-  //       await animate(scope.current, { height: "auto" }, { duration: 0 });
-  //     };
-  //     entryAnimation();
-  //   } else if (!isPresent && safeToRemove) {
-  //     const exitAnimation = async () => {
-  //       await animate(scope.current, { height: "100vh" }, { duration: 0 });
-  //       await animate(scope.current, { x: "100%" }, { duration: 0.3 });
-  //       await animate(scope.current, { scale: 0.8 }, { duration: 0.3 });
-  //       safeToRemove();
-  //     };
-  //     exitAnimation();
-  //   }
-  // }, [isPresent]);
 
   return (
     <motion.div

@@ -52,7 +52,7 @@ button {
   position: absolute;
   bottom: 0;
   height: 2px;
-  animation: draw-border 1s ease-in-out forwards;
+  animation: appear-width 1s ease-in-out forwards;
   animation-delay: 2s;
 }
 
@@ -124,6 +124,21 @@ button {
   pointer-events: none;
 }
 
+.highlighter-underline {
+  @apply relative z-10;
+}
+.highlighter-underline::after {
+  content: "";
+  position: absolute;
+  height: 40%;
+  top: 50%;
+  border-radius: 3px;
+  background: var(--expanse-100);
+  z-index: -1;
+  animation: appear-width 1.5s cubic-bezier(0.9, 0, 1, 1) forwards;
+  animation-delay: 1s;
+}
+
 .cta::before {
   background: white;
   content: "";
@@ -153,7 +168,7 @@ button {
   );
 }
 
-@keyframes draw-border {
+@keyframes appear-width {
   0% {
     width: 0;
   }

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-import ArriveUpwardsStaggered from "../animations/ArriveUpwardsStaggered";
+import ArriveDirectionallyStaggered from "../animations/ArriveDirectionallyStaggered";
 import PopcornText from "../animations/PopcornText";
 import RotatingList from "../animations/RotatingList";
 import PortableTextPopcorn from "../components/PortableTextPopcorn";
@@ -53,10 +53,13 @@ export default function Home() {
   return (
     <motion.div
       className={cx(
-        "flex h-screen flex-col items-center bg-dune-gradient pb-36 text-night-300 lg:pb-0",
+        "relative flex h-screen flex-col items-center bg-dune-gradient pb-36 text-night-300 lg:pb-0",
       )}
     >
-      <div className="flex w-full flex-col-reverse items-center py-6 pl-6 lg:flex-row lg:justify-between lg:px-10">
+      {/* <div className="absolute left-4 top-0 z-0 h-[100vh] overflow-hidden opacity-20">
+        <img src="/images/logo_white.svg" className="h-[140vh]" />
+      </div> */}
+      <div className="z-10 flex w-full flex-col-reverse items-center py-6 pl-6 lg:flex-row lg:justify-between lg:px-10">
         <div className="mt-8 flex flex-col flex-wrap text-2xl lg:mt-10 lg:text-5xl">
           {tagline && <PortableTextPopcorn content={tagline} />}
           <motion.div
@@ -73,11 +76,11 @@ export default function Home() {
         </div>
         <div className="flex flex-col items-center lg:self-start">
           <img className="h-48" src={logo} />
-          <div className="mb-2 mt-1 font-fjalla text-4xl tracking-wider">
+          {/* <div className="mb-2 mt-1 font-fjalla text-4xl tracking-wider">
             CodeBRAVO
-          </div>
+          </div> */}
           {!isMobile && (
-            <ArriveUpwardsStaggered
+            <ArriveDirectionallyStaggered
               className="flex flex-col items-center gap-2"
               staggerChildren={0.5}
               delayChildren={1}
@@ -93,12 +96,12 @@ export default function Home() {
                   </div>
                 ),
               )}
-            </ArriveUpwardsStaggered>
+            </ArriveDirectionallyStaggered>
           )}
         </div>
       </div>
       <div className="mt-4 flex w-full flex-col gap-1 lg:mt-0 lg:mt-10 lg:h-1/2 lg:items-end lg:justify-center">
-        <ArriveUpwardsStaggered
+        <ArriveDirectionallyStaggered
           className="ml-6 flex w-full flex-col items-start gap-1 text-2xl lg:mr-20 lg:w-[40vw] lg:items-start lg:text-6xl"
           staggerChildren={0.8}
           delayChildren={isMobile ? 1 : 2}
@@ -119,7 +122,7 @@ export default function Home() {
               </div>
             )}
           </div>
-        </ArriveUpwardsStaggered>
+        </ArriveDirectionallyStaggered>
       </div>
     </motion.div>
   );

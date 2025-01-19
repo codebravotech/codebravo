@@ -8,8 +8,13 @@ import { merge } from "lodash";
 import { BaseComponents } from "./PortableTextBaseComponents";
 
 const components: PortableTextComponents = {
-  block: ({ children }) => {
-    return <p>{children}</p>;
+  block: {
+    h1: ({ children }) => (
+      <h1 className="mb-2 font-fjalla text-6xl">{children}</h1>
+    ),
+    normal: ({ children }) => {
+      return <p>{children}</p>;
+    },
   },
 };
 
