@@ -26,7 +26,7 @@ export default function Header({ isHomePage }: { isHomePage: boolean }) {
           {!isMobile && (
             <div
               className={cx(
-                "flex flex-row justify-evenly gap-4 pr-4 pt-2",
+                "flex flex-row justify-evenly gap-4 pr-4 pt-8",
                 isHomePage ? "text-stars-100" : "text-night-400",
               )}
             >

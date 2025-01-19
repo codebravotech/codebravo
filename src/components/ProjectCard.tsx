@@ -54,10 +54,11 @@ export default function ProjectCard({ project }: { project: ProjectObject }) {
 
   return (
     <motion.div
+      id={`project_card_${project?._id}`}
       ref={cardRef}
       whileHover="hover"
       className={cx(
-        "relative grow-0 basis-[47%] cursor-pointer overflow-hidden bg-transparent",
+        "group relative grow-0 basis-[47%] cursor-pointer overflow-hidden bg-transparent",
         roundingClass,
         isOpen && "invisible",
       )}
@@ -75,7 +76,7 @@ export default function ProjectCard({ project }: { project: ProjectObject }) {
       {/* Overlay */}
       <motion.div
         className={cx(
-          `absolute inset-0 flex h-full w-full flex-col items-center justify-center hover:!bg-transparent`,
+          `absolute inset-0 flex h-full w-full flex-col items-center justify-center group-hover:!bg-transparent`,
           roundingClass,
         )}
         style={{

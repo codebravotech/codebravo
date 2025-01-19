@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 export const useDisplay = () => {
@@ -16,4 +17,28 @@ export const useDisplay = () => {
     isMobile,
     isRetina,
   };
+};
+
+export const useIsElementOnScreen = (id: string) => {
+  const [isOnScreen, setIsOnScreen] = useState(false);
+
+  useEffect(() => {
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsOnScreen(entry.isIntersecting);
+      },
+      { threshold: 0.1 },
+    );
+
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [id]);
+
+  return isOnScreen;
 };

@@ -3,11 +3,13 @@ import { AnimatePresence, motion } from "framer-motion";
 import { pick } from "lodash";
 import { useEffect, useState } from "react";
 
+// import { useIsElementOnScreen } from "../hooks/display";
 import { useSystemStore } from "../state/system";
 import { ProjectObject } from "../types/components";
 
 export default function ProjectModal({ project }: { project: ProjectObject }) {
   const { setOpenProjectId, clickedCardBoundingBox } = useSystemStore();
+  // const isOnScreen = useIsElementOnScreen(`project_card_${project?._id}`);
 
   const [didRenderModalCard, setDidRenderModalCard] = useState(false);
   const [didAnimateOpen, setDidAnimateOpen] = useState(false);
@@ -28,10 +30,9 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
     setDidRenderModalCard(true);
 
     if (clickedCardBoundingBox) {
-      animationTimeout = setTimeout(
-        () => setDidAnimateOpen(true),
-        transitionDuration,
-      );
+      animationTimeout = setTimeout(() => {
+        setDidAnimateOpen(true);
+      }, transitionDuration);
     }
 
     return () => {
@@ -43,8 +44,17 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
 
   // Animate out
   const handleClose = async () => {
-    setDidAnimateOpen(false);
+    const card = document.getElementById(`project_card_${project?._id}`);
 
+    const rect = card?.getBoundingClientRect();
+    if (rect) {
+      const y = rect.top + window.scrollY - 250;
+      setTimeout(() => {
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }, 200);
+    }
+
+    setDidAnimateOpen(false);
     setTimeout(() => {
       setDidRenderModalCard(false);
       setTimeout(() => {
