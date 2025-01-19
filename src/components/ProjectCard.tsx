@@ -35,7 +35,22 @@ export default function ProjectCard({ project }: { project: ProjectObject }) {
   };
   const roundingClass = "rounded-2xl";
 
-  useEffect(() => {});
+  useEffect(() => {
+    const handleEvent = () => {
+      if (isOpen && cardRef.current) {
+        const boundingBox = cardRef.current.getBoundingClientRect();
+        setClickedCardBoundingBox(boundingBox);
+      }
+    };
+
+    window.addEventListener("scroll", handleEvent);
+    window.addEventListener("resize", handleEvent);
+
+    return () => {
+      window.removeEventListener("scroll", handleEvent);
+      window.removeEventListener("resize", handleEvent);
+    };
+  }, [isOpen]);
 
   return (
     <motion.div
@@ -70,7 +85,7 @@ export default function ProjectCard({ project }: { project: ProjectObject }) {
       ></motion.div>
       {/* Content */}
       <div className="absolute inset-0 flex h-full w-full flex-col items-center justify-center text-2xl text-stars-100">
-        I AM THE CARD
+        {/* CONTENTS FOR THE CARD CAN GO HERE! */}
       </div>
     </motion.div>
   );
