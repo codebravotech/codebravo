@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { AnimatePresence, motion } from "framer-motion";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import {
   BrowserRouter,
   Route,
@@ -22,7 +22,7 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
   // const [isPresent, safeToRemove] = usePresence();
   const { pathname } = useLocation();
   const { isMobile } = useDisplay();
-  const { openProjectId } = useSystemStore();
+  const { hideAppOverflow } = useSystemStore();
   const isHomePage = pathname === "/";
 
   const tooltipClassname =
@@ -47,9 +47,7 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
       }}
       className={cx(
         "relative flex min-h-screen w-[100vw] flex-col overflow-x-hidden bg-stars-100 scrollbar-hide",
-        openProjectId
-          ? "h-screen w-screen overflow-y-hidden"
-          : "overflow-y-scroll",
+        hideAppOverflow ? "h-screen overflow-y-hidden" : "overflow-y-scroll",
       )}
     >
       <Header isHomePage={isHomePage} />

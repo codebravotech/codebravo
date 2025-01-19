@@ -6,6 +6,9 @@ export interface SystemState {
 
   clickedCardBoundingBox: DOMRect | null;
   setClickedCardBoundingBox: (clickedCardBoundingBox: DOMRect) => void;
+
+  hideAppOverflow: boolean;
+  setHideAppOverflow: (hideAppOverflow: boolean) => void;
 }
 
 export const useSystemStore = create<SystemState>()((set /*, get*/) => ({
@@ -14,4 +17,7 @@ export const useSystemStore = create<SystemState>()((set /*, get*/) => ({
   clickedCardBoundingBox: null,
   setClickedCardBoundingBox: (clickedCardBoundingBox) =>
     set({ clickedCardBoundingBox }),
+
+  hideAppOverflow: false,
+  setHideAppOverflow: (hideAppOverflow) => set({ hideAppOverflow }),
 }));
