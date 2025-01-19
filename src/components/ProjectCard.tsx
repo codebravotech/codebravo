@@ -5,7 +5,15 @@ import { useEffect, useRef } from "react";
 import { useSystemStore } from "../state/system";
 import { ProjectObject } from "../types/components";
 
-export default function ProjectCard({ project }: { project: ProjectObject }) {
+export default function ProjectCard({
+  project,
+  className = "",
+  index = 0,
+}: {
+  project: ProjectObject;
+  index: number;
+  className?: string;
+}) {
   const { openProjectId, setOpenProjectId, setClickedCardBoundingBox } =
     useSystemStore();
   const cardRef = useRef<HTMLDivElement>(null);
@@ -55,9 +63,14 @@ export default function ProjectCard({ project }: { project: ProjectObject }) {
   return (
     <motion.div
       id={`project_card_${project?._id}`}
+      initial={{ x: -50, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration: 0.5, delay: 0.2 * index }}
+      style={{ zIndex: index }}
       ref={cardRef}
       whileHover="hover"
       className={cx(
+        className,
         "group relative grow-0 basis-[47%] cursor-pointer overflow-hidden bg-transparent",
         roundingClass,
         isOpen && "invisible",
