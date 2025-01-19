@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import groq from "groq";
 import { get } from "lodash";
 
+import ArriveDirectionallyStaggered from "../animations/ArriveDirectionallyStaggered";
 import PortableTextPopcorn from "../components/PortableTextPopcorn";
 import ProjectCard from "../components/ProjectCard";
 import ProjectModal from "../components/ProjectModal";
@@ -36,16 +37,19 @@ export default function Portfolio() {
         <ProjectModal project={openProject} />
       )}
 
-      <div className="flex w-full flex-row flex-wrap justify-center gap-6 px-4">
-        {projects.map((project) => {
-          return (
-            <ProjectCard
-              project={project}
-              key={`project_card_${project?._id}`}
-            />
-          );
-        })}
-      </div>
+      {projects.length && (
+        <div className="flex w-full flex-row flex-wrap justify-center gap-6 px-4">
+          {projects.map((project, index) => {
+            return (
+              <ProjectCard
+                project={project}
+                key={`project_card_${project?._id}`}
+                index={index}
+              />
+            );
+          })}
+        </div>
+      )}
     </motion.div>
   );
 }
