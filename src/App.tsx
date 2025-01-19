@@ -32,7 +32,6 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
       animate={{
         x: 0,
         opacity: 1,
-        // height: "auto",
         transition: {
           duration: 0.6,
         },
