@@ -11,9 +11,9 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
 
   const [didRenderModalCard, setDidRenderModalCard] = useState(false);
   const [didAnimateOpen, setDidAnimateOpen] = useState(false);
-  const transitionDuration = 0.5;
+  const transitionDuration = 0.3;
   const transitionDurationMs = transitionDuration * 1000;
-  const contentsDuration = 0.5;
+  const contentsDuration = 0.3;
   const contentsDurationMs = contentsDuration * 1000;
 
   const {
