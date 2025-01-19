@@ -15,12 +15,14 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MobileMenu from "./components/MobileMenu";
 import { useDisplay } from "./hooks/display";
+import { useSystemStore } from "./state/system";
 
 const Page = ({ children: pageContents }: { children: ReactNode }) => {
   // const [scope, animate] = useAnimate();
   // const [isPresent, safeToRemove] = usePresence();
   const { pathname } = useLocation();
   const { isMobile } = useDisplay();
+  const { openProjectId } = useSystemStore();
   const isHomePage = pathname === "/";
 
   const tooltipClassname =
@@ -43,7 +45,12 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
           duration: 0.3,
         },
       }}
-      className="relative flex min-h-screen w-[100vw] flex-col overflow-x-hidden overflow-y-scroll bg-stars-100 scrollbar-hide"
+      className={cx(
+        "relative flex min-h-screen w-[100vw] flex-col overflow-x-hidden bg-stars-100 scrollbar-hide",
+        openProjectId
+          ? "h-screen w-screen overflow-y-hidden"
+          : "overflow-y-scroll",
+      )}
     >
       <Header isHomePage={isHomePage} />
       {pageContents}

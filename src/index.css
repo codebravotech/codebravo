@@ -10,6 +10,10 @@
   --dune-100: #eca400;
   --expanse-100: #2dbfd4;
   background: #f4efe8;
+  /* @apply: overflow-hidden scrollbar-hide; */
+}
+
+#root.modal_open {
 }
 
 /* Change the white to any color */

@@ -1,4 +1,5 @@
 import { PortableTextBlock } from "@portabletext/types";
+import cx from "classnames";
 import { motion } from "framer-motion";
 import groq from "groq";
 import { get } from "lodash";
@@ -24,7 +25,9 @@ export default function Portfolio() {
   const openProject = projects.find((project) => project._id === openProjectId);
 
   return (
-    <motion.div className="relative flex h-full w-full flex-col items-center">
+    <motion.div
+      className={cx("relative flex h-full w-full flex-col items-center")}
+    >
       <div className="highlighter-underline relative mb-10">
         <PortableTextPopcorn content={header} />
       </div>
