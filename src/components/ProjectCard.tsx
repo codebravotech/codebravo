@@ -89,11 +89,12 @@ export default function ProjectCard({
       {/* Overlay */}
       <motion.div
         className={cx(
-          `absolute inset-0 flex h-full w-full flex-col items-center justify-center group-hover:!bg-transparent`,
+          `absolute inset-0 flex h-full w-full flex-col items-center justify-center group-hover:!opacity-100`,
           roundingClass,
         )}
         style={{
           backgroundColor: thumbnail_overlay_color,
+          opacity: 0,
           mixBlendMode: "multiply",
         }}
       ></motion.div>
