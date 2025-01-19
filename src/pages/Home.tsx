@@ -81,7 +81,7 @@ export default function Home() {
           </div> */}
           {!isMobile && (
             <ArriveDirectionallyStaggered
-              className="flex flex-col items-center gap-2"
+              className="flex flex-col items-center gap-2 pt-4"
               staggerChildren={0.5}
               delayChildren={1}
             >
