@@ -1,11 +1,5 @@
 import cx from "classnames";
-import {
-  AnimatePresence,
-  easeIn,
-  easeInOut,
-  easeOut,
-  motion,
-} from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { pick } from "lodash";
 import { useEffect, useState } from "react";
 
@@ -14,6 +8,7 @@ import { ProjectObject } from "../types/components";
 
 export default function ProjectModal({ project }: { project: ProjectObject }) {
   const { setOpenProjectId, clickedCardBoundingBox } = useSystemStore();
+
   const [didRenderModalCard, setDidRenderModalCard] = useState(false);
   const [didAnimateOpen, setDidAnimateOpen] = useState(false);
   const transitionDuration = 0.5;
@@ -69,7 +64,7 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
       <motion.div
         key={`project_${_id}_modal`}
         className={cx(
-          "fixed z-10 cursor-pointer bg-stars-100",
+          "fixed z-10 cursor-pointer overscroll-none bg-stars-100 scrollbar-hide",
           !didAnimateOpen && roundingClass,
         )}
         onClick={handleClose}
@@ -105,7 +100,7 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
           {!didAnimateOpen ? (
             <motion.img
               key={`project_${_id}_modal_img`}
-              src={url}
+              src={`${url}?w=${innerWidth}&fit=clip&auto=format`}
               alt={thumbnailAlt}
               className={cx("h-full w-full", !didAnimateOpen && roundingClass)}
               initial={didRenderModalCard ? { opacity: 0 } : {}}
