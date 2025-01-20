@@ -6,81 +6,57 @@ import { useEffect, useState } from "react";
 import { useDisplay } from "../hooks/display";
 // import { useIsElementOnScreen } from "../hooks/display";
 import { useSystemStore } from "../state/system";
-import { ProjectObject } from "../types/components";
+import { ModalAnimationPhase, ProjectObject } from "../types/components";
+import { animationPhaseIn } from "../utils/animation";
 import ProjectModalContents from "./ProjectModalContents";
 
 export default function ProjectModal({ project }: { project: ProjectObject }) {
   const { setOpenProjectId, clickedCardBoundingBox } = useSystemStore();
   const { isPortrait } = useDisplay();
-  const [didRenderModalCard, setDidRenderModalCard] = useState(false);
-  const [didAnimateOpen, setDidAnimateOpen] = useState(false);
-  const transitionDuration = 0.5;
-  const transitionDurationMs = transitionDuration * 1000;
+  const [animationPhase, updateAnimationPhase] =
+    useState<ModalAnimationPhase>("MODAL_CLOSED");
+  const setAnimationPhase = (animationPhase: ModalAnimationPhase) => {
+    updateAnimationPhase(animationPhase);
+  };
   const roundingClass = "rounded-2xl";
 
   // Animate in
   useEffect(() => {
-    let animationTimeout: NodeJS.Timeout;
-    setDidRenderModalCard(true);
-
-    if (clickedCardBoundingBox) {
-      animationTimeout = setTimeout(() => {
-        setDidAnimateOpen(true);
-      }, transitionDurationMs);
-    }
-
-    return () => {
-      if (animationTimeout) {
-        clearTimeout(animationTimeout);
-      }
-    };
+    // STEP 1 -- CARD SCALING UP ANIMATION BEGINS
+    setAnimationPhase("CARD_SCALING_OPEN");
   }, []);
 
-  // Animate out
-  const handleClose = async () => {
-    // const card = document.getElementById(`project_card_${project?._id}`);
-    // const rect = card?.getBoundingClientRect();
-    // if (rect) {
-    //   const y = rect.top + window.scrollY - 250;
-    //   setTimeout(() => {
-    //     window.scrollTo({ top: y, behavior: "smooth" });
-    //   }, 50);
-    // }
-
-    setDidAnimateOpen(false);
-    setDidRenderModalCard(false);
-    setTimeout(() => {
-      setOpenProjectId(null);
-    }, transitionDurationMs);
-  };
-
-  const { _id, thumbnails = [] } = project;
+  const { _id, thumbnails = [], videos = [] } = project;
   const thumbnail =
-    thumbnails.find(
+    thumbnails?.find(
       (elem) => elem.orientation === (isPortrait ? "portrait" : "landscape"),
-    ) || thumbnails.find((elem) => elem.asset.url);
+    ) || thumbnails?.find((elem) => elem.asset.url);
+  const video =
+    videos?.find(
+      (elem) => elem.orientation === (isPortrait ? "portrait" : "landscape"),
+    ) || videos?.find((elem) => elem.asset.url);
 
   if (!clickedCardBoundingBox || !thumbnail) {
     return null;
   }
-
-  // const {
-  //   asset: { url },
-  //   alt,
-  // } = thumbnail;
 
   return (
     <AnimatePresence>
       <motion.div
         key={`project_${_id}_modal`}
         className={cx(
-          "fixed z-20 overscroll-none bg-stars-100 scrollbar-hide",
-          !didAnimateOpen && roundingClass,
+          "fixed z-10 overscroll-none bg-stars-100 scrollbar-hide",
+          animationPhaseIn(
+            ["MODAL_CLOSED", "CARD_SCALING_OPEN", "CARD_SCALING_CLOSED"],
+            animationPhase,
+          ) && roundingClass,
         )}
-        // onClick={handleClose}
         layout
         style={
-          !didRenderModalCard
+          animationPhaseIn(
+            ["MODAL_CLOSED", "CARD_SCALING_CLOSED"],
+            animationPhase,
+          )
             ? pick(clickedCardBoundingBox, [
                 "top",
                 "left",
@@ -100,14 +76,28 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
         }
         transition={{
           layout: {
-            duration: transitionDuration,
+            duration: 0.5,
+            ease: "easeIn",
           },
+        }}
+        onLayoutAnimationComplete={() => {
+          // STEP 2: CARD FINISHES SCALING UP, MODAL CONTENTS DO ENTER ANIMATION
+          if (animationPhase === "CARD_SCALING_OPEN") {
+            if (video) {
+              setAnimationPhase("MODAL_CONTENTS_ENTERING");
+            } else {
+              setAnimationPhase("MODAL_OPEN");
+            }
+          } else if (animationPhase === "CARD_SCALING_CLOSED") {
+            setAnimationPhase("MODAL_CLOSED");
+            setOpenProjectId(null);
+          }
         }}
       >
         <ProjectModalContents
           project={project}
-          handleClose={handleClose}
-          didAnimateOpen={didAnimateOpen}
+          animationPhase={animationPhase}
+          setAnimationPhase={setAnimationPhase}
           roundingClass={roundingClass}
         />
       </motion.div>

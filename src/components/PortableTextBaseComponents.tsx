@@ -40,7 +40,7 @@ export const BaseComponents = ({
         <span className="inline-flex flex-wrap items-center font-fjalla tracking-wide lg:flex-row">
           {isMailTo && <br className="" />}
           <a
-            className={cx("link-highlight z-10 inline-block")}
+            className={cx("link-highlight inline-block")}
             style={{
               color: `var(--${link_color})`,
               borderColor: `var(--${link_color})`,

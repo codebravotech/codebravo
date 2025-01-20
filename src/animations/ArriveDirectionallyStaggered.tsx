@@ -33,7 +33,7 @@ const ArriveDirectionallyStaggered = ({
 
   const itemVariant = {
     hidden: {
-      opacity: 1,
+      opacity: 0,
       y: direction === "up" ? distance : 0,
       x: direction === "right" ? -1 * distance : 0,
     },
