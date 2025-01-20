@@ -47,35 +47,36 @@ export default function ProjectModalContents({
         isPortfolio={true}
         clickedCurrentRoute={handleClose}
       />
+      {/* Invisible video to start load while animation is running */}
+      {video && (
+        <VideoBlockFullscreen
+          video={video}
+          thumbnail={thumbnail}
+          setVideoLoaded={setVideoLoaded}
+          className={cx("absolute hidden")}
+        />
+      )}
       <AnimatePresence>
-        <motion.div
-          key={`project_${_id}_modal_video`}
-          // IMPORTANT PART
-          initial={{ scale: 1 }}
-          animate={{ scale: 0.9, transition: { delay: 0.5, duration: 0.5 } }}
-          // EXPERIMENT
-          exit={{ opacity: 0, transition: { duration: 0.5, delay: 0.5 } }}
-          className="flex h-screen w-screen items-center justify-center"
-        >
-          {/* Invisible video to start load while animation is running */}
-          {video && (
-            <VideoBlockFullscreen
-              video={video}
-              thumbnail={thumbnail}
-              setVideoLoaded={setVideoLoaded}
-              className={cx("absolute hidden")}
-            />
-          )}
-          {/* Video that will actually display  */}
-          {video && videoLoaded && didAnimateOpen && (
+        {video && videoLoaded && didAnimateOpen && (
+          <motion.div
+            key={`project_${_id}_modal_video`}
+            // IMPORTANT PART
+            initial={{ scale: 1 }}
+            animate={{ scale: 0.9, transition: { duration: 1 } }}
+            // EXPERIMENT
+            // exit={{ opacity: 0, transition: { duration: 0.5, delay: 0.5 } }}
+            className="flex h-screen w-screen items-center justify-center"
+          >
+            {/* Video that will actually display  */}
+
             <VideoBlockFullscreen
               video={video}
               thumbnail={thumbnail}
               setVideoLoaded={() => null}
               className={cx(roundingClass)}
             />
-          )}
-        </motion.div>
+          </motion.div>
+        )}
         {thumbnailUrl && (!didAnimateOpen || !video || !videoLoaded) && (
           <motion.img
             key={`project_${_id}_modal_img`}
@@ -84,12 +85,14 @@ export default function ProjectModalContents({
               "absolute bottom-0 left-0 right-0 top-0 h-full w-full",
               !didAnimateOpen && roundingClass,
             )}
-            initial={didAnimateOpen ? { opacity: 0 } : {}}
-            animate={
-              didAnimateOpen ? { opacity: 1, transition: { duration: 1 } } : {}
-            }
+            // initial={didAnimateOpen ? { opacity: 0 } : {}}
+            // animate={
+            //   didAnimateOpen
+            //     ? { opacity: 1, transition: { duration: 0.3 } }
+            //     : {}
+            // }
             // IMPORTANT PART
-            exit={{ opacity: 0, transition: { duration: 1, delay: 0.5 } }}
+            exit={{ opacity: 0, transition: { duration: 0.7 } }}
             alt={alt}
           />
         )}
