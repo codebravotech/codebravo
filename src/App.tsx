@@ -24,6 +24,7 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
   const { isMobile } = useDisplay();
   const { hideAppOverflow } = useSystemStore();
   const isHomePage = pathname === "/";
+  const isPortfolio = pathname === "/portfolio";
 
   const tooltipClassname =
     "mt-2 z-50 rounded-xl bg-opacity-50 px-2 py-1 font-raleway text-xs bg-night-100 text-stars-100";
@@ -46,11 +47,12 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
         },
       }}
       className={cx(
-        "relative flex min-h-screen w-[100vw] flex-col overflow-x-hidden bg-stars-100 scrollbar-hide",
+        "relative flex min-h-screen w-[100vw] flex-col overflow-x-hidden scrollbar-hide",
         hideAppOverflow ? "h-screen overflow-y-hidden" : "overflow-y-scroll",
+        isPortfolio ? "bg-night-gradient text-stars-100" : "bg-stars-100",
       )}
     >
-      <Header isHomePage={isHomePage} />
+      <Header isHomePage={isHomePage} isPortfolio={isPortfolio} />
       {pageContents}
 
       <div className={cx("mt-auto", isMobile && !isHomePage && "mb-32")}>

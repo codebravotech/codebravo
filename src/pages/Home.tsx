@@ -48,8 +48,6 @@ export default function Home() {
 
   const isAndMore = skills[skillIndex]?.includes("and more");
 
-  // return <div>HOME</div>;
-
   return (
     <motion.div
       className={cx(

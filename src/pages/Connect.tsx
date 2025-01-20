@@ -24,25 +24,15 @@ export default function Connect() {
 
   const {
     copy = [],
-    email_link = [],
-    profile_link = [],
+    email_link,
+    profile_link,
     form_header = [],
     name_placeholder = "Your Name",
     email_placeholder = "Your Email",
     message_placeholder = "Your Message",
-  } = connectPage as {
-    copy: PortableTextBlock[];
-    email_link: PortableTextBlock[];
-    profile_link: PortableTextBlock[];
-    form_header: PortableTextBlock[];
-    name_placeholder: string;
-    email_placeholder: string;
-    message_placeholder: string;
-  };
+  } = connectPage as Connect_page;
 
   const conditionalViz = postResult ? "invisible" : "";
-
-  // return <div>Connect</div>;
 
   return (
     <motion.div className="mb-10 mt-4 flex w-full flex-col-reverse gap-4 px-4 pt-4 lg:h-full lg:flex-row lg:gap-10 lg:pl-6 lg:pr-10">
@@ -51,7 +41,7 @@ export default function Connect() {
         className="mb-2 flex flex-col gap-4 text-2xl leading-snug lg:basis-1/2 lg:gap-10 lg:text-3xl lg:leading-snug"
       >
         <div className={cx(conditionalViz)}>
-          <PortableTextRegular content={copy} />
+          <PortableTextRegular content={copy as PortableTextBlock[]} />
         </div>
         <div
           className={cx(
@@ -59,8 +49,11 @@ export default function Connect() {
             "flex flex-col gap-2 lg:flex-row lg:gap-0",
           )}
         >
-          <PortableTextRegular icon_color="expanse-100" content={email_link} />
-          <PortableTextRegular content={profile_link} />
+          <PortableTextRegular
+            icon_color="expanse-100"
+            content={email_link as PortableTextBlock[]}
+          />
+          <PortableTextRegular content={profile_link as PortableTextBlock[]} />
         </div>
       </ArriveDirectionally>
       <ArriveDirectionally
@@ -73,7 +66,7 @@ export default function Connect() {
             "-mt-1 text-2xl leading-snug lg:text-3xl lg:leading-snug",
           )}
         >
-          <PortableTextRegular content={form_header} />
+          <PortableTextRegular content={form_header as PortableTextBlock[]} />
         </div>
         <motion.div
           variants={{
@@ -91,7 +84,7 @@ export default function Connect() {
             name_placeholder={name_placeholder}
             email_placeholder={email_placeholder}
             message_placeholder={message_placeholder}
-            email_link={email_link}
+            email_link={email_link as PortableTextBlock[]}
           />
         </motion.div>
       </ArriveDirectionally>

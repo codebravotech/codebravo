@@ -5,10 +5,17 @@ import { Link } from "react-router-dom";
 import { NAV_OPTIONS } from "../config";
 import { useDisplay } from "../hooks/display";
 
-export default function Header({ isHomePage }: { isHomePage: boolean }) {
+export default function Header({
+  isHomePage,
+  isPortfolio,
+}: {
+  isHomePage: boolean;
+  isPortfolio: boolean;
+}) {
   const navigate = useNavigate();
   const { isMobile } = useDisplay();
-  const logo = `/images/logo_black.svg`;
+  const logoColor = isPortfolio ? "white" : "black";
+  const logo = `/images/logo_${logoColor}.svg`;
 
   return (
     <>
@@ -27,7 +34,7 @@ export default function Header({ isHomePage }: { isHomePage: boolean }) {
             <div
               className={cx(
                 "flex flex-row justify-evenly gap-4 pr-4 pt-8",
-                isHomePage ? "text-stars-100" : "text-night-400",
+                isHomePage || isPortfolio ? "text-stars-100" : "text-night-400",
               )}
             >
               {NAV_OPTIONS.map((button) => (

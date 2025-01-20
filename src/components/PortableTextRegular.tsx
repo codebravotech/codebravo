@@ -12,6 +12,12 @@ const components: PortableTextComponents = {
     h1: ({ children }) => (
       <h1 className="mb-2 font-fjalla text-6xl">{children}</h1>
     ),
+    h2: ({ children }) => (
+      <h1 className="mb-2 font-fjalla text-5xl">{children}</h1>
+    ),
+    h3: ({ children }) => (
+      <h1 className="mb-2 font-fjalla text-4xl">{children}</h1>
+    ),
     normal: ({ children }) => {
       return <p>{children}</p>;
     },

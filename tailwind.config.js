@@ -3,6 +3,8 @@
 const duneGradient = "linear-gradient(to bottom left, #ECA400, #a35b1f)";
 const expanseGradient =
   "linear-gradient(to bottom right, #2dbfd4 0%, #2dbfd4 70%, #F4EFE8 100%)";
+const nightGradient = "radial-gradient(circle, #181818 30%, #202020 100%)";
+
 module.exports = {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -10,6 +12,7 @@ module.exports = {
       spacing: {
         18: "4.5rem",
       },
+
       borderColor: {
         "dune-gradient": duneGradient,
         "expanse-gradient": expanseGradient,
@@ -18,10 +21,12 @@ module.exports = {
         namibia: "url('/images/namibia.jpg')",
         "dune-gradient": duneGradient,
         "expanse-gradient": expanseGradient,
+        "night-gradient": nightGradient,
       },
       colors: {
         "dune-gradient": duneGradient,
         "expanse-gradient": expanseGradient,
+        "night-gradient": nightGradient,
 
         stars: {
           100: "#F4EFE8",
