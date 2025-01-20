@@ -19,8 +19,8 @@ export default function VideoBlockFullscreen({
 
   return (
     <motion.video
-      className={cx("relative object-scale-down", className)}
-      controls={false}
+      className={cx("relative cursor-pointer object-scale-down", className)}
+      controls={true}
       autoPlay
       muted
       loop

@@ -41,46 +41,62 @@ export default function ProjectModalContents({
   const alt = thumbnail?.alt;
 
   return (
-    <motion.div className="bg-night-gradient absolute bottom-0 left-0 right-0 top-0 overflow-y-scroll overscroll-none text-night-400 scrollbar-hide">
-      <Header isHomePage={false} isPortfolio={true} />
+    <motion.div className="bg-night-gradient absolute bottom-0 left-0 right-0 top-0 overflow-y-scroll overscroll-none scrollbar-hide">
+      <Header
+        isHomePage={false}
+        isPortfolio={true}
+        clickedCurrentRoute={handleClose}
+      />
       <AnimatePresence>
-        {thumbnailUrl && (
+        <motion.div
+          key={`project_${_id}_modal_video`}
+          // IMPORTANT PART
+          initial={{ scale: 1 }}
+          animate={{ scale: 0.9, transition: { delay: 0.5, duration: 0.5 } }}
+          // EXPERIMENT
+          exit={{ opacity: 0, transition: { duration: 0.5, delay: 0.5 } }}
+          className="flex h-screen w-screen items-center justify-center"
+        >
+          {/* Invisible video to start load while animation is running */}
+          {video && (
+            <VideoBlockFullscreen
+              video={video}
+              thumbnail={thumbnail}
+              setVideoLoaded={setVideoLoaded}
+              className={cx("absolute hidden")}
+            />
+          )}
+          {/* Video that will actually display  */}
+          {video && videoLoaded && didAnimateOpen && (
+            <VideoBlockFullscreen
+              video={video}
+              thumbnail={thumbnail}
+              setVideoLoaded={() => null}
+              className={cx(roundingClass)}
+            />
+          )}
+        </motion.div>
+        {thumbnailUrl && (!didAnimateOpen || !video || !videoLoaded) && (
           <motion.img
             key={`project_${_id}_modal_img`}
             src={`${thumbnailUrl}?w=${innerWidth}&fit=clip&auto=format`}
             className={cx(
               "absolute bottom-0 left-0 right-0 top-0 h-full w-full",
               !didAnimateOpen && roundingClass,
-              !didAnimateOpen || !video || !videoLoaded
-                ? "visible"
-                : "invisible",
             )}
+            initial={didAnimateOpen ? { opacity: 0 } : {}}
+            animate={
+              didAnimateOpen ? { opacity: 1, transition: { duration: 1 } } : {}
+            }
+            // IMPORTANT PART
+            exit={{ opacity: 0, transition: { duration: 1, delay: 0.5 } }}
             alt={alt}
           />
         )}
-        <motion.div
-          key={`project_${_id}_modal_video`}
-          className="flex h-screen w-screen items-center justify-center"
-        >
-          {video && (
-            <VideoBlockFullscreen
-              video={video}
-              thumbnail={thumbnail}
-              setVideoLoaded={setVideoLoaded}
-              className={cx(
-                didAnimateOpen && videoLoaded ? "visible" : "invisible",
-                "w-11/12",
-              )}
-            />
-          )}
-        </motion.div>
       </AnimatePresence>
-    </motion.div>
-  );
-}
 
-/* {didAnimateOpen && (
-        <div>
+      {didAnimateOpen && (
+        <div className="">
           <div className="h-32">FILLER</div>
           <div className="h-32">FILLER</div>
           <div className="h-32">FILLER</div>
@@ -89,4 +105,9 @@ export default function ProjectModalContents({
           <div className="h-32">FILLER</div>
           <div className="h-32">FILLER</div>
         </div>
-      )} */
+      )}
+    </motion.div>
+  );
+}
+
+/*  */

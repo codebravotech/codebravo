@@ -3,6 +3,7 @@ import cx from "classnames";
 import { motion } from "framer-motion";
 import groq from "groq";
 import { get, partition } from "lodash";
+import { useEffect } from "react";
 
 import ArriveDirectionally from "../animations/ArriveDirectionally";
 import PortableTextPopcorn from "../components/PortableTextPopcorn";
@@ -15,7 +16,8 @@ import { ProjectObject } from "../types/components";
 import { Portfolio_page } from "../types/sanity.types";
 
 export default function Portfolio() {
-  const { openProjectId, clickedCardBoundingBox } = useSystemStore();
+  const { openProjectId, setOpenProjectId, clickedCardBoundingBox } =
+    useSystemStore();
   const query = groq`
   *[_id == $page_id]{ ..., projects[]->{ ..., thumbnails[] { ..., asset-> }, client_logo { ..., asset-> }, videos[] { ..., asset-> }  } }
 `;
@@ -30,6 +32,10 @@ export default function Portfolio() {
   const openProject = projects.find((project) => project._id === openProjectId);
   const [privateProjects, publicProjects] = partition(projects, "private");
   const subheaderClasses = "mb-10 max-w-[35%] text-center";
+
+  useEffect(() => {
+    setOpenProjectId(null);
+  }, []);
 
   return (
     <motion.div
