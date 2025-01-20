@@ -120,7 +120,6 @@ export default function ProjectModalContents({
         <AnimatePresence
           mode="sync"
           onExitComplete={() => {
-            console.log("EXIT COMPLETE!!!", { animationPhase });
             if (animationPhase === "MODAL_CONTENTS_ENTERING") {
               setAnimationPhase("MODAL_OPEN");
             }
@@ -135,9 +134,17 @@ export default function ProjectModalContents({
           ) ? (
             <motion.div
               key={`project_${_id}_modal_video`}
-              initial={{ scale: 1 }}
-              animate={{ scale: 0.9, transition: { duration: 1 } }}
-              exit={{ scale: 1, transition: { duration: 1 } }}
+              initial={{ scale: 1, y: 0 }}
+              animate={{
+                scale: 0.9,
+                y: isPortrait ? "-10%" : "-5%",
+                transition: { duration: 1, ease: "easeOut" },
+              }}
+              exit={{
+                scale: 1,
+                y: 0,
+                transition: { duration: 1, ease: "easeIn" },
+              }}
               className="flex h-screen w-screen items-center justify-center"
             >
               {/* Video that will actually display  */}
