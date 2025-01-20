@@ -1,4 +1,4 @@
-import { Project } from "./sanity.types";
+import { Project, SanityImageAsset } from "./sanity.types";
 
 export type ValidRoutes = "/expertise" | "/connect" | "/" | "/portfolio";
 export type IconType =
@@ -22,6 +22,9 @@ export interface NavOptions {
 }
 
 export interface ProjectObject extends Project {
-  thumbnailAsset: { url: string };
-  thumbnailAlt: string;
+  thumbnails: {
+    asset: SanityImageAsset;
+    alt: string;
+    orientation: "landscape" | "portrait";
+  }[];
 }

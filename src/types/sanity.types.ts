@@ -52,6 +52,16 @@ export type Slug = {
   source?: string
 }
 
+export type Technology_tool = {
+  _type: 'technology_tool'
+  name?: string
+}
+
+export type Partner = {
+  _type: 'partner'
+  name?: string
+}
+
 export type Content_block = {
   _type: 'content_block'
   image?: {
@@ -126,6 +136,42 @@ export type Portfolio_page = {
     _type: 'block'
     _key: string
   }>
+  public_header?: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
+  private_header?: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
   projects?: Array<{
     _ref: string
     _type: 'reference'
@@ -161,12 +207,6 @@ export type Home_page = {
   }>
   tagline_link?: Link
   skills?: Array<string>
-}
-
-export type Link = {
-  _type: 'link'
-  label?: string
-  url?: string
 }
 
 export type Connect_page = {
@@ -211,6 +251,42 @@ export type Connect_page = {
     _type: 'block'
     _key: string
   }>
+  email_link?: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
+  profile_link?: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
   name_placeholder?: string
   email_placeholder?: string
   message_placeholder?: string
@@ -236,8 +312,36 @@ export type Project = {
   _updatedAt: string
   _rev: string
   title?: string
-  description?: string
-  thumbnail?: {
+  description?: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
+  client_logo?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    _type: 'image'
+  }
+  thumbnails?: Array<{
     asset?: {
       _ref: string
       _type: 'reference'
@@ -247,9 +351,31 @@ export type Project = {
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     alt?: string
+    orientation?: 'landscape' | 'portrait'
     _type: 'image'
-  }
+    _key: string
+  }>
   thumbnail_overlay_color?: string
+  header?: string
+  private?: boolean
+  private_project_summary?: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
   videos?: Array<{
     asset?: {
       _ref: string
@@ -257,6 +383,7 @@ export type Project = {
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
     }
+    orientation?: 'landscape' | 'portrait'
     _type: 'file'
     _key: string
   }>
@@ -269,10 +396,32 @@ export type Project = {
     }
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
+    alt?: string
+    orientation?: 'landscape' | 'portrait'
     _type: 'image'
     _key: string
   }>
-  partners?: Array<string>
+  technology_tools?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'technology_tool'
+  }>
+  partners?: Array<{
+    _ref: string
+    _type: 'reference'
+    _weak?: boolean
+    _key: string
+    [internalGroqTypeReferenceTo]?: 'partner'
+  }>
+  project_link?: Link
+}
+
+export type Link = {
+  _type: 'link'
+  label?: string
+  url?: string
 }
 
 export type SanityFileAsset = {
@@ -360,14 +509,16 @@ export type AllSanitySchemaTypes =
   | SanityImageDimensions
   | Geopoint
   | Slug
+  | Technology_tool
+  | Partner
   | Content_block
   | Pdf
   | Portfolio_page
   | Home_page
-  | Link
   | Connect_page
   | About_page
   | Project
+  | Link
   | SanityFileAsset
   | SanityImageCrop
   | SanityImageHotspot

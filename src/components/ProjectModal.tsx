@@ -3,12 +3,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import { pick } from "lodash";
 import { useEffect, useState } from "react";
 
+import { useDisplay } from "../hooks/display";
 // import { useIsElementOnScreen } from "../hooks/display";
 import { useSystemStore } from "../state/system";
 import { ProjectObject } from "../types/components";
 
 export default function ProjectModal({ project }: { project: ProjectObject }) {
   const { setOpenProjectId, clickedCardBoundingBox } = useSystemStore();
+  const { isPortrait } = useDisplay();
   // const isOnScreen = useIsElementOnScreen(`project_card_${project?._id}`);
 
   const [didRenderModalCard, setDidRenderModalCard] = useState(false);
@@ -17,12 +19,6 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
   const transitionDurationMs = transitionDuration * 1000;
   const contentsDuration = 0.3;
   const contentsDurationMs = contentsDuration * 1000;
-
-  const {
-    _id,
-    thumbnailAsset: { url = "" },
-    thumbnailAlt = "",
-  } = project;
 
   // Animate in
   useEffect(() => {
@@ -63,9 +59,20 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
     }, contentsDurationMs * 2);
   };
 
-  if (!clickedCardBoundingBox) {
+  const { _id, thumbnails = [] } = project;
+
+  const thumbnail = thumbnails.find(
+    (elem) => elem.orientation === (isPortrait ? "portrait" : "landscape"),
+  );
+
+  if (!clickedCardBoundingBox || !thumbnail) {
     return null;
   }
+
+  const {
+    asset: { url },
+    alt,
+  } = thumbnail;
 
   const roundingClass = "rounded-2xl";
 
@@ -111,7 +118,7 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
             <motion.img
               key={`project_${_id}_modal_img`}
               src={`${url}?w=${innerWidth}&fit=clip&auto=format`}
-              alt={thumbnailAlt}
+              alt={alt}
               className={cx("h-full w-full", !didAnimateOpen && roundingClass)}
               initial={didRenderModalCard ? { opacity: 0 } : {}}
               animate={

@@ -1,9 +1,13 @@
+import { PortableTextBlock } from "@portabletext/types";
+import { SanityAssetDocument } from "@sanity/client";
 import cx from "classnames";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 
+import { useDisplay } from "../hooks/display";
 import { useSystemStore } from "../state/system";
 import { ProjectObject } from "../types/components";
+import PortableTextRegular from "./PortableTextRegular";
 
 export default function ProjectCard({
   project,
@@ -16,24 +20,15 @@ export default function ProjectCard({
 }) {
   const { openProjectId, setOpenProjectId, setClickedCardBoundingBox } =
     useSystemStore();
+  const { isPortrait } = useDisplay();
   const cardRef = useRef<HTMLDivElement>(null);
   const {
     _id,
-    thumbnailAsset: { url = "" },
-    thumbnailAlt = "",
     thumbnail_overlay_color = "",
+    description = [],
+    client_logo,
   } = project;
   const isOpen = openProjectId === _id;
-
-  // We use state and then an effect to turn off the hover so that the bounding box will be the right size and not
-  // stretch the ProjectModal that will render and grows based on the "openProjectId"
-  const onClick = async () => {
-    if (cardRef.current) {
-      const boundingBox = cardRef.current.getBoundingClientRect();
-      setClickedCardBoundingBox(boundingBox);
-      setOpenProjectId(_id);
-    }
-  };
 
   const imageVariants = {
     hover: {
@@ -42,6 +37,29 @@ export default function ProjectCard({
     },
   };
   const roundingClass = "rounded-2xl";
+
+  // We use state and then an effect to turn off the hover so that the bounding box will be the right size and not
+  // stretch the ProjectModal that will render and grows based on the "openProjectId"
+  const onClick = async () => {
+    if (isPortrait) {
+      if (cardRef.current) {
+        const originalRect = cardRef.current.getBoundingClientRect();
+        const y = originalRect.top + window.scrollY;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+    }
+
+    setTimeout(
+      () => {
+        if (cardRef.current) {
+          const rect = cardRef.current.getBoundingClientRect();
+          setClickedCardBoundingBox(rect);
+          setOpenProjectId(_id);
+        }
+      },
+      isPortrait ? 500 : 0,
+    );
+  };
 
   useEffect(() => {
     const handleEvent = () => {
@@ -60,6 +78,21 @@ export default function ProjectCard({
     };
   }, [isOpen]);
 
+  const { thumbnails = [] } = project;
+
+  const thumbnail = thumbnails.find(
+    (elem) => elem.orientation === (isPortrait ? "portrait" : "landscape"),
+  );
+
+  if (!thumbnail) {
+    return null;
+  }
+
+  const {
+    asset: { url },
+    alt,
+  } = thumbnail;
+
   return (
     <motion.div
       id={`project_card_${project?._id}`}
@@ -71,7 +104,8 @@ export default function ProjectCard({
       whileHover="hover"
       className={cx(
         className,
-        "group relative grow-0 basis-[47%] cursor-pointer overflow-hidden bg-transparent",
+        isPortrait ? "max-w-[97%] basis-full" : "basis-[47%]",
+        "group relative grow-0 cursor-pointer overflow-hidden border-night-100 bg-transparent shadow-2xl",
         roundingClass,
         isOpen && "invisible",
       )}
@@ -81,8 +115,8 @@ export default function ProjectCard({
       {/* Image */}
       <motion.img
         src={`${url}?w=${innerWidth}&fit=clip&auto=format`}
-        alt={thumbnailAlt}
-        className="h-full w-full object-contain"
+        alt={alt}
+        className="h-full w-full object-fill"
         variants={imageVariants}
       />
 
@@ -99,8 +133,16 @@ export default function ProjectCard({
         }}
       ></motion.div>
       {/* Content */}
-      <div className="absolute inset-0 flex h-full w-full flex-col items-center justify-center text-2xl text-stars-100">
-        {/* CONTENTS FOR THE CARD CAN GO HERE! */}
+      <div className="invisible absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-3 bg-black/50 px-6 text-center text-2xl text-stars-100 group-hover:visible">
+        {client_logo && (
+          <img
+            src={(client_logo as SanityAssetDocument)?.asset?.url}
+            className="z-50 max-h-[40%] max-w-[60%] object-contain"
+          />
+        )}
+        <div className="max-w-[70%] font-raleway font-bold">
+          <PortableTextRegular content={description as PortableTextBlock[]} />
+        </div>
       </div>
     </motion.div>
   );

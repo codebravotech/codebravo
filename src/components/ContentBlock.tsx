@@ -1,8 +1,8 @@
 import { PortableTextBlock } from "@portabletext/types";
 import cx from "classnames";
 import { motion } from "framer-motion";
-import { get, update } from "lodash";
-import { useEffect, useRef, useState } from "react";
+import { get } from "lodash";
+import { RefObject, useState } from "react";
 
 import ArriveDirectionally from "../animations/ArriveDirectionally";
 import ParallaxImage from "../animations/ParallaxImage";
@@ -16,23 +16,30 @@ export default function ContentBlock({
   content_block,
   justified,
 }: {
-  content_block: Content_block;
+  content_block: {
+    _key: string;
+  } & Content_block;
+
   justified: "left" | "right";
 }) {
   const { isMobile } = useDisplay();
   const [imgWidth, setImgWidth] = useState(0);
-  const _key = get(content_block, "_key", {});
-  const cta_link = get(content_block, "cta_link", {});
-  const file_link = get(content_block, "file_link", {});
-  const buttonText = get(cta_link, "label", "") || get(file_link, "label", "");
-  const fileAsset = get(content_block, "fileAsset");
+
+  const { _key, cta_link, file_link, image } = content_block;
+  const buttonLabel = get(cta_link, "label", "") || get(file_link, "label", "");
+  const fileAsset = get(file_link, "file.asset");
   const buttonUrl = fileAsset
     ? get(fileAsset, "url", "")
     : get(cta_link, "url", "");
 
-  const image = get(content_block, "imageAsset", "");
-  const src = get(image, "url", "");
-  const dimensions = get(image, "metadata.dimensions", {});
+  const imageAsset = image?.asset;
+
+  if (!imageAsset) {
+    return null;
+  }
+
+  const src = get(imageAsset, "url", "");
+  const dimensions = get(imageAsset, "metadata.dimensions", {});
   const height = get(dimensions, "height", 0);
   const width = get(dimensions, "width", 0);
   const orientation = height > width ? "portrait" : "landscape";
@@ -73,7 +80,7 @@ export default function ContentBlock({
     }
   }
 
-  const updatePosition = (ref: any) => {
+  const updatePosition = (ref: RefObject<HTMLElement>) => {
     if (ref.current) {
       const { left, right } = ref.current.getBoundingClientRect();
       const width = (Math.round(right - left) * 1) / IMAGE_SCALE_FACTOR;
@@ -114,19 +121,6 @@ export default function ContentBlock({
           className="shadow-xl lg:rounded-2xl"
         />
       </motion.div>
-      {/* 
-      <div className="flex w-full justify-center">
-        <CtaButton
-          url={buttonUrl}
-          label={buttonText}
-          style={
-            justifiedLeft
-              ? { marginLeft: paddingX * 2 }
-              : { marginRight: paddingX * 2 }
-          }
-        />
-      </div> */}
-
       {_key && (
         <div
           className={cx(
@@ -147,7 +141,7 @@ export default function ContentBlock({
                 content={copy as PortableTextBlock[]}
               />
               <CtaButton url={buttonUrl} variant="white_blue">
-                {buttonText}
+                {buttonLabel}
               </CtaButton>
             </div>
           </ArriveDirectionally>

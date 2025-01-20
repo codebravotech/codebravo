@@ -2,28 +2,34 @@ import { PortableTextBlock } from "@portabletext/types";
 import cx from "classnames";
 import { motion } from "framer-motion";
 import groq from "groq";
-import { get } from "lodash";
+import { get, partition } from "lodash";
 
-import ArriveDirectionallyStaggered from "../animations/ArriveDirectionallyStaggered";
+import ArriveDirectionally from "../animations/ArriveDirectionally";
 import PortableTextPopcorn from "../components/PortableTextPopcorn";
+import PortableTextRegular from "../components/PortableTextRegular";
 import ProjectCard from "../components/ProjectCard";
 import ProjectModal from "../components/ProjectModal";
 import { useQuery } from "../hooks/sanity";
 import { useSystemStore } from "../state/system";
 import { ProjectObject } from "../types/components";
+import { Portfolio_page } from "../types/sanity.types";
 
 export default function Portfolio() {
   const { openProjectId, clickedCardBoundingBox } = useSystemStore();
   const query = groq`
-  *[_id == $page_id]{ ..., "projects": projects[]->{ ..., "thumbnailAlt": thumbnail.alt, "thumbnailAsset": thumbnail.asset->{ ... } } }
+  *[_id == $page_id]{ ..., projects[]->{ ..., thumbnails[] { ..., asset-> }, client_logo { asset -> }  } }
 `;
   const { documents = [] } = useQuery(query, {
     page_id: "portfolio_page",
   });
-  const page = get(documents, "[0]", {});
+  const page = get(documents, "[0]", {}) as Portfolio_page;
   const header = get(page, "header", []) as PortableTextBlock[];
   const projects = get(page, "projects", []) as ProjectObject[];
+
+  const { private_header, public_header } = page;
   const openProject = projects.find((project) => project._id === openProjectId);
+  const [privateProjects, publicProjects] = partition(projects, "private");
+  const subheaderClasses = "mb-10 max-w-[35%] text-center";
 
   return (
     <motion.div
@@ -37,18 +43,54 @@ export default function Portfolio() {
         <ProjectModal project={openProject} />
       )}
 
-      {projects.length && (
-        <div className="flex w-full flex-row flex-wrap justify-center gap-6 px-4">
-          {projects.map((project, index) => {
-            return (
-              <ProjectCard
-                project={project}
-                key={`project_card_${project?._id}`}
-                index={index}
-              />
-            );
-          })}
-        </div>
+      {publicProjects.length > 0 && (
+        <>
+          <ArriveDirectionally
+            keyBy="private_header"
+            direction="up"
+            delay={0}
+            duration={0.5}
+            className={cx(subheaderClasses, "mt-10")}
+          >
+            <PortableTextRegular content={public_header} />
+          </ArriveDirectionally>
+          <div className="mb-4 flex w-full flex-row flex-wrap justify-center gap-6 px-4">
+            {publicProjects.map((project, index) => {
+              return (
+                <ProjectCard
+                  project={project}
+                  key={`project_card_${project?._id}`}
+                  index={index}
+                />
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {privateProjects.length > 0 && (
+        <>
+          <ArriveDirectionally
+            keyBy="public_header"
+            direction="up"
+            delay={0}
+            duration={0.5}
+            className={cx(subheaderClasses, "mt-10")}
+          >
+            <PortableTextRegular content={private_header} />
+          </ArriveDirectionally>
+          <div className="flex w-full flex-row flex-wrap justify-center gap-6 px-4">
+            {privateProjects.map((project, index) => {
+              return (
+                <ProjectCard
+                  project={project}
+                  key={`project_card_${project?._id}`}
+                  index={index}
+                />
+              );
+            })}
+          </div>
+        </>
       )}
     </motion.div>
   );
