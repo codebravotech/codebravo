@@ -7,28 +7,26 @@ import { useDisplay } from "../hooks/display";
 // import { useIsElementOnScreen } from "../hooks/display";
 import { useSystemStore } from "../state/system";
 import { ProjectObject } from "../types/components";
+import ProjectModalContents from "./ProjectModalContents";
 
 export default function ProjectModal({ project }: { project: ProjectObject }) {
   const { setOpenProjectId, clickedCardBoundingBox } = useSystemStore();
   const { isPortrait } = useDisplay();
-  // const isOnScreen = useIsElementOnScreen(`project_card_${project?._id}`);
-
   const [didRenderModalCard, setDidRenderModalCard] = useState(false);
   const [didAnimateOpen, setDidAnimateOpen] = useState(false);
-  const transitionDuration = 0.3;
+  const transitionDuration = 0.5;
   const transitionDurationMs = transitionDuration * 1000;
-  const contentsDuration = 0.3;
-  const contentsDurationMs = contentsDuration * 1000;
+  const roundingClass = "rounded-2xl";
 
   // Animate in
   useEffect(() => {
-    let animationTimeout = null;
+    let animationTimeout: NodeJS.Timeout;
     setDidRenderModalCard(true);
 
     if (clickedCardBoundingBox) {
       animationTimeout = setTimeout(() => {
         setDidAnimateOpen(true);
-      }, transitionDuration);
+      }, transitionDurationMs);
     }
 
     return () => {
@@ -40,52 +38,46 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
 
   // Animate out
   const handleClose = async () => {
-    const card = document.getElementById(`project_card_${project?._id}`);
-
-    const rect = card?.getBoundingClientRect();
-    if (rect) {
-      const y = rect.top + window.scrollY - 250;
-      setTimeout(() => {
-        window.scrollTo({ top: y, behavior: "smooth" });
-      }, 200);
-    }
+    // const card = document.getElementById(`project_card_${project?._id}`);
+    // const rect = card?.getBoundingClientRect();
+    // if (rect) {
+    //   const y = rect.top + window.scrollY - 250;
+    //   setTimeout(() => {
+    //     window.scrollTo({ top: y, behavior: "smooth" });
+    //   }, 50);
+    // }
 
     setDidAnimateOpen(false);
+    setDidRenderModalCard(false);
     setTimeout(() => {
-      setDidRenderModalCard(false);
-      setTimeout(() => {
-        setOpenProjectId(null);
-      }, transitionDurationMs);
-    }, contentsDurationMs * 2);
+      setOpenProjectId(null);
+    }, transitionDurationMs);
   };
 
   const { _id, thumbnails = [] } = project;
-
-  const thumbnail = thumbnails.find(
-    (elem) => elem.orientation === (isPortrait ? "portrait" : "landscape"),
-  );
+  const thumbnail =
+    thumbnails.find(
+      (elem) => elem.orientation === (isPortrait ? "portrait" : "landscape"),
+    ) || thumbnails.find((elem) => elem.asset.url);
 
   if (!clickedCardBoundingBox || !thumbnail) {
     return null;
   }
 
-  const {
-    asset: { url },
-    alt,
-  } = thumbnail;
-
-  const roundingClass = "rounded-2xl";
+  // const {
+  //   asset: { url },
+  //   alt,
+  // } = thumbnail;
 
   return (
     <AnimatePresence>
       <motion.div
         key={`project_${_id}_modal`}
         className={cx(
-          "fixed z-10 cursor-pointer overscroll-none bg-stars-100 scrollbar-hide",
+          "fixed z-20 cursor-pointer overscroll-none bg-stars-100 scrollbar-hide",
           !didAnimateOpen && roundingClass,
         )}
         onClick={handleClose}
-        onTap={handleClose}
         layout
         style={
           !didRenderModalCard
@@ -112,51 +104,12 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
           },
         }}
       >
-        {/* Image */}
-        <AnimatePresence mode="wait">
-          {!didAnimateOpen ? (
-            <motion.img
-              key={`project_${_id}_modal_img`}
-              src={`${url}?w=${innerWidth}&fit=clip&auto=format`}
-              alt={alt}
-              className={cx("h-full w-full", !didAnimateOpen && roundingClass)}
-              initial={didRenderModalCard ? { opacity: 0 } : {}}
-              animate={
-                didRenderModalCard
-                  ? {
-                      opacity: 1,
-                      transition: { duration: contentsDuration / 2 },
-                    }
-                  : {}
-              }
-              exit={{
-                opacity: 0,
-                transition: {
-                  delay: transitionDuration,
-                  duration: contentsDuration,
-                },
-              }}
-            />
-          ) : (
-            <motion.div
-              key={`project_${_id}_contents`}
-              className="flex h-full w-full flex-row items-center justify-center bg-dune-100"
-              initial={{ opacity: 0, y: -100 }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                transition: { duration: contentsDuration },
-              }}
-              exit={{
-                opacity: 0,
-                y: -100,
-                transition: { duration: contentsDuration },
-              }}
-            >
-              HELLO WORLD
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <ProjectModalContents
+          project={project}
+          handleClose={handleClose}
+          didAnimateOpen={didAnimateOpen}
+          roundingClass={roundingClass}
+        />
       </motion.div>
     </AnimatePresence>
   );

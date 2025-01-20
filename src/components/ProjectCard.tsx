@@ -93,6 +93,9 @@ export default function ProjectCard({
     alt,
   } = thumbnail;
 
+  const logoUrl = client_logo?.asset?.url;
+  const logoAlt = client_logo?.alt;
+
   return (
     <motion.div
       id={`project_card_${project?._id}`}
@@ -127,7 +130,7 @@ export default function ProjectCard({
           roundingClass,
         )}
         style={{
-          backgroundColor: thumbnail_overlay_color,
+          backgroundColor: thumbnail_overlay_color.trim(),
           opacity: 0,
           mixBlendMode: "multiply",
         }}
@@ -136,7 +139,8 @@ export default function ProjectCard({
       <div className="invisible absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-3 bg-black/50 px-6 text-center text-2xl text-stars-100 group-hover:visible">
         {client_logo && (
           <img
-            src={(client_logo as SanityAssetDocument)?.asset?.url}
+            src={logoUrl}
+            alt={logoAlt}
             className="z-50 max-h-[40%] max-w-[60%] object-contain"
           />
         )}

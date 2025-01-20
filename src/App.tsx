@@ -47,8 +47,10 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
         },
       }}
       className={cx(
-        "relative flex min-h-screen w-[100vw] flex-col overflow-x-hidden scrollbar-hide",
-        hideAppOverflow ? "h-screen overflow-y-hidden" : "overflow-y-scroll",
+        "relative flex min-h-screen w-[100vw] flex-col overflow-x-hidden",
+        hideAppOverflow
+          ? "h-screen overflow-y-hidden scrollbar-hide"
+          : "overflow-y-scroll",
         isPortfolio ? "bg-night-gradient text-stars-100" : "bg-stars-100",
       )}
     >

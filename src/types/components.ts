@@ -1,4 +1,9 @@
-import { Project, SanityImageAsset } from "./sanity.types";
+import {
+  Content_block,
+  Project,
+  SanityFileAsset,
+  SanityImageAsset,
+} from "./sanity.types";
 
 export type ValidRoutes = "/expertise" | "/connect" | "/" | "/portfolio";
 export type IconType =
@@ -14,6 +19,8 @@ export type SanityQueryParams = Record<
   string | number | boolean | null | (string | number | boolean | null)[]
 >;
 
+export type Orientation = "landscape" | "portrait";
+
 export interface NavOptions {
   label: string;
   pathname: ValidRoutes;
@@ -21,10 +28,25 @@ export interface NavOptions {
   short_label: string;
 }
 
-export interface ProjectObject extends Project {
-  thumbnails: {
-    asset: SanityImageAsset;
-    alt: string;
-    orientation: "landscape" | "portrait";
-  }[];
+export interface ResolvedVideoRef {
+  asset: SanityFileAsset;
+  orientation: Orientation;
+}
+
+export interface ResolvedImageRef {
+  asset: SanityImageAsset;
+  alt: string;
+  orientation?: Orientation;
+}
+
+export interface ProjectObject
+  extends Omit<Project, "thumbnails" | "videos" | "client_logo"> {
+  thumbnails: ResolvedImageRef[];
+  client_logo: ResolvedImageRef;
+  videos: ResolvedVideoRef[];
+}
+
+export interface ContentObject extends Omit<Content_block, "image"> {
+  _key: string;
+  image: ResolvedImageRef;
 }
