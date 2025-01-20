@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import { NAV_OPTIONS } from "../config";
@@ -8,11 +8,14 @@ import { useDisplay } from "../hooks/display";
 export default function Header({
   isHomePage,
   isPortfolio,
+  clickedCurrentRoute,
 }: {
   isHomePage: boolean;
   isPortfolio: boolean;
+  clickedCurrentRoute?: () => void;
 }) {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { isMobile } = useDisplay();
   const logoColor = isPortfolio ? "white" : "black";
   const logo = `/images/logo_${logoColor}.svg`;
@@ -40,7 +43,12 @@ export default function Header({
               {NAV_OPTIONS.map((button) => (
                 <div
                   key={button.label}
-                  onClick={() => navigate(button.pathname)}
+                  onClick={() => {
+                    if (button?.pathname === pathname && clickedCurrentRoute) {
+                      clickedCurrentRoute();
+                    }
+                    navigate(button.pathname);
+                  }}
                   className="underline-appear cursor-pointer text-lg"
                 >
                   {button.short_label}

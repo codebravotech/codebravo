@@ -74,10 +74,10 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
       <motion.div
         key={`project_${_id}_modal`}
         className={cx(
-          "fixed z-20 cursor-pointer overscroll-none bg-stars-100 scrollbar-hide",
+          "fixed z-20 overscroll-none bg-stars-100 scrollbar-hide",
           !didAnimateOpen && roundingClass,
         )}
-        onClick={handleClose}
+        // onClick={handleClose}
         layout
         style={
           !didRenderModalCard
