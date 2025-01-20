@@ -76,11 +76,20 @@ export default function ProjectModalContents({
 
   return (
     <motion.div className="bg-night-gradient absolute bottom-0 left-0 right-0 top-0 overflow-y-scroll overscroll-none scrollbar-hide">
-      <Header
-        isHomePage={false}
-        isPortfolio={true}
-        clickedCurrentRoute={handleClose}
-      />
+      <div
+        className={cx(
+          "relative z-20",
+          animationPhase === "MODAL_OPEN" ? "visible" : "invisible",
+        )}
+      >
+        {
+          <Header
+            isHomePage={false}
+            isPortfolio={true}
+            clickedCurrentRoute={handleClose}
+          />
+        }
+      </div>
       {video && (
         // Invisible video to start load while animation is running */}
         <VideoBlockFullscreen
