@@ -77,6 +77,7 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
         transition={{
           layout: {
             duration: 0.5,
+            ease: "easeIn",
           },
         }}
         onLayoutAnimationComplete={() => {
