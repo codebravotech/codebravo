@@ -8,7 +8,7 @@ import ArriveDirectionally from "../animations/ArriveDirectionally";
 import ParallaxImage from "../animations/ParallaxImage";
 import { IMAGE_SCALE_FACTOR } from "../config";
 import { useDisplay } from "../hooks/display";
-import { Content_block } from "../types/sanity.types";
+import { ContentObject } from "../types/components";
 import CtaButton from "./CtaButton";
 import PortableTextRegular from "./PortableTextRegular";
 
@@ -16,35 +16,29 @@ export default function ContentBlock({
   content_block,
   justified,
 }: {
-  content_block: {
-    _key: string;
-  } & Content_block;
+  content_block: ContentObject;
 
   justified: "left" | "right";
 }) {
   const { isMobile } = useDisplay();
   const [imgWidth, setImgWidth] = useState(0);
 
-  const { _key, cta_link, file_link, image } = content_block;
+  const { _key, cta_link, file_link, image, copy = [] } = content_block;
   const buttonLabel = get(cta_link, "label", "") || get(file_link, "label", "");
   const fileAsset = get(file_link, "file.asset");
   const buttonUrl = fileAsset
     ? get(fileAsset, "url", "")
     : get(cta_link, "url", "");
 
-  const imageAsset = image?.asset;
+  const { asset: imageAsset, alt } = image;
 
   if (!imageAsset) {
     return null;
   }
-
-  const src = get(imageAsset, "url", "");
-  const dimensions = get(imageAsset, "metadata.dimensions", {});
-  const height = get(dimensions, "height", 0);
-  const width = get(dimensions, "width", 0);
+  const { url = "", metadata } = imageAsset;
+  const height = metadata?.dimensions?.height || 0;
+  const width = metadata?.dimensions?.width || 0;
   const orientation = height > width ? "portrait" : "landscape";
-  const alt = get(content_block, "imageAlt", "");
-  const copy = get(content_block, "copy", []);
   const paddingX = !isMobile ? 35 : 0;
   const justifiedLeft = justified === "left";
   const justifiedRight = justified === "right";
@@ -97,7 +91,7 @@ export default function ContentBlock({
       style={{ paddingLeft: `${paddingX}px`, paddingRight: `${paddingX}px` }}
     >
       <motion.div
-        key={`container_${src}`}
+        key={`container_${url}`}
         initial={{
           x: isMobile ? 0 : 100 * (justifiedLeft ? -1 : 1),
           opacity: 0,
@@ -115,7 +109,7 @@ export default function ContentBlock({
         style={isMobile ? {} : imgContainerStyle}
       >
         <ParallaxImage
-          src={src}
+          src={url}
           alt={alt}
           updatePosition={updatePosition}
           className="shadow-xl lg:rounded-2xl"

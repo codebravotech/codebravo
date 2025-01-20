@@ -17,7 +17,7 @@ import { Portfolio_page } from "../types/sanity.types";
 export default function Portfolio() {
   const { openProjectId, clickedCardBoundingBox } = useSystemStore();
   const query = groq`
-  *[_id == $page_id]{ ..., projects[]->{ ..., thumbnails[] { ..., asset-> }, client_logo { asset -> }  } }
+  *[_id == $page_id]{ ..., projects[]->{ ..., thumbnails[] { ..., asset-> }, client_logo { ..., asset-> }, videos[] { ..., asset-> }  } }
 `;
   const { documents = [] } = useQuery(query, {
     page_id: "portfolio_page",
@@ -52,7 +52,9 @@ export default function Portfolio() {
             duration={0.5}
             className={cx(subheaderClasses, "mt-10")}
           >
-            <PortableTextRegular content={public_header} />
+            <PortableTextRegular
+              content={public_header as PortableTextBlock[]}
+            />
           </ArriveDirectionally>
           <div className="mb-4 flex w-full flex-row flex-wrap justify-center gap-6 px-4">
             {publicProjects.map((project, index) => {
@@ -77,7 +79,9 @@ export default function Portfolio() {
             duration={0.5}
             className={cx(subheaderClasses, "mt-10")}
           >
-            <PortableTextRegular content={private_header} />
+            <PortableTextRegular
+              content={private_header as PortableTextBlock[]}
+            />
           </ArriveDirectionally>
           <div className="flex w-full flex-row flex-wrap justify-center gap-6 px-4">
             {privateProjects.map((project, index) => {
