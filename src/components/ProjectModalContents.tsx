@@ -79,6 +79,7 @@ export default function ProjectModalContents({
       <div
         className={cx(
           "relative z-20",
+          !video && "bg-night-400/70",
           animationPhase === "MODAL_OPEN" ? "visible" : "invisible",
         )}
       >
