@@ -1,27 +1,61 @@
 import cx from "classnames";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { AnimatePresence, motion, useIsPresent } from "framer-motion";
+import { useEffect, useState } from "react";
 
 import { useDisplay } from "../hooks/display";
 import {
+  ModalAnimationPhase,
   ProjectObject,
   ResolvedImageRef,
   ResolvedVideoRef,
 } from "../types/components";
+import { animationPhaseIn } from "../utils/animation";
 import Header from "./Header";
 import VideoBlockFullscreen from "./VideoBlockFullscreen";
 
+// const VideoContainer = ({
+//   _id,
+//   video,
+//   thumbnail,
+//   roundingClass,
+//   animationPhase,
+//   setAnimationPhase,
+// }) => {
+//   const videoIsPresent = useIsPresent();
+
+//   useEffect(() => {
+//     console.log("PRESENCE HAS CHANGED!!", { videoIsPresent, animationPhase });
+//     // if()
+//   }, [videoIsPresent]);
+
+//   return (
+
+//   );
+// };
+
 export default function ProjectModalContents({
   project,
-  didAnimateOpen,
-  handleClose,
+  animationPhase,
+  setAnimationPhase,
   roundingClass,
 }: {
   project: ProjectObject;
-  didAnimateOpen: boolean;
-  handleClose: () => void;
+  animationPhase: ModalAnimationPhase;
+  setAnimationPhase: (animationPhase: ModalAnimationPhase) => void;
   roundingClass: string;
 }) {
+  // Animate out
+  const handleClose = async () => {
+    if (video) {
+      if (animationPhase === "MODAL_OPEN") {
+        // STEP 4: MODAL CONTENTS START TO DO EXIT ANIMATION
+        setAnimationPhase("MODAL_CONTENTS_EXITING");
+      }
+    } else {
+      setAnimationPhase("CARD_SCALING_CLOSED");
+    }
+  };
+
   const { isPortrait } = useDisplay();
   const [videoLoaded, setVideoLoaded] = useState(false);
 
@@ -47,58 +81,81 @@ export default function ProjectModalContents({
         isPortfolio={true}
         clickedCurrentRoute={handleClose}
       />
-      {/* Invisible video to start load while animation is running */}
       {video && (
+        // Invisible video to start load while animation is running */}
         <VideoBlockFullscreen
+          key={`project_${_id}_loader_video`}
           video={video}
           thumbnail={thumbnail}
           setVideoLoaded={setVideoLoaded}
           className={cx("absolute hidden")}
         />
       )}
-      <AnimatePresence>
-        {video && videoLoaded && didAnimateOpen && (
-          <motion.div
-            key={`project_${_id}_modal_video`}
-            // IMPORTANT PART
-            initial={{ scale: 1 }}
-            animate={{ scale: 0.9, transition: { duration: 1 } }}
-            // EXPERIMENT
-            // exit={{ opacity: 0, transition: { duration: 0.5, delay: 0.5 } }}
-            className="flex h-screen w-screen items-center justify-center"
-          >
-            {/* Video that will actually display  */}
+      {!video && thumbnailUrl && (
+        // NON-VIDEO HEADER IMAGE
+        <motion.img
+          src={`${thumbnailUrl}?w=${innerWidth}&fit=clip&auto=format`}
+          // TODO TAKE THIS OUTTTT!!!
+          onClick={() => setAnimationPhase("CARD_SCALING_CLOSED")}
+          className={cx(
+            "absolute bottom-0 left-0 right-0 top-0 h-full w-full",
+            roundingClass,
+          )}
+          alt={alt}
+        />
+      )}
 
-            <VideoBlockFullscreen
-              video={video}
-              thumbnail={thumbnail}
-              setVideoLoaded={() => null}
-              className={cx(roundingClass)}
+      {/* CROSS FADING VIDEO AND IMAGE ANIMATION */}
+      {video && (
+        <AnimatePresence
+          mode="sync"
+          onExitComplete={() => {
+            console.log("EXIT COMPLETE!!!", { animationPhase });
+            if (animationPhase === "MODAL_CONTENTS_ENTERING") {
+              setAnimationPhase("MODAL_OPEN");
+            }
+            if (animationPhase === "MODAL_CONTENTS_EXITING") {
+              setAnimationPhase("CARD_SCALING_CLOSED");
+            }
+          }}
+        >
+          {animationPhaseIn(
+            ["MODAL_CONTENTS_ENTERING", "MODAL_OPEN"],
+            animationPhase,
+          ) ? (
+            <motion.div
+              key={`project_${_id}_modal_video`}
+              initial={{ scale: 1 }}
+              animate={{ scale: 0.9, transition: { duration: 1 } }}
+              exit={{ scale: 1, transition: { duration: 1 } }}
+              className="flex h-screen w-screen items-center justify-center"
+            >
+              {/* Video that will actually display  */}
+              <VideoBlockFullscreen
+                video={video}
+                thumbnail={thumbnail}
+                setVideoLoaded={() => null}
+                className={roundingClass}
+              />
+            </motion.div>
+          ) : (
+            <motion.img
+              key={`project_${_id}_modal_img`}
+              src={`${thumbnailUrl}?w=${innerWidth}&fit=clip&auto=format`}
+              className={cx(
+                "absolute bottom-0 left-0 right-0 top-0 h-full w-full",
+                roundingClass,
+              )}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { duration: 1 } }}
+              exit={{ opacity: 0, transition: { duration: 0.7 } }}
+              alt={alt}
             />
-          </motion.div>
-        )}
-        {thumbnailUrl && (!didAnimateOpen || !video || !videoLoaded) && (
-          <motion.img
-            key={`project_${_id}_modal_img`}
-            src={`${thumbnailUrl}?w=${innerWidth}&fit=clip&auto=format`}
-            className={cx(
-              "absolute bottom-0 left-0 right-0 top-0 h-full w-full",
-              !didAnimateOpen && roundingClass,
-            )}
-            // initial={didAnimateOpen ? { opacity: 0 } : {}}
-            // animate={
-            //   didAnimateOpen
-            //     ? { opacity: 1, transition: { duration: 0.3 } }
-            //     : {}
-            // }
-            // IMPORTANT PART
-            exit={{ opacity: 0, transition: { duration: 0.7 } }}
-            alt={alt}
-          />
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      )}
 
-      {didAnimateOpen && (
+      {animationPhaseIn(["MODAL_OPEN"], animationPhase) && (
         <div className="">
           <div className="h-32">FILLER</div>
           <div className="h-32">FILLER</div>

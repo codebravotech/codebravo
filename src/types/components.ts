@@ -13,13 +13,21 @@ export type IconType =
   | "home"
   | "portfolio"
   | "refresh";
-export type PostResult = "SUCCESS" | "ERROR" | null;
 export type SanityQueryParams = Record<
   string,
   string | number | boolean | null | (string | number | boolean | null)[]
 >;
 
 export type Orientation = "landscape" | "portrait";
+
+export type PostResult = "SUCCESS" | "ERROR" | null;
+export type ModalAnimationPhase =
+  | "MODAL_CLOSED"
+  | "CARD_SCALING_OPEN"
+  | "MODAL_CONTENTS_ENTERING"
+  | "MODAL_CONTENTS_EXITING"
+  | "CARD_SCALING_CLOSED"
+  | "MODAL_OPEN";
 
 export interface NavOptions {
   label: string;

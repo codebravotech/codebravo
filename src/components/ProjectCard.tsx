@@ -136,12 +136,12 @@ export default function ProjectCard({
         }}
       ></motion.div>
       {/* Content */}
-      <div className="invisible absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-3 bg-black/50 px-6 text-center text-2xl text-stars-100 group-hover:visible">
+      <div className="invisible absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-3 bg-night-400/50 px-6 text-center text-2xl text-stars-100 group-hover:visible">
         {client_logo && (
           <img
             src={logoUrl}
             alt={logoAlt}
-            className="z-50 max-h-[40%] max-w-[60%] object-contain"
+            className="max-h-[40%] max-w-[60%] object-contain"
           />
         )}
         <div className="max-w-[70%] font-raleway font-bold">
