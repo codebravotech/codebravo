@@ -15,15 +15,18 @@ import { useSystemStore } from "../state/system";
 import { ProjectObject } from "../types/components";
 import { Portfolio_page } from "../types/sanity.types";
 
+const query = groq`
+*[_id == $page_id]{ ..., projects[]->{ ..., thumbnails[] { ..., asset-> }, client_logo { ..., asset-> }, videos[] { ..., asset-> }  } }
+`;
+const params = {
+  page_id: "portfolio_page",
+};
+
 export default function Portfolio() {
   const { openProjectId, setOpenProjectId, clickedCardBoundingBox } =
     useSystemStore();
-  const query = groq`
-  *[_id == $page_id]{ ..., projects[]->{ ..., thumbnails[] { ..., asset-> }, client_logo { ..., asset-> }, videos[] { ..., asset-> }  } }
-`;
-  const { documents = [] } = useQuery(query, {
-    page_id: "portfolio_page",
-  });
+
+  const { documents = [] } = useQuery(query, params);
   const page = get(documents, "[0]", {}) as Portfolio_page;
   const header = get(page, "header", []) as PortableTextBlock[];
   const projects = get(page, "projects", []) as ProjectObject[];

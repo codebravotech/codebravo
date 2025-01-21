@@ -36,25 +36,36 @@ export interface NavOptions {
   short_label: string;
 }
 
-export interface ResolvedVideoRef {
+export interface VideoRefResolved {
   asset: SanityFileAsset;
   orientation: Orientation;
 }
 
-export interface ResolvedImageRef {
+export interface ImageRefResolved {
   asset: SanityImageAsset;
   alt: string;
   orientation?: Orientation;
 }
 
-export interface ProjectObject
-  extends Omit<Project, "thumbnails" | "videos" | "client_logo"> {
-  thumbnails: ResolvedImageRef[];
-  client_logo: ResolvedImageRef;
-  videos: ResolvedVideoRef[];
+export interface FileRefResolved {
+  asset: SanityFileAsset;
 }
 
-export interface ContentObject extends Omit<Content_block, "image"> {
+export interface ProjectObject
+  extends Omit<Project, "thumbnails" | "videos" | "client_logo"> {
+  thumbnails: ImageRefResolved[];
+  client_logo: ImageRefResolved;
+  videos: VideoRefResolved[];
+}
+
+export interface PdfRefResolved {
+  label: string;
+  file: FileRefResolved;
+}
+
+export interface ContentObject
+  extends Omit<Content_block, "image" | "file_link"> {
   _key: string;
-  image: ResolvedImageRef;
+  image: ImageRefResolved;
+  file_link: PdfRefResolved;
 }

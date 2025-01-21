@@ -1,15 +1,15 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
 
-import { ResolvedImageRef, ResolvedVideoRef } from "../types/components";
+import { ImageRefResolved, VideoRefResolved } from "../types/components";
 
 export default function VideoBlockFullscreen({
   video,
   setVideoLoaded,
   className = "",
 }: {
-  video: ResolvedVideoRef;
-  thumbnail: ResolvedImageRef | undefined;
+  video: VideoRefResolved;
+  thumbnail: ImageRefResolved | undefined;
   setVideoLoaded: (videoLoaded: boolean) => void;
   className?: string;
 }) {

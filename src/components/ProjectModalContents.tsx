@@ -4,34 +4,14 @@ import { useEffect, useState } from "react";
 
 import { useDisplay } from "../hooks/display";
 import {
+  ImageRefResolved,
   ModalAnimationPhase,
   ProjectObject,
-  ResolvedImageRef,
-  ResolvedVideoRef,
+  VideoRefResolved,
 } from "../types/components";
 import { animationPhaseIn } from "../utils/animation";
 import Header from "./Header";
 import VideoBlockFullscreen from "./VideoBlockFullscreen";
-
-// const VideoContainer = ({
-//   _id,
-//   video,
-//   thumbnail,
-//   roundingClass,
-//   animationPhase,
-//   setAnimationPhase,
-// }) => {
-//   const videoIsPresent = useIsPresent();
-
-//   useEffect(() => {
-//     console.log("PRESENCE HAS CHANGED!!", { videoIsPresent, animationPhase });
-//     // if()
-//   }, [videoIsPresent]);
-
-//   return (
-
-//   );
-// };
 
 export default function ProjectModalContents({
   project,
@@ -57,11 +37,10 @@ export default function ProjectModalContents({
   };
 
   const { isPortrait } = useDisplay();
-  const [videoLoaded, setVideoLoaded] = useState(false);
 
   const { _id } = project;
-  const videos = project.videos || ([] as ResolvedVideoRef[]);
-  const thumbnails = project.thumbnails || ([] as ResolvedImageRef[]);
+  const videos = project.videos || ([] as VideoRefResolved[]);
+  const thumbnails = project.thumbnails || ([] as ImageRefResolved[]);
   const video =
     videos.find(
       (elem) => elem.orientation === (isPortrait ? "portrait" : "landscape"),
@@ -75,7 +54,7 @@ export default function ProjectModalContents({
   const alt = thumbnail?.alt;
 
   return (
-    <motion.div className="bg-night-gradient absolute bottom-0 left-0 right-0 top-0 overflow-y-scroll overscroll-none scrollbar-hide">
+    <motion.div className="absolute bottom-0 left-0 right-0 top-0 overflow-y-scroll overscroll-none bg-night-gradient scrollbar-hide">
       <div
         className={cx(
           "relative z-20",

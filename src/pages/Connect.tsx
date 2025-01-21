@@ -11,11 +11,13 @@ import { useSingleton } from "../hooks/sanity";
 import { PostResult } from "../types/components";
 import { Connect_page } from "../types/sanity.types";
 
+const _id = "connect_page";
+
 export default function Connect() {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [postResult, setPostResult] = useState<PostResult>(null);
   const { isMobile } = useDisplay();
-  const { singleton } = useSingleton("connect_page");
+  const { singleton } = useSingleton(_id);
   const connectPage = singleton as Connect_page;
 
   if (!connectPage) {

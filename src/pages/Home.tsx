@@ -13,6 +13,8 @@ import { NAV_OPTIONS } from "../config";
 import { useDisplay } from "../hooks/display";
 import { useSingleton } from "../hooks/sanity";
 
+const _id = "home_page";
+
 export default function Home() {
   const [skillIndex, setSkillIndex] = useState<number>(0);
   const [listAnimationComplete, setListAnimationComplete] = useState(false);
@@ -20,7 +22,7 @@ export default function Home() {
   const navigate = useNavigate();
   const { isMobile } = useDisplay();
 
-  const { singleton: homePage } = useSingleton("home_page");
+  const { singleton: homePage } = useSingleton(_id);
   const tagline = get(homePage, "tagline", []);
   const tagline_link = get(homePage, "tagline_link", "");
   const url = get(tagline_link, "url", "");
@@ -54,23 +56,15 @@ export default function Home() {
         "relative flex h-screen flex-col items-center bg-dune-gradient pb-36 text-night-300 lg:pb-0",
       )}
     >
-      {/* <div className="absolute left-4 top-0 z-0 h-[100vh] overflow-hidden opacity-20">
+      <div className="absolute left-4 top-0 z-0 h-[100vh] overflow-hidden opacity-20">
         <img src="/images/logo_white.svg" className="h-[140vh]" />
-      </div> */}
+      </div>
       <div className="z-10 flex w-full flex-col-reverse items-center py-6 pl-6 lg:flex-row lg:justify-between lg:px-10">
         <div className="mt-8 flex flex-col flex-wrap text-2xl lg:mt-10 lg:text-5xl">
-          {tagline && <PortableTextPopcorn content={tagline} />}
-          <motion.div
-            initial={{
-              color: "#202020",
-            }}
-            whileInView={{ color: "#F4EFE8" }}
-            transition={{ duration: 2, delay: 2 }}
-          >
-            <Link to={url} className="link-appear mr-auto mt-2 text-stars-100">
-              {label && <PopcornText text={label} />}
-            </Link>
-          </motion.div>
+          <PortableTextPopcorn content={tagline} />
+          <Link to={url} className="link-appear mr-auto mt-2 text-stars-100">
+            {label && <PopcornText text={label} />}
+          </Link>
         </div>
         <div className="flex flex-col items-center lg:self-start">
           <img className="h-48" src={logo} />

@@ -61,8 +61,7 @@ button {
 }
 
 .link-highlight {
-  position: relative;
-  @apply rounded-md border-b-[2px] text-[0.9em];
+  @apply relative z-0 rounded-md border-b-[2px] text-[0.9em];
 }
 
 .link-highlight:hover {

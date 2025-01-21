@@ -11,7 +11,7 @@ import { BaseComponents } from "./PortableTextBaseComponents";
 
 const components: PortableTextComponents = {
   block: {
-    block: ({ children }) => {
+    normal: ({ children }) => {
       const text = React.Children.toArray(children).join("");
       return <PopcornText text={text} />;
     },

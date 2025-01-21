@@ -15,6 +15,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MobileMenu from "./components/MobileMenu";
 import { useDisplay } from "./hooks/display";
+import NotFound from "./pages/NotFound";
 import { useSystemStore } from "./state/system";
 
 const Page = ({ children: pageContents }: { children: ReactNode }) => {
@@ -93,9 +94,11 @@ const AnimationWrapper = () => {
           <Route
             key={route.path}
             path={route.path}
+            errorElement={<NotFound />}
             element={<Page>{route.element}</Page>}
           />
         ))}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
   );
