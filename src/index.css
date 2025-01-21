@@ -35,6 +35,9 @@ input:-webkit-autofill:active {
 button {
   @apply active:opacity-50;
 }
+a {
+  @apply active:opacity-50;
+}
 
 :focus {
   @apply outline-expanse-100;
@@ -44,17 +47,18 @@ button {
   @apply bg-expanse-100;
 }
 
-.link-appear {
+.underline-drawn {
   position: relative;
-  display: inline-block;
+  /* display: inline-block; */
   padding-bottom: 4px;
 }
 
-.link-appear::after {
+.underline-drawn::after {
   @apply bg-stars-100;
   content: "";
   position: absolute;
   bottom: 0;
+  left: 0;
   height: 2px;
   animation: appear-width 1s ease-in-out forwards;
   animation-delay: 2s;
@@ -128,13 +132,15 @@ button {
 }
 
 .highlighter-underline {
-  @apply relative z-10;
+  @apply relative;
+  z-index: 1;
 }
 .highlighter-underline::after {
   content: "";
   position: absolute;
   height: 40%;
   top: 50%;
+  left: 0;
   border-radius: 3px;
   background: var(--expanse-100);
   z-index: -1;

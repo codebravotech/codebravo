@@ -5,12 +5,12 @@ import { ImageRefResolved, VideoRefResolved } from "../types/components";
 
 export default function VideoBlockFullscreen({
   video,
-  setVideoLoaded,
+  // setVideoLoaded,
   className = "",
 }: {
   video: VideoRefResolved;
   thumbnail: ImageRefResolved | undefined;
-  setVideoLoaded: (videoLoaded: boolean) => void;
+  // setVideoLoaded: (videoLoaded: boolean) => void;
   className?: string;
 }) {
   const {
@@ -24,9 +24,9 @@ export default function VideoBlockFullscreen({
       autoPlay
       muted
       loop
-      onLoadedData={() => {
-        setVideoLoaded(true);
-      }}
+      // onLoadedData={() => {
+      //   setVideoLoaded(true);
+      // }}
     >
       <source src={url} type="video/mp4" />
       Your browser does not support the video tag.

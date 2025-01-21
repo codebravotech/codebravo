@@ -61,6 +61,10 @@ module.exports = {
           100: "#C62828",
           200: "#B71C1C",
         },
+        "trash-panda": {
+          100: "#BFB7B4",
+          button: "#031D40",
+        },
       },
       fontFamily: {
         fjalla: ['"Fjalla One"', "sans-serif"],

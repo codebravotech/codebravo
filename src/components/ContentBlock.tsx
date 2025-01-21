@@ -134,7 +134,7 @@ export default function ContentBlock({
                 link_color="stars-100"
                 content={copy as PortableTextBlock[]}
               />
-              <CtaButton url={buttonUrl} variant="white_blue">
+              <CtaButton url={buttonUrl} variant="white_blue" className="mt-5">
                 {buttonLabel}
               </CtaButton>
             </div>

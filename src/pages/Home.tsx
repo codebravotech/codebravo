@@ -62,7 +62,10 @@ export default function Home() {
       <div className="z-10 flex w-full flex-col-reverse items-center py-6 pl-6 lg:flex-row lg:justify-between lg:px-10">
         <div className="mt-8 flex flex-col flex-wrap text-2xl lg:mt-10 lg:text-5xl">
           <PortableTextPopcorn content={tagline} />
-          <Link to={url} className="link-appear mr-auto mt-2 text-stars-100">
+          <Link
+            to={url}
+            className="underline-drawn mr-auto mt-2 text-stars-100"
+          >
             {label && <PopcornText text={label} />}
           </Link>
         </div>

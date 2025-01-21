@@ -24,6 +24,7 @@ export default function ProjectModalContents({
   setAnimationPhase: (animationPhase: ModalAnimationPhase) => void;
   roundingClass: string;
 }) {
+  // const [videoLoaded, setVideoLoaded] = useState();
   // Animate out
   const handleClose = async () => {
     if (video) {
@@ -38,7 +39,7 @@ export default function ProjectModalContents({
 
   const { isPortrait } = useDisplay();
 
-  const { _id } = project;
+  const { _id, header } = project;
   const videos = project.videos || ([] as VideoRefResolved[]);
   const thumbnails = project.thumbnails || ([] as ImageRefResolved[]);
   const video =
@@ -55,36 +56,45 @@ export default function ProjectModalContents({
 
   return (
     <motion.div className="absolute bottom-0 left-0 right-0 top-0 overflow-y-scroll overscroll-none bg-night-gradient scrollbar-hide">
-      <div
+      <motion.div
+        initial={{ opacity: 0 }}
+        variants={{
+          visible: { opacity: 1 },
+        }}
+        animate={animationPhase === "MODAL_OPEN" ? "visible" : "hidden"}
+        transition={{ duration: 1, delay: 1 }}
         className={cx(
           "relative z-20",
           !video && "bg-night-400/70",
           animationPhase === "MODAL_OPEN" ? "visible" : "invisible",
         )}
       >
-        {
-          <Header
-            isHomePage={false}
-            isPortfolio={true}
-            clickedCurrentRoute={handleClose}
-          />
-        }
-      </div>
+        <Header
+          isHomePage={false}
+          isPortfolio={true}
+          clickedCurrentRoute={handleClose}
+        />
+        <div className="relative flex justify-center">
+          <div className="underline-drawn relative font-fjalla text-3xl">
+            {header?.toUpperCase()}
+          </div>
+        </div>
+      </motion.div>
+
       {video && (
         // Invisible video to start load while animation is running */}
         <VideoBlockFullscreen
           key={`project_${_id}_loader_video`}
           video={video}
           thumbnail={thumbnail}
-          setVideoLoaded={setVideoLoaded}
+          // setVideoLoaded={setVideoLoaded}
           className={cx("absolute hidden")}
         />
       )}
       {!video && thumbnailUrl && (
-        // NON-VIDEO HEADER IMAGE
+        // NON-VIDEO MODAL IMAGE
         <motion.img
           src={`${thumbnailUrl}?w=${innerWidth}&fit=clip&auto=format`}
-          // TODO TAKE THIS OUTTTT!!!
           onClick={() => setAnimationPhase("CARD_SCALING_CLOSED")}
           className={cx(
             "absolute bottom-0 left-0 right-0 top-0 h-full w-full",
@@ -116,7 +126,7 @@ export default function ProjectModalContents({
               initial={{ scale: 1, y: 0 }}
               animate={{
                 scale: 0.9,
-                y: isPortrait ? "-10%" : "-5%",
+                y: isPortrait ? "-10%" : 0,
                 transition: { duration: 1, ease: "easeOut" },
               }}
               exit={{
@@ -130,7 +140,6 @@ export default function ProjectModalContents({
               <VideoBlockFullscreen
                 video={video}
                 thumbnail={thumbnail}
-                setVideoLoaded={() => null}
                 className={roundingClass}
               />
             </motion.div>

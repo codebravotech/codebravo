@@ -2,7 +2,7 @@
 
 // const [scope, animate] = useAnimate();
 // const [isPresent, safeToRemove] = usePresence();
-// initial={{ x: "-100%", scale: 0.8, height: "100vh" }}
+// initial={ x: "-100%", scale: 0.8, height: "100vh" }
 
 // useEffect(() => {
 //   if (isPresent) {
@@ -14,10 +14,10 @@
 //     entryAnimation();
 //   } else if (!isPresent) {
 //     const exitAnimation = async () => {
-//       safeToRemove();
 //       // await animate(scope.current, { height: "100vh" }, { duration: 0 });
 //       // await animate(scope.current, { x: "100%" }, { duration: 0.3 });
 //       // await animate(scope.current, { scale: 0.8 }, { duration: 0.6 });
+//       safeToRemove();
 //     };
 //     exitAnimation();
 //   }

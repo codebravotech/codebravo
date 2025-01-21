@@ -36,7 +36,7 @@ export const BaseComponents = ({
           href.includes(key),
         );
 
-        console.log("");
+        console.log("LINK: ", { children, value });
 
         const copyEmail = () => navigator.clipboard.writeText(email);
         return (
