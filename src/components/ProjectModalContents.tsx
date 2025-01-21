@@ -11,6 +11,8 @@ import {
 } from "../types/components";
 import { animationPhaseIn } from "../utils/animation";
 import Header from "./Header";
+import ProjectModalBodyPrivate from "./ProjectModalBodyPrivate";
+import ProjectModalBodyPublic from "./ProjectModalBodyPublic";
 import VideoBlockFullscreen from "./VideoBlockFullscreen";
 
 export default function ProjectModalContents({
@@ -25,6 +27,7 @@ export default function ProjectModalContents({
   roundingClass: string;
 }) {
   // const [videoLoaded, setVideoLoaded] = useState();
+  const [headerPresent, setHeaderPresent] = useState(false);
   // Animate out
   const handleClose = async () => {
     if (video) {
@@ -37,9 +40,11 @@ export default function ProjectModalContents({
     }
   };
 
+  useEffect(() => {});
+
   const { isPortrait } = useDisplay();
 
-  const { _id, header } = project;
+  const { _id, header, private: isPrivate } = project;
   const videos = project.videos || ([] as VideoRefResolved[]);
   const thumbnails = project.thumbnails || ([] as ImageRefResolved[]);
   const video =
@@ -62,7 +67,7 @@ export default function ProjectModalContents({
           visible: { opacity: 1 },
         }}
         animate={animationPhase === "MODAL_OPEN" ? "visible" : "hidden"}
-        transition={{ duration: 1, delay: 1 }}
+        transition={{ duration: 0.5, delay: 0.7 }}
         className={cx(
           "relative z-20",
           !video && "bg-night-400/70",
@@ -92,7 +97,7 @@ export default function ProjectModalContents({
         />
       )}
       {!video && thumbnailUrl && (
-        // NON-VIDEO MODAL IMAGE
+        // NON-VIDEO MODAL IMAGE FOR DURING THE ANIMATION
         <motion.img
           src={`${thumbnailUrl}?w=${innerWidth}&fit=clip&auto=format`}
           onClick={() => setAnimationPhase("CARD_SCALING_CLOSED")}
@@ -161,15 +166,19 @@ export default function ProjectModalContents({
       )}
 
       {animationPhaseIn(["MODAL_OPEN"], animationPhase) && (
-        <div className="">
-          <div className="h-32">FILLER</div>
-          <div className="h-32">FILLER</div>
-          <div className="h-32">FILLER</div>
-          <div className="h-32">FILLER</div>
-          <div className="h-32">FILLER</div>
-          <div className="h-32">FILLER</div>
-          <div className="h-32">FILLER</div>
-        </div>
+        <>
+          {isPrivate ? (
+            <ProjectModalBodyPrivate
+              project={project}
+              animationPhase={animationPhase}
+            />
+          ) : (
+            <ProjectModalBodyPublic
+              project={project}
+              animationPhase={animationPhase}
+            />
+          )}
+        </>
       )}
     </motion.div>
   );

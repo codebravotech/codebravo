@@ -36,8 +36,6 @@ export const BaseComponents = ({
           href.includes(key),
         );
 
-        console.log("LINK: ", { children, value });
-
         const copyEmail = () => navigator.clipboard.writeText(email);
         return (
           <span className="inline-flex flex-wrap items-center font-fjalla tracking-wide lg:flex-row">

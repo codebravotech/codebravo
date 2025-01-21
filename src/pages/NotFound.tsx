@@ -50,7 +50,10 @@ export default function NotFound() {
 
   return (
     <motion.div className="bg-trash-panda-100 flex h-screen w-screen flex-col items-center justify-center overflow-clip scrollbar-hide">
-      <div className="flex flex-col items-start justify-center">
+      <div className="width-screen absolute bottom-0 left-0 right-0 top-[30%] z-0 flex w-screen justify-center overflow-clip font-fjalla text-[15rem] text-night-300 opacity-70 lg:top-8 lg:text-[30rem]">
+        404
+      </div>
+      <div className="z-10 flex flex-col items-start justify-center">
         <div className="text-trash-panda-button font-fjalla text-xl">
           Oops! You seem to be lost...
         </div>
@@ -59,7 +62,7 @@ export default function NotFound() {
           <motion.img
             ref={scope}
             initial={initial}
-            className="my-8 max-h-[50%]"
+            className="my-6 max-h-[50%]"
             src="/images/moto_trash_panda.png"
           />
         </AnimatePresence>
