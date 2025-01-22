@@ -13,7 +13,7 @@ export default function ProjectModalBodyPrivate({
 }) {
   const { private_project_summary } = project;
   return (
-    <motion.div>
+    <motion.div className="h-screen w-screen bg-red-200">
       <PortableTextRegular
         content={private_project_summary as PortableTextBlock[]}
       />

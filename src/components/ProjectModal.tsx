@@ -83,11 +83,7 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
         onLayoutAnimationComplete={() => {
           // STEP 2: CARD FINISHES SCALING UP, MODAL CONTENTS DO ENTER ANIMATION
           if (animationPhase === "CARD_SCALING_OPEN") {
-            if (video) {
-              setAnimationPhase("MODAL_CONTENTS_ENTERING");
-            } else {
-              setAnimationPhase("MODAL_OPEN");
-            }
+            setAnimationPhase("MODAL_CONTENTS_ENTERING");
           } else if (animationPhase === "CARD_SCALING_CLOSED") {
             setAnimationPhase("MODAL_CLOSED");
             setOpenProjectId(null);
@@ -97,7 +93,10 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
         <ProjectModalContents
           project={project}
           animationPhase={animationPhase}
-          setAnimationPhase={setAnimationPhase}
+          setAnimationPhase={(phase) => {
+            console.log("SETTING PHASE: ", phase);
+            setAnimationPhase(phase);
+          }}
           roundingClass={roundingClass}
         />
       </motion.div>

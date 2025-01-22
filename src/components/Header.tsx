@@ -2,7 +2,7 @@ import cx from "classnames";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-import { NAV_OPTIONS } from "../config";
+import { HEADER_HEIGHT, NAV_OPTIONS } from "../config";
 import { useDisplay } from "../hooks/display";
 
 export default function Header({
@@ -29,8 +29,9 @@ export default function Header({
             isMobile ? "justify-center" : "justify-between",
             isHomePage && "hidden",
           )}
+          style={{ height: HEADER_HEIGHT }}
         >
-          <Link className="mb-2 h-24 pl-6" to="/">
+          <Link className="mb-2 h-full pl-6" to="/">
             <img className="h-full w-full" src={logo} />
           </Link>
           {!isMobile && (

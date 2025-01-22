@@ -1,7 +1,13 @@
 import cx from "classnames";
-import { AnimatePresence, motion, useIsPresent } from "framer-motion";
-import { useEffect, useState } from "react";
+import {
+  AnimatePresence,
+  animateMini,
+  motion,
+  useIsPresent,
+} from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
+import { HEADER_HEIGHT } from "../config";
 import { useDisplay } from "../hooks/display";
 import {
   ImageRefResolved,
@@ -27,20 +33,22 @@ export default function ProjectModalContents({
   roundingClass: string;
 }) {
   // const [videoLoaded, setVideoLoaded] = useState();
-  const [headerPresent, setHeaderPresent] = useState(false);
+  const headerRef = useRef<HTMLDivElement>();
+  const headerHeightRef = useRef<number>(0);
+  const imageRef = useRef<HTMLElement>();
+  const imageHeightRef = useRef<number>(0);
   // Animate out
   const handleClose = async () => {
-    if (video) {
-      if (animationPhase === "MODAL_OPEN") {
-        // STEP 4: MODAL CONTENTS START TO DO EXIT ANIMATION
-        setAnimationPhase("MODAL_CONTENTS_EXITING");
-      }
-    } else {
-      setAnimationPhase("CARD_SCALING_CLOSED");
+    if (animationPhase === "MODAL_OPEN") {
+      // STEP 4: MODAL CONTENTS START TO DO EXIT ANIMATION
+      setAnimationPhase("MODAL_CONTENTS_EXITING");
     }
+    // if (video) {
+    //   }
+    // } else {
+    //   setAnimationPhase("CARD_SCALING_CLOSED");
+    // }
   };
-
-  useEffect(() => {});
 
   const { isPortrait } = useDisplay();
 
@@ -62,16 +70,29 @@ export default function ProjectModalContents({
   return (
     <motion.div className="absolute bottom-0 left-0 right-0 top-0 overflow-y-scroll overscroll-none bg-night-gradient scrollbar-hide">
       <motion.div
+        ref={headerRef}
         initial={{ opacity: 0 }}
         variants={{
           visible: { opacity: 1 },
+          hidden: { opacity: 0 },
         }}
-        animate={animationPhase === "MODAL_OPEN" ? "visible" : "hidden"}
-        transition={{ duration: 0.5, delay: 0.7 }}
+        animate={
+          animationPhaseIn(["MODAL_OPEN"], animationPhase)
+            ? "visible"
+            : "hidden"
+        }
+        onAnimationComplete={() => {
+          if (!video) {
+            console.log("ANIMATION COMPLETE: HEADER");
+            // if (animationPhase === "MODAL_CONTENTS_ENTERING") {
+            //   setAnimationPhase("MODAL_OPEN");
+            // }
+          }
+        }}
+        transition={{ duration: 0.5 }}
         className={cx(
           "relative z-20",
-          !video && "bg-night-400/70",
-          animationPhase === "MODAL_OPEN" ? "visible" : "invisible",
+          // animationPhase === "MODAL_OPEN" ? "visible" : "invisible",
         )}
       >
         <Header
@@ -99,12 +120,38 @@ export default function ProjectModalContents({
       {!video && thumbnailUrl && (
         // NON-VIDEO MODAL IMAGE FOR DURING THE ANIMATION
         <motion.img
+          ref={imageRef}
+          key={`project_${_id}_no_video_thumbnail`}
           src={`${thumbnailUrl}?w=${innerWidth}&fit=clip&auto=format`}
-          onClick={() => setAnimationPhase("CARD_SCALING_CLOSED")}
+          onClick={handleClose}
           className={cx(
             "absolute bottom-0 left-0 right-0 top-0 h-full w-full",
             roundingClass,
           )}
+          initial={{ y: 0 }}
+          variants={{
+            modalOpen: {
+              y: headerRef?.current?.getBoundingClientRect()?.height,
+            },
+            modalClosed: { y: 0 },
+          }}
+          animate={
+            animationPhaseIn(
+              ["MODAL_CONTENTS_ENTERING", "MODAL_OPEN"],
+              animationPhase,
+            )
+              ? "modalOpen"
+              : "modalClosed"
+          }
+          onAnimationComplete={() => {
+            if (animationPhase === "MODAL_CONTENTS_ENTERING") {
+              setAnimationPhase("MODAL_OPEN");
+            }
+            if (animationPhase === "MODAL_CONTENTS_EXITING") {
+              setAnimationPhase("CARD_SCALING_CLOSED");
+            }
+          }}
+          transition={{ duration: 0.5 }}
           alt={alt}
         />
       )}
