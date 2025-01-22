@@ -6,14 +6,14 @@ import PortableTextRegular from "./PortableTextRegular";
 
 export default function ProjectModalBodyPrivate({
   project,
-  animationPhase,
+  offset = 0,
 }: {
   project: ProjectObject;
-  animationPhase: ModalAnimationPhase;
+  offset?: number;
 }) {
   const { private_project_summary } = project;
   return (
-    <motion.div className="h-screen w-screen bg-red-200">
+    <motion.div className="text-stars-100" style={{ marginTop: offset }}>
       <PortableTextRegular
         content={private_project_summary as PortableTextBlock[]}
       />

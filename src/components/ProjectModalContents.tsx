@@ -33,10 +33,8 @@ export default function ProjectModalContents({
   roundingClass: string;
 }) {
   // const [videoLoaded, setVideoLoaded] = useState();
-  const headerRef = useRef<HTMLDivElement>();
-  const headerHeightRef = useRef<number>(0);
-  const imageRef = useRef<HTMLElement>();
-  const imageHeightRef = useRef<number>(0);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLImageElement>(null);
   // Animate out
   const handleClose = async () => {
     if (animationPhase === "MODAL_OPEN") {
@@ -49,6 +47,7 @@ export default function ProjectModalContents({
     //   setAnimationPhase("CARD_SCALING_CLOSED");
     // }
   };
+  const headerMargin = 20;
 
   const { isPortrait } = useDisplay();
 
@@ -81,19 +80,8 @@ export default function ProjectModalContents({
             ? "visible"
             : "hidden"
         }
-        onAnimationComplete={() => {
-          if (!video) {
-            console.log("ANIMATION COMPLETE: HEADER");
-            // if (animationPhase === "MODAL_CONTENTS_ENTERING") {
-            //   setAnimationPhase("MODAL_OPEN");
-            // }
-          }
-        }}
         transition={{ duration: 0.5 }}
-        className={cx(
-          "relative z-20",
-          // animationPhase === "MODAL_OPEN" ? "visible" : "invisible",
-        )}
+        className={cx("relative z-20")}
       >
         <Header
           isHomePage={false}
@@ -131,7 +119,9 @@ export default function ProjectModalContents({
           initial={{ y: 0 }}
           variants={{
             modalOpen: {
-              y: headerRef?.current?.getBoundingClientRect()?.height,
+              y:
+                (headerRef?.current?.getBoundingClientRect()?.height || 0) +
+                headerMargin,
             },
             modalClosed: { y: 0 },
           }}
@@ -217,7 +207,10 @@ export default function ProjectModalContents({
           {isPrivate ? (
             <ProjectModalBodyPrivate
               project={project}
-              animationPhase={animationPhase}
+              offset={
+                (imageRef.current?.getBoundingClientRect()?.height || 0) +
+                headerMargin
+              }
             />
           ) : (
             <ProjectModalBodyPublic
