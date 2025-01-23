@@ -1,16 +1,11 @@
 import cx from "classnames";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { useDisplay } from "../hooks/display";
+import { useProjectThumbnail, useProjectVideo } from "../hooks/documents";
 import { useSystemStore } from "../state/system";
-import {
-  ImageRefResolved,
-  ModalAnimationPhase,
-  ProjectDocument,
-  VideoRefResolved,
-} from "../types/components";
+import { ModalAnimationPhase, ProjectDocument } from "../types/components";
 import { animationPhaseIn } from "../utils/animation";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -33,16 +28,22 @@ export default function ProjectModalContents({
 }) {
   const { setHideAppOverflow } = useSystemStore();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [videoLoaded, setVideoLoaded] = useState();
-  const headerAssetScalingFactor = 0.9;
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  const modalOpen = animationPhase === "MODAL_OPEN";
+  const roundingClassConditional = !modalOpen ? roundingClass : "";
   const headerRef = useRef<HTMLDivElement>(null);
+  const contentPadding = 20;
+  const swapTransitionDuration = 0.5;
+  const headerOffset =
+    (headerRef?.current?.getBoundingClientRect()?.height || 0) + contentPadding;
+
   const imageRef = useRef<HTMLImageElement>(null);
   // Animate out
   const handleClose = async () => {
-    if (animationPhase === "MODAL_OPEN") {
+    if (modalOpen) {
       if (searchParams.get("_id")) {
         searchParams.delete("_id");
-        setSearchParams(searchParams); // reset URL searchParams to object with foo removed
+        setSearchParams(searchParams);
       }
 
       // STEP 4: MODAL CONTENTS START TO DO EXIT ANIMATION
@@ -51,38 +52,24 @@ export default function ProjectModalContents({
     }
   };
 
-  const { isPortrait } = useDisplay();
-
   const { _id, header, private: isPrivate } = project;
-  const videos = project.videos || ([] as VideoRefResolved[]);
-  const thumbnails = project.thumbnails || ([] as ImageRefResolved[]);
-  const video =
-    videos.find(
-      (elem) => elem.orientation === (isPortrait ? "portrait" : "landscape"),
-    ) || videos.find((elem) => elem.asset.url);
-  const thumbnail =
-    thumbnails.find(
-      (elem) => elem.orientation === (isPortrait ? "portrait" : "landscape"),
-    ) || thumbnails.find((elem) => elem.asset.url);
+  const video = useProjectVideo(project);
+  const thumbnail = useProjectThumbnail(project);
 
   const thumbnailUrl = thumbnail?.asset?.url;
   const alt = thumbnail?.alt;
 
   return (
     <motion.div className="absolute bottom-0 left-0 right-0 top-0 overflow-y-scroll overscroll-none bg-night-gradient scrollbar-hide">
+      {/* Site header and page header */}
       <motion.div
         ref={headerRef}
         initial={{ opacity: 0 }}
         variants={{
-          visible: { opacity: 1 },
-          hidden: { opacity: 0 },
+          visible: { opacity: 1, transition: { duration: 1 } },
+          hidden: { opacity: 0, transition: { duration: 0.5 } },
         }}
-        animate={
-          animationPhaseIn(["MODAL_OPEN"], animationPhase)
-            ? "visible"
-            : "hidden"
-        }
-        transition={{ duration: 0.5 }}
+        animate={modalOpen ? "visible" : "hidden"}
         className={cx("relative z-20")}
       >
         <Header
@@ -102,123 +89,106 @@ export default function ProjectModalContents({
           </div>
         </div>
       </motion.div>
-
+      {/* Invisible video to start load while animation is running */}
       {video && (
-        // Invisible video to start load while animation is running */}
         <VideoBlockFullscreen
           key={`project_${_id}_loader_video`}
           video={video}
           thumbnail={thumbnail}
-          setVideoLoaded={setVideoLoaded}
+          setVideoLoaded={() => setVideoLoaded(true)}
           className={cx("absolute hidden")}
         />
       )}
-      {!video && thumbnailUrl && (
-        // NON-VIDEO MODAL IMAGE FOR DURING THE ANIMATION
-        <motion.img
-          ref={imageRef}
-          key={`project_${_id}_no_video_thumbnail`}
-          src={`${thumbnailUrl}?w=${innerWidth}&fit=clip&auto=format`}
-          onClick={handleClose}
-          className={cx(
-            "absolute bottom-0 left-0 right-0 top-0 h-full w-full",
-            roundingClass,
-          )}
-          initial={{ y: 0, scale: 1 }}
-          variants={{
-            modalOpen: {
-              scale: headerAssetScalingFactor,
-              y: headerRef?.current?.getBoundingClientRect()?.height || 0,
-            },
-            modalClosed: { y: 0, scale: 1 },
-          }}
-          animate={
-            animationPhaseIn(
-              ["MODAL_CONTENTS_ENTERING", "MODAL_OPEN"],
-              animationPhase,
-            )
-              ? "modalOpen"
-              : "modalClosed"
-          }
-          onAnimationComplete={() => {
-            if (animationPhase === "MODAL_CONTENTS_ENTERING") {
-              setAnimationPhase("MODAL_OPEN");
-              // setHideAppOverflow(true);
-            }
-            if (animationPhase === "MODAL_CONTENTS_EXITING") {
-              setAnimationPhase("CARD_SCALING_CLOSED");
-            }
-          }}
-          transition={{ duration: 0.5 }}
-          alt={alt}
-        />
-      )}
-
-      {/* CROSS FADING VIDEO AND IMAGE ANIMATION */}
-      {video && (
-        <AnimatePresence
-          mode="sync"
-          onExitComplete={() => {
-            if (animationPhase === "MODAL_CONTENTS_ENTERING") {
-              setAnimationPhase("MODAL_OPEN");
-              // setHideAppOverflow(true);
-            }
-            if (animationPhase === "MODAL_CONTENTS_EXITING") {
-              setAnimationPhase("CARD_SCALING_CLOSED");
-            }
-          }}
-        >
-          {animationPhaseIn(
+      {/* Video/image header that fills the card during animate and sits at the top of the modal page when animation is done*/}
+      <motion.div
+        ref={imageRef}
+        key={`project_${_id}_no_video_thumbnail`}
+        className={cx(
+          "absolute bottom-0 left-0 right-0 top-0 h-full w-full",
+          roundingClassConditional,
+        )}
+        initial={{ y: 0 }}
+        variants={{
+          modalOpen: {
+            y: headerOffset,
+          },
+          modalClosed: { y: 0 },
+        }}
+        animate={
+          animationPhaseIn(
             ["MODAL_CONTENTS_ENTERING", "MODAL_OPEN"],
             animationPhase,
-          ) && videoLoaded ? (
-            <motion.div
-              key={`project_${_id}_modal_video`}
-              initial={{ scale: 1, y: 0 }}
-              animate={{
-                scale: headerAssetScalingFactor,
-                y: isPortrait ? "-10%" : 0,
-                transition: { duration: 1, ease: "easeOut" },
-              }}
-              exit={{
-                scale: 1,
-                y: 0,
-                transition: { duration: 1, ease: "easeIn" },
-              }}
-              className="flex h-screen w-screen items-center justify-center"
-            >
-              {/* Video that will actually display  */}
-              <VideoBlockFullscreen
-                video={video}
-                thumbnail={thumbnail}
-                className={roundingClass}
-              />
-            </motion.div>
-          ) : (
-            <motion.img
-              key={`project_${_id}_modal_img`}
-              src={`${thumbnailUrl}?w=${innerWidth}&fit=clip&auto=format`}
+          )
+            ? "modalOpen"
+            : "modalClosed"
+        }
+        onAnimationComplete={() => {
+          if (animationPhase === "MODAL_CONTENTS_ENTERING") {
+            setAnimationPhase("MODAL_OPEN");
+          }
+          if (animationPhase === "MODAL_CONTENTS_EXITING") {
+            setAnimationPhase("CARD_SCALING_CLOSED");
+          }
+        }}
+        transition={{ duration: swapTransitionDuration, ease: "easeOut" }}
+      >
+        <motion.div
+          key={`project_${_id}_modal_header_video`}
+          variants={{
+            visible: {
+              opacity: 1,
+              transition: { duration: swapTransitionDuration },
+            },
+            hidden: {
+              opacity: 0,
+              transition: { duration: swapTransitionDuration },
+            },
+          }}
+          animate={!(video && videoLoaded && modalOpen) ? "hidden" : "visible"}
+        >
+          {video && (
+            <VideoBlockFullscreen
+              video={video}
+              thumbnail={thumbnail}
               className={cx(
-                "absolute bottom-0 left-0 right-0 top-0 h-full w-full",
-                roundingClass,
+                roundingClassConditional,
+                "absolute bottom-0 left-0 right-0 top-0 z-10 h-full w-full",
+                // !(video && videoLoaded && modalOpen) && "hidden",
               )}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1, transition: { duration: 1 } }}
-              exit={{ opacity: 0, transition: { duration: 0.7 } }}
-              alt={alt}
             />
           )}
-        </AnimatePresence>
-      )}
-
-      {animationPhaseIn(["MODAL_OPEN"], animationPhase) && (
+        </motion.div>
+        <motion.img
+          key={`project_${_id}_modal_header_img`}
+          src={`${thumbnailUrl}?w=${innerWidth}&fit=clip&auto=format`}
+          alt={alt}
+          className={cx(
+            "absolute bottom-0 left-0 right-0 top-0 z-20 h-full w-full",
+            // video && videoLoaded && modalOpen && "hidden",
+          )}
+          variants={{
+            visible: {
+              opacity: 1,
+              // filter: "blur(0px)",
+              transition: { duration: modalOpen ? swapTransitionDuration : 0 },
+            },
+            hidden: {
+              opacity: 0,
+              // filter: "blur(100px)",
+              transition: { duration: swapTransitionDuration },
+            },
+          }}
+          animate={video && videoLoaded && modalOpen ? "hidden" : "visible"}
+        />
+      </motion.div>
+      {modalOpen && (
         <>
           {isPrivate ? (
             <ProjectModalBodyPrivate
               project={project}
               offset={
-                (imageRef.current?.getBoundingClientRect()?.height || 0) /
-                headerAssetScalingFactor
+                (imageRef.current?.getBoundingClientRect()?.height || 0) +
+                contentPadding
               }
             />
           ) : (
@@ -233,5 +203,3 @@ export default function ProjectModalContents({
     </motion.div>
   );
 }
-
-/*  */

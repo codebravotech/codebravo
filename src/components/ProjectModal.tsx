@@ -4,6 +4,7 @@ import { pick } from "lodash";
 import { useEffect, useState } from "react";
 
 import { useDisplay } from "../hooks/display";
+import { useProjectThumbnail } from "../hooks/documents";
 // import { useIsElementOnScreen } from "../hooks/display";
 import { useSystemStore } from "../state/system";
 import { ModalAnimationPhase, ProjectDocument } from "../types/components";
@@ -30,15 +31,8 @@ export default function ProjectModal({
     setAnimationPhase("CARD_SCALING_OPEN");
   }, []);
 
-  const { _id, thumbnails = [], videos = [] } = project;
-  const thumbnail =
-    thumbnails?.find(
-      (elem) => elem.orientation === (isPortrait ? "portrait" : "landscape"),
-    ) || thumbnails?.find((elem) => elem.asset.url);
-  const video =
-    videos?.find(
-      (elem) => elem.orientation === (isPortrait ? "portrait" : "landscape"),
-    ) || videos?.find((elem) => elem.asset.url);
+  const { _id } = project;
+  const thumbnail = useProjectThumbnail(project);
 
   if (!clickedCardBoundingBox || !thumbnail) {
     return null;
@@ -80,6 +74,7 @@ export default function ProjectModal({
         }
         transition={{
           layout: {
+            delay: 0.2,
             duration: 0.5,
             ease: "easeIn",
           },

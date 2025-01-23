@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { useDisplay } from "../hooks/display";
+import { useProjectThumbnail } from "../hooks/documents";
 import { useSystemStore } from "../state/system";
 import { ProjectDocument } from "../types/components";
 import PortableTextRegular from "./PortableTextRegular";
@@ -29,6 +30,7 @@ export default function ProjectCard({
     client_logo,
   } = project;
   const isOpen = openProjectId === _id;
+  const thumbnail = useProjectThumbnail(project);
 
   const imageVariants = {
     hover: {
@@ -87,12 +89,6 @@ export default function ProjectCard({
       onClick();
     }
   }, [searchParams, openProjectId]);
-
-  const { thumbnails = [] } = project;
-
-  const thumbnail = thumbnails.find(
-    (elem) => elem.orientation === (isPortrait ? "portrait" : "landscape"),
-  );
 
   if (!thumbnail) {
     return null;
