@@ -72,5 +72,29 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwind-scrollbar-hide")],
+  plugins: [
+    require("tailwind-scrollbar-hide"),
+    function ({ addComponents }) {
+      addComponents({
+        "h1, .h1": {
+          "@apply my-4 font-fjalla text-6xl": {},
+        },
+        "h2, .h2": {
+          "@apply my-4 font-fjalla text-5xl": {},
+        },
+        "h3, .h3": {
+          "@apply my-4 font-fjalla text-4xl": {},
+        },
+        "h4, .h4": {
+          "@apply my-4 font-fjalla text-3xl": {},
+        },
+        "h5, .h5": {
+          "@apply my-4 font-fjalla text-2xl": {},
+        },
+        "h6, .h6": {
+          "@apply my-4 font-fjalla text-xl": {},
+        },
+      });
+    },
+  ],
 };

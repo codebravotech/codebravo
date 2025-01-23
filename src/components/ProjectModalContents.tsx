@@ -1,22 +1,21 @@
 import cx from "classnames";
-import {
-  AnimatePresence,
-  animateMini,
-  motion,
-  useIsPresent,
-} from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
-import { HEADER_HEIGHT } from "../config";
 import { useDisplay } from "../hooks/display";
+import { useSystemStore } from "../state/system";
 import {
   ImageRefResolved,
   ModalAnimationPhase,
-  ProjectObject,
+  ProjectDocument,
   VideoRefResolved,
 } from "../types/components";
 import { animationPhaseIn } from "../utils/animation";
+import Footer from "./Footer";
 import Header from "./Header";
+import Icon from "./Icon";
+import PortableTextRegular from "./PortableTextRegular";
 import ProjectModalBodyPrivate from "./ProjectModalBodyPrivate";
 import ProjectModalBodyPublic from "./ProjectModalBodyPublic";
 import VideoBlockFullscreen from "./VideoBlockFullscreen";
@@ -27,27 +26,30 @@ export default function ProjectModalContents({
   setAnimationPhase,
   roundingClass,
 }: {
-  project: ProjectObject;
+  project: ProjectDocument;
   animationPhase: ModalAnimationPhase;
   setAnimationPhase: (animationPhase: ModalAnimationPhase) => void;
   roundingClass: string;
 }) {
-  // const [videoLoaded, setVideoLoaded] = useState();
+  const { setHideAppOverflow } = useSystemStore();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [videoLoaded, setVideoLoaded] = useState();
+  const headerAssetScalingFactor = 0.9;
   const headerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   // Animate out
   const handleClose = async () => {
     if (animationPhase === "MODAL_OPEN") {
+      if (searchParams.get("_id")) {
+        searchParams.delete("_id");
+        setSearchParams(searchParams); // reset URL searchParams to object with foo removed
+      }
+
       // STEP 4: MODAL CONTENTS START TO DO EXIT ANIMATION
       setAnimationPhase("MODAL_CONTENTS_EXITING");
+      setHideAppOverflow(false);
     }
-    // if (video) {
-    //   }
-    // } else {
-    //   setAnimationPhase("CARD_SCALING_CLOSED");
-    // }
   };
-  const headerMargin = 20;
 
   const { isPortrait } = useDisplay();
 
@@ -88,9 +90,15 @@ export default function ProjectModalContents({
           isPortfolio={true}
           clickedCurrentRoute={handleClose}
         />
-        <div className="relative flex justify-center">
-          <div className="underline-drawn relative font-fjalla text-3xl">
-            {header?.toUpperCase()}
+
+        <div className="relative mt-6 flex justify-center">
+          <div className="underline-drawn relative flex items-center text-center font-fjalla text-3xl">
+            <PortableTextRegular content={header} />
+            <Icon
+              icon="back"
+              className="absolute -right-14 z-20 h-auto w-16 text-stars-100 hover:scale-150 hover:text-expanse-100"
+              onClick={handleClose}
+            />
           </div>
         </div>
       </motion.div>
@@ -101,7 +109,7 @@ export default function ProjectModalContents({
           key={`project_${_id}_loader_video`}
           video={video}
           thumbnail={thumbnail}
-          // setVideoLoaded={setVideoLoaded}
+          setVideoLoaded={setVideoLoaded}
           className={cx("absolute hidden")}
         />
       )}
@@ -116,14 +124,13 @@ export default function ProjectModalContents({
             "absolute bottom-0 left-0 right-0 top-0 h-full w-full",
             roundingClass,
           )}
-          initial={{ y: 0 }}
+          initial={{ y: 0, scale: 1 }}
           variants={{
             modalOpen: {
-              y:
-                (headerRef?.current?.getBoundingClientRect()?.height || 0) +
-                headerMargin,
+              scale: headerAssetScalingFactor,
+              y: headerRef?.current?.getBoundingClientRect()?.height || 0,
             },
-            modalClosed: { y: 0 },
+            modalClosed: { y: 0, scale: 1 },
           }}
           animate={
             animationPhaseIn(
@@ -136,6 +143,7 @@ export default function ProjectModalContents({
           onAnimationComplete={() => {
             if (animationPhase === "MODAL_CONTENTS_ENTERING") {
               setAnimationPhase("MODAL_OPEN");
+              // setHideAppOverflow(true);
             }
             if (animationPhase === "MODAL_CONTENTS_EXITING") {
               setAnimationPhase("CARD_SCALING_CLOSED");
@@ -153,6 +161,7 @@ export default function ProjectModalContents({
           onExitComplete={() => {
             if (animationPhase === "MODAL_CONTENTS_ENTERING") {
               setAnimationPhase("MODAL_OPEN");
+              // setHideAppOverflow(true);
             }
             if (animationPhase === "MODAL_CONTENTS_EXITING") {
               setAnimationPhase("CARD_SCALING_CLOSED");
@@ -162,12 +171,12 @@ export default function ProjectModalContents({
           {animationPhaseIn(
             ["MODAL_CONTENTS_ENTERING", "MODAL_OPEN"],
             animationPhase,
-          ) ? (
+          ) && videoLoaded ? (
             <motion.div
               key={`project_${_id}_modal_video`}
               initial={{ scale: 1, y: 0 }}
               animate={{
-                scale: 0.9,
+                scale: headerAssetScalingFactor,
                 y: isPortrait ? "-10%" : 0,
                 transition: { duration: 1, ease: "easeOut" },
               }}
@@ -208,8 +217,8 @@ export default function ProjectModalContents({
             <ProjectModalBodyPrivate
               project={project}
               offset={
-                (imageRef.current?.getBoundingClientRect()?.height || 0) +
-                headerMargin
+                (imageRef.current?.getBoundingClientRect()?.height || 0) /
+                headerAssetScalingFactor
               }
             />
           ) : (
@@ -218,6 +227,7 @@ export default function ProjectModalContents({
               animationPhase={animationPhase}
             />
           )}
+          <Footer isHomePage={false} />
         </>
       )}
     </motion.div>

@@ -70,7 +70,7 @@ export default function NotFound() {
         <CtaButton
           url={"/"}
           variant="trash_panda"
-          className="self-end text-3xl"
+          className="self-end text-3xl lg:self-end"
         >
           Follow me home!
         </CtaButton>

@@ -1,13 +1,20 @@
+import { PortableTextBlock } from "@portabletext/types";
+
 import {
+  Connect_page,
   Content_block,
+  Partner,
+  Portfolio_page,
   Project,
   SanityFileAsset,
   SanityImageAsset,
+  Technology_tool,
 } from "./sanity.types";
 
 export type ValidRoutes = "/expertise" | "/connect" | "/" | "/portfolio";
 export type IconType =
   | "about"
+  | "back"
   | "clipboard"
   | "connect"
   | "home"
@@ -36,6 +43,27 @@ export interface NavOptions {
   short_label: string;
 }
 
+export interface ConnectPageDocument
+  extends Omit<
+    Connect_page,
+    "copy" | "form_header" | "profile_link" | "email_link"
+  > {
+  copy: PortableTextBlock[];
+  form_header: PortableTextBlock[];
+  profile_link: PortableTextBlock[];
+  email_link: PortableTextBlock[];
+}
+export interface PortfolioPageDocument
+  extends Omit<
+    Portfolio_page,
+    "header" | "private_header" | "public_header" | "projects"
+  > {
+  header: PortableTextBlock[];
+  private_header: PortableTextBlock[];
+  public_header: PortableTextBlock[];
+  projects: ProjectDocument[];
+}
+
 export interface VideoRefResolved {
   asset: SanityFileAsset;
   orientation: Orientation;
@@ -51,11 +79,38 @@ export interface FileRefResolved {
   asset: SanityFileAsset;
 }
 
-export interface ProjectObject
-  extends Omit<Project, "thumbnails" | "videos" | "client_logo"> {
+export interface PartnerObject {
+  partner_role: string;
+  partner: Partner;
+}
+
+export interface TechnologyToolObject {
+  used_for: string;
+  technology_tool: Technology_tool;
+}
+
+export interface ProjectDocument
+  extends Omit<
+    Project,
+    | "header"
+    | "description"
+    | "thumbnails"
+    | "videos"
+    | "client_logo"
+    | "partners"
+    | "technology_tools"
+    | "private_project_summary"
+    | "final_cta"
+  > {
+  header: PortableTextBlock[];
+  description: PortableTextBlock[];
   thumbnails: ImageRefResolved[];
   client_logo: ImageRefResolved;
   videos: VideoRefResolved[];
+  partners: PartnerObject[];
+  technology_tools: TechnologyToolObject[];
+  private_project_summary: PortableTextBlock[];
+  final_cta: PortableTextBlock[];
 }
 
 export interface PdfRefResolved {
@@ -64,8 +119,9 @@ export interface PdfRefResolved {
 }
 
 export interface ContentObject
-  extends Omit<Content_block, "image" | "file_link"> {
+  extends Omit<Content_block, "image" | "file_link" | "copy"> {
   _key: string;
   image: ImageRefResolved;
   file_link: PdfRefResolved;
+  copy: PortableTextBlock[];
 }

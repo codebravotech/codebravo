@@ -1,6 +1,7 @@
 import cx from "classnames";
 import { CSSProperties } from "react";
 
+import back from "../assets/icons/back.svg?react";
 import clipboard from "../assets/icons/clipboard.svg?react";
 import connect from "../assets/icons/connect.svg?react";
 import home from "../assets/icons/home.svg?react";
@@ -10,6 +11,7 @@ import refresh from "../assets/icons/refresh.svg?react";
 import { IconType } from "../types/components";
 
 const componentMap = {
+  back,
   clipboard,
   connect,
   portfolio,
@@ -33,7 +35,10 @@ export default function Icon({
 
   return (
     <SVG
-      className={cx("fill-current active:opacity-50", className)}
+      className={cx(
+        "!cursor-pointer fill-current active:opacity-50",
+        className,
+      )}
       onClick={onClick}
       style={style}
     />

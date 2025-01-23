@@ -17,7 +17,27 @@ const components: PortableTextComponents = {
     },
     h1: ({ children }) => {
       const text = React.Children.toArray(children).join("");
-      return <PopcornText text={text} className="mb-2 font-fjalla text-6xl" />;
+      return <PopcornText text={text} className="h1" />;
+    },
+    h2: ({ children }) => {
+      const text = React.Children.toArray(children).join("");
+      return <PopcornText text={text} className="h2" />;
+    },
+    h3: ({ children }) => {
+      const text = React.Children.toArray(children).join("");
+      return <PopcornText text={text} className="h3" />;
+    },
+    h4: ({ children }) => {
+      const text = React.Children.toArray(children).join("");
+      return <PopcornText text={text} className="h4" />;
+    },
+    h5: ({ children }) => {
+      const text = React.Children.toArray(children).join("");
+      return <PopcornText text={text} className="h5" />;
+    },
+    h6: ({ children }) => {
+      const text = React.Children.toArray(children).join("");
+      return <PopcornText text={text} className="h6" />;
     },
   },
 };

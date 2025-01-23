@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 
-import { ModalAnimationPhase, ProjectObject } from "../types/components";
+import { ModalAnimationPhase, ProjectDocument } from "../types/components";
 
 export default function ProjectModalBodyPublic({
   project,
   animationPhase,
 }: {
-  project: ProjectObject;
+  project: ProjectDocument;
   animationPhase: ModalAnimationPhase;
 }) {
-  return <motion.div className="mt-[200vh]"></motion.div>;
+  return <motion.div className=""></motion.div>;
 }

@@ -1,4 +1,3 @@
-import { PortableTextBlock } from "@portabletext/types";
 import cx from "classnames";
 import { motion } from "framer-motion";
 import { get } from "lodash";
@@ -130,11 +129,12 @@ export default function ContentBlock({
             direction={"right"}
           >
             <div className="flex flex-col items-stretch rounded-2xl bg-expanse-gradient bg-opacity-[97%] px-4 py-5 text-stars-300 shadow-lg lg:items-start lg:px-8">
-              <PortableTextRegular
-                link_color="stars-100"
-                content={copy as PortableTextBlock[]}
-              />
-              <CtaButton url={buttonUrl} variant="white_blue" className="mt-5">
+              <PortableTextRegular link_color="stars-100" content={copy} />
+              <CtaButton
+                url={buttonUrl}
+                variant="white_blue"
+                className="mt-5 lg:self-end"
+              >
                 {buttonLabel}
               </CtaButton>
             </div>

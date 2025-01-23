@@ -6,11 +6,15 @@ import { useEffect, useState } from "react";
 import { useDisplay } from "../hooks/display";
 // import { useIsElementOnScreen } from "../hooks/display";
 import { useSystemStore } from "../state/system";
-import { ModalAnimationPhase, ProjectObject } from "../types/components";
+import { ModalAnimationPhase, ProjectDocument } from "../types/components";
 import { animationPhaseIn } from "../utils/animation";
 import ProjectModalContents from "./ProjectModalContents";
 
-export default function ProjectModal({ project }: { project: ProjectObject }) {
+export default function ProjectModal({
+  project,
+}: {
+  project: ProjectDocument;
+}) {
   const { setOpenProjectId, clickedCardBoundingBox } = useSystemStore();
   const { isPortrait } = useDisplay();
   const [animationPhase, updateAnimationPhase] =
@@ -94,7 +98,7 @@ export default function ProjectModal({ project }: { project: ProjectObject }) {
           project={project}
           animationPhase={animationPhase}
           setAnimationPhase={(phase) => {
-            console.log("SETTING PHASE: ", phase);
+            // console.log("SETTING PHASE: ", phase);
             setAnimationPhase(phase);
           }}
           roundingClass={roundingClass}

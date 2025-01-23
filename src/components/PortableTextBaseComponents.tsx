@@ -28,7 +28,7 @@ export const BaseComponents = ({
         }
         const href = value.href;
 
-        const rel = href.startsWith("/") ? "noreferrer noopener" : undefined;
+        const rel = !href.startsWith("/") ? "noreferrer noopener" : undefined;
 
         const isMailTo = href.startsWith("mailto:");
         const email = href.split("mailto:").pop();

@@ -1,12 +1,11 @@
-import { PortableTextBlock } from "@portabletext/types";
-import { SanityAssetDocument } from "@sanity/client";
 import cx from "classnames";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { useDisplay } from "../hooks/display";
 import { useSystemStore } from "../state/system";
-import { ProjectObject } from "../types/components";
+import { ProjectDocument } from "../types/components";
 import PortableTextRegular from "./PortableTextRegular";
 
 export default function ProjectCard({
@@ -14,12 +13,13 @@ export default function ProjectCard({
   className = "",
   index = 0,
 }: {
-  project: ProjectObject;
+  project: ProjectDocument;
   index: number;
   className?: string;
 }) {
   const { openProjectId, setOpenProjectId, setClickedCardBoundingBox } =
     useSystemStore();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { isPortrait } = useDisplay();
   const cardRef = useRef<HTMLDivElement>(null);
   const {
@@ -54,6 +54,9 @@ export default function ProjectCard({
         if (cardRef.current) {
           const rect = cardRef.current.getBoundingClientRect();
           setClickedCardBoundingBox(rect);
+          searchParams.set("_id", _id);
+          setSearchParams(searchParams);
+
           setOpenProjectId(_id);
         }
       },
@@ -77,6 +80,13 @@ export default function ProjectCard({
       window.removeEventListener("resize", handleEvent);
     };
   }, [isOpen]);
+
+  useEffect(() => {
+    const searchParamsId = searchParams.get("_id");
+    if (searchParamsId && searchParamsId === _id && !openProjectId) {
+      onClick();
+    }
+  }, [searchParams, openProjectId]);
 
   const { thumbnails = [] } = project;
 
@@ -145,7 +155,7 @@ export default function ProjectCard({
           />
         )}
         <div className="max-w-[70%] font-raleway font-bold">
-          <PortableTextRegular content={description as PortableTextBlock[]} />
+          <PortableTextRegular content={description} />
         </div>
       </div>
     </motion.div>
