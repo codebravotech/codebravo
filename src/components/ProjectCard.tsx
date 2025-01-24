@@ -150,7 +150,7 @@ export default function ProjectCard({
             className="max-h-[40%] max-w-[60%] object-contain"
           />
         )}
-        <div className="font-inter max-w-[70%] font-bold">
+        <div className="max-w-[70%] font-raleway font-bold">
           <PortableTextRegular content={description} />
         </div>
       </div>
