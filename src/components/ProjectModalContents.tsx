@@ -90,7 +90,7 @@ export default function ProjectModalContents({
         </div>
       </motion.div>
       {/* Invisible video to start load while animation is running */}
-      {video && (
+      {video && !videoLoaded && (
         <VideoBlockFullscreen
           key={`project_${_id}_loader_video`}
           video={video}
