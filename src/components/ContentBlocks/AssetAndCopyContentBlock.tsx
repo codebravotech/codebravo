@@ -3,8 +3,16 @@ import { motion } from "framer-motion";
 import { useRef } from "react";
 
 import ArriveDirectionally from "../../animations/ArriveDirectionally";
-import { useAssetOrientation, useDisplay } from "../../hooks/display";
-import { ContentObject } from "../../types/components";
+import { useDisplay } from "../../hooks/display";
+import {
+  useContentBlockImage,
+  useContentBlockVideo,
+} from "../../hooks/documents";
+import {
+  ContentObject,
+  ImageRefResolved,
+  VideoRefResolved,
+} from "../../types/components";
 import PortableTextRegular from "../PortableTextRegular";
 
 export default function AssetAndCopyContentBlock({
@@ -17,8 +25,6 @@ export default function AssetAndCopyContentBlock({
   const {
     _key,
     copy = [],
-    image,
-    video,
     block_axis,
     block_ordering,
     text_align,
@@ -31,8 +37,24 @@ export default function AssetAndCopyContentBlock({
   let textClasses = "";
   let assetArrivalDirection: "up" | "left" | "right" = "up";
   let textArrivalDirection: "up" | "left" | "right" = "up";
+  let assetType: "video" | "image" | "" = "";
+  let orientation = "landscape";
+  let playback_speed = 1;
 
-  const orientation = image?.orientation || video?.orientation;
+  const image: ImageRefResolved | undefined =
+    useContentBlockImage(content_block);
+  const video: VideoRefResolved | undefined =
+    useContentBlockVideo(content_block);
+
+  if (video) {
+    orientation = video?.orientation || "landscape";
+    playback_speed = video?.playback_speed || 1;
+    assetType = "video";
+  } else if (image) {
+    orientation = image?.orientation || "landscape";
+    assetType = "image";
+  }
+
   const assetIsPortrait = orientation === "portrait";
 
   if (axis === "vertical") {
@@ -42,14 +64,19 @@ export default function AssetAndCopyContentBlock({
       axisClasses = "flex-col-reverse items-center justify-center";
     }
 
-    if (text_align === "left") {
+    if (isPortrait) {
+      textClasses = "w-screen px-5 text-center";
+    } else if (text_align === "left" && !isPortrait) {
       textClasses = "text-left self-start ml-8 w-1/2";
-    } else if (text_align === "right") {
+    } else if (text_align === "right" && !isPortrait) {
       textClasses = "text-right self-end mr-8 w-1/2";
+    } else if (text_align === "center") {
+      textClasses = "w-3/4 text-center";
     }
   } else if (axis === "horizontal") {
     assetClasses = "rounded-2xl";
     assetContainerClasses = `${assetIsPortrait ? "basis-1/3 grow-0" : "basis-2/3"} mx-6`;
+
     if (block_ordering === "asset_copy") {
       assetArrivalDirection = "right";
       textArrivalDirection = "left";
@@ -61,12 +88,54 @@ export default function AssetAndCopyContentBlock({
       axisClasses = "flex-row-reverse items-center";
     }
 
-    textClasses = `text-left mx-8 basis-1/3 ${assetIsPortrait ? "grow" : "grow-0"}`;
+    if (isPortrait) {
+      textClasses = "w-screen px-6 text-center";
+    } else {
+      textClasses = `text-left mx-8 basis-1/3 ${assetIsPortrait ? "grow" : "grow-0"}`;
+    }
   }
+
+  const videoId = `content_block_${_key}_video_${orientation}`;
 
   return (
     <motion.div key={_key} className={cx("relative flex", axisClasses)}>
-      {image?.asset?.url && (
+      {assetType === "video" && (
+        <ArriveDirectionally
+          keyBy={`content_block_${_key}_asset_video`}
+          direction={assetArrivalDirection}
+          className={cx(assetContainerClasses)}
+        >
+          <motion.video
+            id={videoId}
+            className={cx(
+              assetClasses,
+              assetIsPortrait ? "max-h-[95vh]" : "max-h-[100vh]",
+              "relative cursor-pointer object-scale-down",
+            )}
+            controls={!!isMobile}
+            autoPlay
+            muted
+            loop
+            onLoadedData={() => {
+              const vidElem = document.getElementById(
+                videoId,
+              ) as HTMLVideoElement;
+              if (
+                vidElem &&
+                typeof playback_speed === "number" &&
+                0 < playback_speed &&
+                playback_speed < 1
+              ) {
+                vidElem.playbackRate = playback_speed;
+              }
+            }}
+          >
+            <source src={video?.asset?.url} type="video/mp4" />
+            Your browser does not support the video tag.
+          </motion.video>
+        </ArriveDirectionally>
+      )}
+      {assetType === "image" && (
         <ArriveDirectionally
           keyBy={`content_block_${_key}_asset_img`}
           direction={assetArrivalDirection}
@@ -77,28 +146,6 @@ export default function AssetAndCopyContentBlock({
             src={image?.asset?.url}
             alt={image?.alt}
           />
-        </ArriveDirectionally>
-      )}
-      {video && video?.asset?.url && (
-        <ArriveDirectionally
-          keyBy={`content_block_${_key}_asset_video`}
-          direction={assetArrivalDirection}
-          className={assetContainerClasses}
-        >
-          <motion.video
-            className={cx(
-              assetClasses,
-              assetIsPortrait ? "max-h-[95vh]" : "max-h-[100vh]",
-              "relative cursor-pointer object-scale-down",
-            )}
-            controls={!!isMobile}
-            autoPlay
-            muted
-            loop
-          >
-            <source src={video?.asset?.url} type="video/mp4" />
-            Your browser does not support the video tag.
-          </motion.video>
         </ArriveDirectionally>
       )}
       {!assetOnly && (

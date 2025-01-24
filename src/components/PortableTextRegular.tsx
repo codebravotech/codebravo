@@ -21,6 +21,9 @@ const components: PortableTextComponents = {
     large_body: ({ children }) => {
       return <p className="text-xl">{children}</p>;
     },
+    xl_body: ({ children }) => {
+      return <p className="text-2xl">{children}</p>;
+    },
   },
 };
 

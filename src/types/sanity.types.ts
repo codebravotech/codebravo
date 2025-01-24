@@ -54,11 +54,12 @@ export type Slug = {
 
 export type Content_block = {
   _type: 'content_block'
+  title?: string
   block_type?: 'copy_and_asset' | 'asset_only' | 'copy_only'
   block_axis?: 'vertical' | 'horizontal'
   block_ordering?: 'asset_copy' | 'copy_asset'
   text_align?: 'left' | 'right' | 'center'
-  image?: {
+  images?: Array<{
     asset?: {
       _ref: string
       _type: 'reference'
@@ -68,17 +69,22 @@ export type Content_block = {
     hotspot?: SanityImageHotspot
     crop?: SanityImageCrop
     alt?: string
+    orientation?: 'landscape' | 'portrait'
     _type: 'image'
-  }
-  video?: {
+    _key: string
+  }>
+  videos?: Array<{
     asset?: {
       _ref: string
       _type: 'reference'
       _weak?: boolean
       [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
     }
+    orientation?: 'landscape' | 'portrait'
+    playback_speed?: number
     _type: 'file'
-  }
+    _key: string
+  }>
   copy?: Array<{
     children?: Array<{
       marks?: Array<string>
@@ -86,7 +92,17 @@ export type Content_block = {
       _type: 'span'
       _key: string
     }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote' | 'large_body'
+    style?:
+      | 'large_body'
+      | 'xl_body'
+      | 'normal'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'blockquote'
     listItem?: 'bullet' | 'number'
     markDefs?: Array<{
       href?: string
@@ -359,6 +375,17 @@ export type Project = {
     _key: string
   }>
   thumbnail_overlay_color?: string
+  videos?: Array<{
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
+    }
+    orientation?: 'landscape' | 'portrait'
+    _type: 'file'
+    _key: string
+  }>
   header?: Array<{
     children?: Array<{
       marks?: Array<string>
@@ -366,7 +393,7 @@ export type Project = {
       _type: 'span'
       _key: string
     }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    style?: 'normal'
     listItem?: 'bullet' | 'number'
     markDefs?: Array<{
       href?: string
@@ -394,17 +421,6 @@ export type Project = {
     }>
     level?: number
     _type: 'block'
-    _key: string
-  }>
-  videos?: Array<{
-    asset?: {
-      _ref: string
-      _type: 'reference'
-      _weak?: boolean
-      [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
-    }
-    orientation?: 'landscape' | 'portrait'
-    _type: 'file'
     _key: string
   }>
   public_content_blocks?: Array<

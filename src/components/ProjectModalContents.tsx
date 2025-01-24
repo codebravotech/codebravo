@@ -12,8 +12,8 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Icon from "./Icon";
 import PortableTextRegular from "./PortableTextRegular";
+import ProjectModalBody from "./ProjectModalBody";
 import ProjectModalBodyPrivate from "./ProjectModalBodyPrivate";
-import ProjectModalBodyPublic from "./ProjectModalBodyPublic";
 import VideoBlockFullscreen from "./VideoBlockFullscreen";
 
 export default function ProjectModalContents({
@@ -63,14 +63,22 @@ export default function ProjectModalContents({
   const alt = thumbnail?.alt;
 
   return (
-    <motion.div className="absolute bottom-0 left-0 right-0 top-0 overflow-y-scroll overscroll-none bg-night-gradient scrollbar-hide">
+    <motion.div
+      className={cx(
+        "absolute bottom-0 left-0 right-0 top-0 overflow-y-scroll overscroll-none bg-night-gradient scrollbar-hide",
+        !animationPhaseIn(
+          ["MODAL_CONTENTS_ENTERING", "MODAL_CONTENTS_EXITING", "MODAL_OPEN"],
+          animationPhase,
+        ) && roundingClass,
+      )}
+    >
       {/* Site header and page header */}
       <motion.div
         ref={headerRef}
         initial={{ opacity: 0 }}
         variants={{
           visible: { opacity: 1, transition: { duration: 1 } },
-          hidden: { opacity: 0, transition: { duration: 0.5 } },
+          hidden: { opacity: 0, transition: { duration: 0.2 } },
         }}
         animate={modalOpen ? "visible" : "hidden"}
         className={cx("relative z-20")}
@@ -80,7 +88,7 @@ export default function ProjectModalContents({
           isPortfolio={true}
           clickedCurrentRoute={handleClose}
         />
-        <div className="relative mt-6 flex justify-center">
+        <div className="relative mt-6 flex justify-center px-10 lg:px-0">
           <div className="underline-drawn relative flex items-center text-center font-fjalla text-5xl">
             <PortableTextRegular content={header} />
           </div>
@@ -93,6 +101,7 @@ export default function ProjectModalContents({
       {video && !videoLoaded && (
         <VideoBlockFullscreen
           key={`project_${_id}_loader_video`}
+          id={`project_${_id}_loader_video`}
           video={video}
           thumbnail={thumbnail}
           setVideoLoaded={() => setVideoLoaded(true)}
@@ -134,7 +143,7 @@ export default function ProjectModalContents({
         <motion.div
           ref={heroContainerRef}
           key={`project_${_id}_modal_header_video`}
-          className="bg-red-200"
+          className="h-screen"
           variants={{
             visible: {
               opacity: 1,
@@ -149,11 +158,13 @@ export default function ProjectModalContents({
         >
           {video && (
             <VideoBlockFullscreen
+              key={`project_${_id}_display_video`}
+              id={`project_${_id}_display_video`}
               video={video}
               thumbnail={thumbnail}
               className={cx(
                 roundingClassConditional,
-                "absolute bottom-0 left-0 right-0 top-0 z-10",
+                "absolute bottom-0 left-0 right-0 top-0 z-10 h-full w-full",
               )}
             />
           )}
@@ -175,6 +186,7 @@ export default function ProjectModalContents({
               opacity: 0,
               filter: "blur(10px)",
               transition: { duration: swapTransitionDuration },
+              zIndex: -1,
             },
           }}
           animate={video && videoLoaded && modalOpen ? "hidden" : "visible"}
@@ -202,9 +214,10 @@ export default function ProjectModalContents({
               offset={heroHeight + contentPadding}
             />
           ) : (
-            <ProjectModalBodyPublic
+            <ProjectModalBody
               project={project}
               offset={heroHeight + contentPadding + 70}
+              handleClose={handleClose}
             />
           )}
           <Footer isHomePage={false} />

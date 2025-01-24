@@ -11,20 +11,20 @@ export default function Partners({
 
   return (
     <div>
-      <div className="mb-2 underline">Special thanks to my collaborators:</div>
+      <div className="text-xl underline">Collaborators:</div>
 
       {partners.map((object) => {
         const { partner_role, partner } = object;
         const { name, location } = partner;
         return (
-          <div key={`partner_${name}`}>
-            <div>
+          <div key={`partner_${name}`} className="text-lg">
+            <div className="mt-1">
               <span className="">
-                <span className="">{name}</span> --{" "}
-                <span className="italic">{location}</span>
+                <span className="">{name}</span>
+                <div className="mt-1 italic">{location}</div>
               </span>
             </div>
-            <div className="mt-1 italic">Project role: {partner_role}</div>
+            <div className="mt-1 italic">{partner_role}</div>
           </div>
         );
       })}

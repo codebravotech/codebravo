@@ -74,7 +74,7 @@ export default function ProjectModal({
         }
         transition={{
           layout: {
-            delay: 0.2,
+            delay: animationPhase === "CARD_SCALING_OPEN" ? 0.1 : 0,
             duration: 0.5,
             ease: "easeIn",
           },

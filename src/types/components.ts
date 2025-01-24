@@ -66,7 +66,8 @@ export interface PortfolioPageDocument
 
 export interface VideoRefResolved {
   asset: SanityFileAsset;
-  orientation: Orientation;
+  orientation?: Orientation;
+  playback_speed?: number;
 }
 
 export interface ImageRefResolved {
@@ -121,10 +122,10 @@ export interface PdfRefResolved {
 }
 
 export interface ContentObject
-  extends Omit<Content_block, "image" | "video" | "file_link" | "copy"> {
+  extends Omit<Content_block, "images" | "videos" | "file_link" | "copy"> {
   _key: string;
-  image?: ImageRefResolved;
-  video?: VideoRefResolved;
+  images?: ImageRefResolved[];
+  videos?: VideoRefResolved[];
   file_link?: PdfRefResolved;
   copy?: PortableTextBlock[];
 }

@@ -4,6 +4,7 @@ import { useDisplay } from "../hooks/display";
 
 export default function Footer({ isHomePage }: { isHomePage: boolean }) {
   const { isMobile } = useDisplay();
+
   const logo = `/images/logo_black.svg`;
 
   return (

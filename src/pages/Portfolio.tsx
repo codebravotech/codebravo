@@ -15,7 +15,7 @@ import { useSystemStore } from "../state/system";
 import { PortfolioPageDocument } from "../types/components";
 
 const query = groq`
-*[_id == $page_id]{ ..., projects[]->{ ..., thumbnails[] { ..., asset-> }, client_logo { ..., asset-> }, videos[] { ..., asset-> }, technology_tools[] { ..., technology_tool-> }, partners[] { ..., partner-> }, public_content_blocks[] { ..., image { ..., asset-> }, video { ..., asset-> } }  } }
+*[_id == $page_id]{ ..., projects[]->{ ..., thumbnails[] { ..., asset-> }, client_logo { ..., asset-> }, videos[] { ..., asset-> }, technology_tools[] { ..., technology_tool-> }, partners[] { ..., partner-> }, public_content_blocks[] { ..., images[] { ..., asset-> }, videos[] { ..., asset-> } }  } }
 `;
 const params = {
   page_id: "portfolio_page",

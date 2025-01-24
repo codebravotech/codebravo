@@ -5,16 +5,19 @@ import { ProjectDocument } from "../types/components";
 import AssetAndCopyContentBlock from "./ContentBlocks/AssetAndCopyContentBlock";
 import CopyContentBlock from "./ContentBlocks/CopyContentBlock";
 import CtaButton from "./CtaButton";
+import Icon from "./Icon";
 import Partners from "./Partners";
 import PortableTextRegular from "./PortableTextRegular";
 import TechnologyTools from "./TechnologyTools";
 
-export default function ProjectModalBodyPublic({
+export default function ProjectModalBody({
   project,
   offset = 0,
+  handleClose,
 }: {
   project: ProjectDocument;
   offset: number;
+  handleClose: () => void;
 }) {
   const public_content_blocks = project?.public_content_blocks || [];
   const final_cta = project?.final_cta || [];
@@ -24,7 +27,7 @@ export default function ProjectModalBodyPublic({
 
   return (
     <motion.div
-      className="flex w-full flex-col items-center gap-10 text-stars-100"
+      className="flex w-full flex-col items-center gap-4 text-stars-100 lg:gap-20"
       style={{ marginTop: offset }}
     >
       {public_content_blocks.map((content_block) => {
@@ -50,14 +53,6 @@ export default function ProjectModalBodyPublic({
       })}
 
       <ArriveDirectionally
-        keyBy={`${project?._id}_collaborators and tech`}
-        className="flex flex-row gap-32"
-      >
-        <Partners partners={partners} />
-        <TechnologyTools technology_tools={technology_tools} />
-      </ArriveDirectionally>
-
-      <ArriveDirectionally
         keyBy={`${project?._id}_cta`}
         className="mt-10 flex w-full flex-col items-center text-xl"
       >
@@ -71,7 +66,27 @@ export default function ProjectModalBodyPublic({
             {cta_link?.label}
           </CtaButton>
         )}
+
+        <div
+          onClick={handleClose}
+          className="mt-4 flex cursor-pointer items-center text-sm hover:scale-110"
+        >
+          <Icon className="h-6 w-6" icon="back" />
+          <span>Portfolio</span>
+        </div>
       </ArriveDirectionally>
+
+      {(partners?.length > 0 || technology_tools?.length > 0) && (
+        <ArriveDirectionally
+          keyBy={`${project?._id}_collaborators and tech`}
+          className="flex flex-col gap-10 lg:flex-row lg:gap-48"
+        >
+          {partners?.length > 0 && <Partners partners={partners} />}
+          {technology_tools?.length > 0 && (
+            <TechnologyTools technology_tools={technology_tools} />
+          )}
+        </ArriveDirectionally>
+      )}
     </motion.div>
   );
 }

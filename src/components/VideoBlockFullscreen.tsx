@@ -5,10 +5,12 @@ import { useDisplay } from "../hooks/display";
 import { ImageRefResolved, VideoRefResolved } from "../types/components";
 
 export default function VideoBlockFullscreen({
+  id,
   video,
   setVideoLoaded,
   className = "",
 }: {
+  id: string;
   video: VideoRefResolved;
   thumbnail: ImageRefResolved | undefined;
   setVideoLoaded?: (videoLoaded: boolean) => void;
@@ -16,12 +18,13 @@ export default function VideoBlockFullscreen({
 }) {
   const { isMobile } = useDisplay();
   const {
+    playback_speed,
     asset: { url },
   } = video;
-
   return (
     <motion.video
-      className={cx("relative cursor-pointer", className)}
+      id={id}
+      className={cx("relative z-20 cursor-pointer object-cover", className)}
       controls={!!isMobile}
       autoPlay
       muted
@@ -29,6 +32,15 @@ export default function VideoBlockFullscreen({
       onLoadedData={() => {
         if (setVideoLoaded) {
           setVideoLoaded(true);
+        }
+        const vidElem = document.getElementById(id) as HTMLVideoElement;
+        if (
+          vidElem &&
+          typeof playback_speed === "number" &&
+          0 < playback_speed &&
+          playback_speed < 1
+        ) {
+          vidElem.playbackRate = playback_speed;
         }
       }}
     >
