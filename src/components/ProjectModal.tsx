@@ -92,10 +92,7 @@ export default function ProjectModal({
         <ProjectModalContents
           project={project}
           animationPhase={animationPhase}
-          setAnimationPhase={(phase) => {
-            // console.log("SETTING PHASE: ", phase);
-            setAnimationPhase(phase);
-          }}
+          setAnimationPhase={setAnimationPhase}
           roundingClass={roundingClass}
         />
       </motion.div>

@@ -1,6 +1,7 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
 
+import { useDisplay } from "../hooks/display";
 import { ImageRefResolved, VideoRefResolved } from "../types/components";
 
 export default function VideoBlockFullscreen({
@@ -13,6 +14,7 @@ export default function VideoBlockFullscreen({
   setVideoLoaded?: (videoLoaded: boolean) => void;
   className?: string;
 }) {
+  const { isMobile } = useDisplay();
   const {
     asset: { url },
   } = video;
@@ -20,7 +22,7 @@ export default function VideoBlockFullscreen({
   return (
     <motion.video
       className={cx("relative cursor-pointer object-scale-down", className)}
-      controls={false}
+      controls={!!isMobile}
       autoPlay
       muted
       loop

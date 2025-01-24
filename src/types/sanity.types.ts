@@ -54,6 +54,10 @@ export type Slug = {
 
 export type Content_block = {
   _type: 'content_block'
+  block_type?: 'copy_and_asset' | 'asset_only' | 'copy_only'
+  block_axis?: 'vertical' | 'horizontal'
+  block_ordering?: 'asset_copy' | 'copy_asset'
+  text_align?: 'left' | 'right' | 'center'
   image?: {
     asset?: {
       _ref: string
@@ -66,6 +70,15 @@ export type Content_block = {
     alt?: string
     _type: 'image'
   }
+  video?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
+    }
+    _type: 'file'
+  }
   copy?: Array<{
     children?: Array<{
       marks?: Array<string>
@@ -73,7 +86,7 @@ export type Content_block = {
       _type: 'span'
       _key: string
     }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote' | 'large_body'
     listItem?: 'bullet' | 'number'
     markDefs?: Array<{
       href?: string
@@ -394,20 +407,11 @@ export type Project = {
     _type: 'file'
     _key: string
   }>
-  images?: Array<{
-    asset?: {
-      _ref: string
-      _type: 'reference'
-      _weak?: boolean
-      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
-    }
-    hotspot?: SanityImageHotspot
-    crop?: SanityImageCrop
-    alt?: string
-    orientation?: 'landscape' | 'portrait'
-    _type: 'image'
-    _key: string
-  }>
+  public_content_blocks?: Array<
+    {
+      _key: string
+    } & Content_block
+  >
   technology_tools?: Array<{
     technology_tool?: {
       _ref: string

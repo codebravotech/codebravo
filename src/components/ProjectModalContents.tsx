@@ -7,6 +7,7 @@ import { useProjectThumbnail, useProjectVideo } from "../hooks/documents";
 import { useSystemStore } from "../state/system";
 import { ModalAnimationPhase, ProjectDocument } from "../types/components";
 import { animationPhaseIn } from "../utils/animation";
+import CtaButton from "./CtaButton";
 import Footer from "./Footer";
 import Header from "./Header";
 import Icon from "./Icon";
@@ -29,15 +30,17 @@ export default function ProjectModalContents({
   const { setHideAppOverflow } = useSystemStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const headerRef = useRef<HTMLDivElement>(null);
+  const heroContainerRef = useRef<HTMLDivElement>(null);
   const modalOpen = animationPhase === "MODAL_OPEN";
   const roundingClassConditional = !modalOpen ? roundingClass : "";
-  const headerRef = useRef<HTMLDivElement>(null);
   const contentPadding = 20;
   const swapTransitionDuration = 0.5;
   const headerOffset =
     (headerRef?.current?.getBoundingClientRect()?.height || 0) + contentPadding;
+  const heroHeight =
+    heroContainerRef?.current?.getBoundingClientRect().height || 0;
 
-  const imageRef = useRef<HTMLImageElement>(null);
   // Animate out
   const handleClose = async () => {
     if (modalOpen) {
@@ -52,7 +55,7 @@ export default function ProjectModalContents({
     }
   };
 
-  const { _id, header, private: isPrivate } = project;
+  const { _id, header, private: isPrivate, project_link } = project;
   const video = useProjectVideo(project);
   const thumbnail = useProjectThumbnail(project);
 
@@ -77,15 +80,12 @@ export default function ProjectModalContents({
           isPortfolio={true}
           clickedCurrentRoute={handleClose}
         />
-
         <div className="relative mt-6 flex justify-center">
-          <div className="underline-drawn relative flex items-center text-center font-fjalla text-3xl">
+          <div className="underline-drawn relative flex items-center text-center font-fjalla text-5xl">
             <PortableTextRegular content={header} />
-            <Icon
-              icon="back"
-              className="absolute -right-14 z-20 h-auto w-16 text-stars-100 hover:scale-150 hover:text-expanse-100"
-              onClick={handleClose}
-            />
+          </div>
+          <div className="absolute right-4 top-0 flex h-full flex-col justify-center text-stars-100 hover:scale-150">
+            <Icon className="h-6 w-6" icon="back" onClick={handleClose} />
           </div>
         </div>
       </motion.div>
@@ -101,7 +101,6 @@ export default function ProjectModalContents({
       )}
       {/* Video/image header that fills the card during animate and sits at the top of the modal page when animation is done*/}
       <motion.div
-        ref={imageRef}
         key={`project_${_id}_no_video_thumbnail`}
         className={cx(
           "absolute bottom-0 left-0 right-0 top-0 h-full w-full",
@@ -133,7 +132,9 @@ export default function ProjectModalContents({
         transition={{ duration: swapTransitionDuration, ease: "easeOut" }}
       >
         <motion.div
+          ref={heroContainerRef}
           key={`project_${_id}_modal_header_video`}
+          className="bg-red-200"
           variants={{
             visible: {
               opacity: 1,
@@ -152,8 +153,7 @@ export default function ProjectModalContents({
               thumbnail={thumbnail}
               className={cx(
                 roundingClassConditional,
-                "absolute bottom-0 left-0 right-0 top-0 z-10 h-full w-full",
-                // !(video && videoLoaded && modalOpen) && "hidden",
+                "absolute bottom-0 left-0 right-0 top-0 z-10",
               )}
             />
           )}
@@ -164,37 +164,47 @@ export default function ProjectModalContents({
           alt={alt}
           className={cx(
             "absolute bottom-0 left-0 right-0 top-0 z-20 h-full w-full",
-            // video && videoLoaded && modalOpen && "hidden",
           )}
           variants={{
             visible: {
               opacity: 1,
-              // filter: "blur(0px)",
+              filter: "blur(0px)",
               transition: { duration: modalOpen ? swapTransitionDuration : 0 },
             },
             hidden: {
               opacity: 0,
-              // filter: "blur(100px)",
+              filter: "blur(10px)",
               transition: { duration: swapTransitionDuration },
             },
           }}
           animate={video && videoLoaded && modalOpen ? "hidden" : "visible"}
         />
+        {!isPrivate && project_link?.url && modalOpen && (
+          <div
+            className="absolute z-30 flex w-full justify-center"
+            style={{
+              top: (heroHeight || 0) - 80,
+            }}
+          >
+            <div className="glass-menu rounded-full">
+              <CtaButton variant="white_night" url={project_link?.url || ""}>
+                {project_link?.label || "Launch Site"}
+              </CtaButton>
+            </div>
+          </div>
+        )}
       </motion.div>
       {modalOpen && (
         <>
           {isPrivate ? (
             <ProjectModalBodyPrivate
               project={project}
-              offset={
-                (imageRef.current?.getBoundingClientRect()?.height || 0) +
-                contentPadding
-              }
+              offset={heroHeight + contentPadding}
             />
           ) : (
             <ProjectModalBodyPublic
               project={project}
-              animationPhase={animationPhase}
+              offset={heroHeight + contentPadding + 70}
             />
           )}
           <Footer isHomePage={false} />

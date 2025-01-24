@@ -22,8 +22,6 @@ export default function ProjectModalBodyPrivate({
     cta_link,
   } = project;
 
-  console.log("CTA LINK", cta_link);
-
   return (
     <motion.div
       className="my-32 flex flex-col items-center text-stars-100"

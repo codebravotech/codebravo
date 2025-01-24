@@ -3,15 +3,15 @@ import { motion } from "framer-motion";
 import { get } from "lodash";
 import { RefObject, useState } from "react";
 
-import ArriveDirectionally from "../animations/ArriveDirectionally";
-import ParallaxImage from "../animations/ParallaxImage";
-import { IMAGE_SCALE_FACTOR } from "../config";
-import { useDisplay } from "../hooks/display";
-import { ContentObject } from "../types/components";
-import CtaButton from "./CtaButton";
-import PortableTextRegular from "./PortableTextRegular";
+import ArriveDirectionally from "../../animations/ArriveDirectionally";
+import ParallaxImage from "../../animations/ParallaxImage";
+import { IMAGE_SCALE_FACTOR } from "../../config";
+import { useDisplay } from "../../hooks/display";
+import { ContentObject } from "../../types/components";
+import CtaButton from "../CtaButton";
+import PortableTextRegular from "../PortableTextRegular";
 
-export default function ContentBlock({
+export default function OverlappingContentBlock({
   content_block,
   justified,
 }: {

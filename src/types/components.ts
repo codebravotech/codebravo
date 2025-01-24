@@ -100,6 +100,7 @@ export interface ProjectDocument
     | "partners"
     | "technology_tools"
     | "private_project_summary"
+    | "public_content_blocks"
     | "final_cta"
   > {
   header: PortableTextBlock[];
@@ -110,6 +111,7 @@ export interface ProjectDocument
   partners: PartnerObject[];
   technology_tools: TechnologyToolObject[];
   private_project_summary: PortableTextBlock[];
+  public_content_blocks: ContentObject[];
   final_cta: PortableTextBlock[];
 }
 
@@ -119,9 +121,10 @@ export interface PdfRefResolved {
 }
 
 export interface ContentObject
-  extends Omit<Content_block, "image" | "file_link" | "copy"> {
+  extends Omit<Content_block, "image" | "video" | "file_link" | "copy"> {
   _key: string;
-  image: ImageRefResolved;
-  file_link: PdfRefResolved;
-  copy: PortableTextBlock[];
+  image?: ImageRefResolved;
+  video?: VideoRefResolved;
+  file_link?: PdfRefResolved;
+  copy?: PortableTextBlock[];
 }

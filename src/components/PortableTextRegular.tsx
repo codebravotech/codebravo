@@ -14,9 +14,12 @@ const components: PortableTextComponents = {
     h3: ({ children }) => <div className="h3">{children}</div>,
     h4: ({ children }) => <div className="h4">{children}</div>,
     h5: ({ children }) => <div className="h5">{children}</div>,
-    h6: ({ children }) => <div className="h7">{children}</div>,
+    h6: ({ children }) => <div className="h6">{children}</div>,
     normal: ({ children }) => {
       return <p>{children}</p>;
+    },
+    large_body: ({ children }) => {
+      return <p className="text-xl">{children}</p>;
     },
   },
 };

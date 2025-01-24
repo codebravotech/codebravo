@@ -6,7 +6,7 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { CSSProperties, useRef } from "react";
+import { CSSProperties, RefObject, useRef } from "react";
 
 import { IMAGE_SCALE_FACTOR } from "../config";
 
@@ -15,15 +15,13 @@ export default function ParallaxImage({
   alt,
   className = "",
   style = {},
-  updatePosition = (ref) => {
-    console.log(ref);
-  },
+  updatePosition = () => {},
 }: {
   src: string;
   alt: string;
   style?: CSSProperties;
   className?: string;
-  updatePosition: (ref) => void;
+  updatePosition: (ref: RefObject<HTMLImageElement> | undefined) => void;
 }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({

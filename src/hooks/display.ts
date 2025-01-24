@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
 export const useDisplay = () => {
