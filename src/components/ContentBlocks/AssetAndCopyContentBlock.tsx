@@ -29,6 +29,8 @@ export default function AssetAndCopyContentBlock({
   let assetContainerClasses = "";
   let assetClasses = "";
   let textClasses = "";
+  let assetArrivalDirection: "up" | "left" | "right" = "up";
+  let textArrivalDirection: "up" | "left" | "right" = "up";
 
   const orientation = image?.orientation || video?.orientation;
   const assetIsPortrait = orientation === "portrait";
@@ -49,8 +51,13 @@ export default function AssetAndCopyContentBlock({
     assetClasses = "rounded-2xl";
     assetContainerClasses = `${assetIsPortrait ? "basis-1/3 grow-0" : "basis-2/3"} mx-6`;
     if (block_ordering === "asset_copy") {
+      assetArrivalDirection = "right";
+      textArrivalDirection = "left";
+
       axisClasses = "flex-row items-center";
     } else {
+      assetArrivalDirection = "left";
+      textArrivalDirection = "right";
       axisClasses = "flex-row-reverse items-center";
     }
 
@@ -62,7 +69,7 @@ export default function AssetAndCopyContentBlock({
       {image?.asset?.url && (
         <ArriveDirectionally
           keyBy={`content_block_${_key}_asset_img`}
-          direction="right"
+          direction={assetArrivalDirection}
           className={assetContainerClasses}
         >
           <img
@@ -75,7 +82,7 @@ export default function AssetAndCopyContentBlock({
       {video && video?.asset?.url && (
         <ArriveDirectionally
           keyBy={`content_block_${_key}_asset_video`}
-          direction="right"
+          direction={assetArrivalDirection}
           className={assetContainerClasses}
         >
           <motion.video
@@ -95,9 +102,13 @@ export default function AssetAndCopyContentBlock({
         </ArriveDirectionally>
       )}
       {!assetOnly && (
-        <div className={cx("relative my-8 flex flex-col", textClasses)}>
+        <ArriveDirectionally
+          keyBy={`content_block_${_key}_copy`}
+          direction={textArrivalDirection}
+          className={cx("relative my-8 flex flex-col", textClasses)}
+        >
           <PortableTextRegular link_color="stars-100" content={copy} />
-        </div>
+        </ArriveDirectionally>
       )}
     </motion.div>
   );

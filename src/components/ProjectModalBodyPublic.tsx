@@ -1,9 +1,13 @@
 import { motion } from "framer-motion";
 
+import ArriveDirectionally from "../animations/ArriveDirectionally";
 import { ProjectDocument } from "../types/components";
 import AssetAndCopyContentBlock from "./ContentBlocks/AssetAndCopyContentBlock";
 import CopyContentBlock from "./ContentBlocks/CopyContentBlock";
 import CtaButton from "./CtaButton";
+import Partners from "./Partners";
+import PortableTextRegular from "./PortableTextRegular";
+import TechnologyTools from "./TechnologyTools";
 
 export default function ProjectModalBodyPublic({
   project,
@@ -13,7 +17,10 @@ export default function ProjectModalBodyPublic({
   offset: number;
 }) {
   const public_content_blocks = project?.public_content_blocks || [];
+  const final_cta = project?.final_cta || [];
   const cta_link = project?.cta_link;
+  const partners = project?.partners || [];
+  const technology_tools = project?.technology_tools || [];
 
   return (
     <motion.div
@@ -41,15 +48,30 @@ export default function ProjectModalBodyPublic({
             return null;
         }
       })}
-      {cta_link?.url && cta_link?.label && (
-        <CtaButton
-          url={cta_link?.url}
-          variant="black_dune"
-          className="mt-4 grow-0"
-        >
-          {cta_link?.label}
-        </CtaButton>
-      )}
+
+      <ArriveDirectionally
+        keyBy={`${project?._id}_collaborators and tech`}
+        className="flex flex-row gap-32"
+      >
+        <Partners partners={partners} />
+        <TechnologyTools technology_tools={technology_tools} />
+      </ArriveDirectionally>
+
+      <ArriveDirectionally
+        keyBy={`${project?._id}_cta`}
+        className="mt-10 flex w-full flex-col items-center text-xl"
+      >
+        <PortableTextRegular content={final_cta} />
+        {cta_link?.url && cta_link?.label && (
+          <CtaButton
+            url={cta_link?.url}
+            variant="black_dune"
+            className="mt-4 grow-0"
+          >
+            {cta_link?.label}
+          </CtaButton>
+        )}
+      </ArriveDirectionally>
     </motion.div>
   );
 }

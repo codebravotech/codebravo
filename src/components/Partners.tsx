@@ -10,23 +10,24 @@ export default function Partners({
   }
 
   return (
-    <>
-      <h3 className="underline">Badass Partners</h3>
+    <div>
+      <div className="mb-2 underline">Special thanks to my collaborators:</div>
 
       {partners.map((object) => {
         const { partner_role, partner } = object;
         const { name, location } = partner;
         return (
-          <>
+          <div key={`partner_${name}`}>
             <div>
-              <span className="italic">
-                {name} -- {location}
+              <span className="">
+                <span className="">{name}</span> --{" "}
+                <span className="italic">{location}</span>
               </span>
             </div>
-            <div>{partner_role}</div>
-          </>
+            <div className="mt-1 italic">Project role: {partner_role}</div>
+          </div>
         );
       })}
-    </>
+    </div>
   );
 }

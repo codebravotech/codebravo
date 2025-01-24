@@ -42,7 +42,7 @@ export default function ProjectModalBodyPrivate({
           <TechnologyTools technology_tools={technology_tools} />
         </ArriveDirectionally>
         <ArriveDirectionally
-          keyBy={`${project?._id}_technology_tools`}
+          keyBy={`${project?._id}_cta`}
           className="h6 mt-10 flex w-full flex-col items-center"
         >
           <PortableTextRegular content={final_cta} />

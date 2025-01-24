@@ -13,7 +13,7 @@ export default function ArriveDirectionally({
   exit = false,
 }: {
   keyBy: string;
-  direction?: "up" | "right";
+  direction?: "up" | "right" | "left";
   distance?: number;
   delay?: number;
   duration?: number;
@@ -29,7 +29,12 @@ export default function ArriveDirectionally({
       initial={{
         opacity: 0,
         y: direction === "up" ? distance : 0,
-        x: direction === "right" ? -1 * distance : 0,
+        x:
+          direction === "right"
+            ? -1 * distance
+            : direction === "left"
+              ? distance
+              : 0,
       }}
       whileInView={{ opacity: 1, y: 0, x: 0 }}
       transition={{
@@ -41,7 +46,12 @@ export default function ArriveDirectionally({
           ? {
               opacity: 0,
               y: direction === "up" ? distance : 0,
-              x: direction === "right" ? -1 * distance : 0,
+              x:
+                direction === "right"
+                  ? -1 * distance
+                  : direction === "left"
+                    ? distance
+                    : 0,
             }
           : {}
       }
