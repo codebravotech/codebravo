@@ -24,8 +24,8 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
   const { pathname } = useLocation();
   const { isMobile } = useDisplay();
   const { hideAppOverflow } = useSystemStore();
-  const isHomePage = pathname === "/";
-  const isPortfolio = pathname === "/portfolio";
+  const isHomePage = pathname === "/home";
+  const isPortfolio = pathname === "/portfolio" || pathname === "/";
 
   const tooltipClassname =
     "mt-2 z-50 rounded-xl bg-opacity-50 px-2 py-1 font-raleway text-xs bg-night-100 text-stars-100";
