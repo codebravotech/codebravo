@@ -7,6 +7,7 @@ import { useDisplay } from "../hooks/display";
 import { useProjectThumbnail } from "../hooks/documents";
 import { useSystemStore } from "../state/system";
 import { ProjectDocument } from "../types/components";
+import Icon from "./Icon";
 import PortableTextRegular from "./PortableTextRegular";
 
 export default function ProjectCard({
@@ -28,6 +29,7 @@ export default function ProjectCard({
     thumbnail_overlay_color = "",
     description = [],
     client_logo,
+    private: isPrivate,
   } = project;
   const isOpen = openProjectId === _id;
   const thumbnail = useProjectThumbnail(project);
@@ -113,7 +115,7 @@ export default function ProjectCard({
       whileHover="hover"
       className={cx(
         className,
-        isPortrait ? "max-w-[97%] basis-full" : "basis-[47%]",
+        isPortrait ? "max-w-[97%] basis-full" : "basis-[45%]",
         "group relative grow-0 cursor-pointer overflow-hidden border-night-100 bg-transparent shadow-2xl",
         roundingClass,
         isOpen && "invisible",
@@ -143,10 +145,15 @@ export default function ProjectCard({
       ></motion.div>
       {/* Content */}
       <div className="invisible absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-3 bg-night-400/50 px-6 text-center text-2xl text-stars-100 group-hover:visible">
-        {client_logo && (
+        {client_logo && !isPrivate ? (
           <img
             src={logoUrl}
             alt={logoAlt}
+            className="max-h-[40%] max-w-[60%] object-contain"
+          />
+        ) : (
+          <Icon
+            icon="lock"
             className="max-h-[40%] max-w-[60%] object-contain"
           />
         )}

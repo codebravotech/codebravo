@@ -31,10 +31,7 @@ export default function Portfolio() {
   const header = get(page, "header", []);
   const projects = get(page, "projects", []);
 
-  const { private_header, public_header } = page;
   const openProject = projects.find((project) => project._id === openProjectId);
-  const [privateProjects, publicProjects] = partition(projects, "private");
-  const subheaderClasses = "mb-10 max-w-[35%] text-center";
 
   useEffect(() => {
     if (!searchParams.get("_id")) {
@@ -54,54 +51,18 @@ export default function Portfolio() {
         <ProjectModal project={openProject} />
       )}
 
-      {publicProjects.length > 0 && (
-        <>
-          <ArriveDirectionally
-            keyBy="private_header"
-            direction="up"
-            delay={0}
-            duration={0.5}
-            className={cx(subheaderClasses, "mt-10")}
-          >
-            <PortableTextRegular content={public_header} />
-          </ArriveDirectionally>
-          <div className="mb-4 flex w-full flex-row flex-wrap justify-center gap-6 px-4">
-            {publicProjects.map((project, index) => {
-              return (
-                <ProjectCard
-                  project={project}
-                  key={`project_card_${project?._id}`}
-                  index={index}
-                />
-              );
-            })}
-          </div>
-        </>
-      )}
-
-      {privateProjects.length > 0 && (
-        <>
-          <ArriveDirectionally
-            keyBy="public_header"
-            direction="up"
-            delay={0}
-            duration={0.5}
-            className={cx(subheaderClasses, "mt-10")}
-          >
-            <PortableTextRegular content={private_header} />
-          </ArriveDirectionally>
-          <div className="flex w-full flex-row flex-wrap justify-center gap-6 px-4">
-            {privateProjects.map((project, index) => {
-              return (
-                <ProjectCard
-                  project={project}
-                  key={`project_card_${project?._id}`}
-                  index={index}
-                />
-              );
-            })}
-          </div>
-        </>
+      {projects.length > 0 && (
+        <div className="mb-4 flex w-full flex-row flex-wrap justify-center gap-6 px-4">
+          {projects.map((project, index) => {
+            return (
+              <ProjectCard
+                project={project}
+                key={`project_card_${project?._id}`}
+                index={index}
+              />
+            );
+          })}
+        </div>
       )}
     </motion.div>
   );

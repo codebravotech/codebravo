@@ -79,7 +79,7 @@ export default function ProjectModalBody({
       {(partners?.length > 0 || technology_tools?.length > 0) && (
         <ArriveDirectionally
           keyBy={`${project?._id}_collaborators and tech`}
-          className="flex flex-col gap-10 lg:flex-row lg:gap-48"
+          className="flex w-full flex-col justify-center gap-10 text-center lg:flex-col"
         >
           {partners?.length > 0 && <Partners partners={partners} />}
           {technology_tools?.length > 0 && (

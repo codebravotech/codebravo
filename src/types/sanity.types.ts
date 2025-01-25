@@ -383,6 +383,7 @@ export type Project = {
       [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
     }
     orientation?: 'landscape' | 'portrait'
+    playback_speed?: number
     _type: 'file'
     _key: string
   }>

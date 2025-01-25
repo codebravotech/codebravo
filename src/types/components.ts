@@ -18,8 +18,10 @@ export type IconType =
   | "clipboard"
   | "connect"
   | "home"
+  | "lock"
   | "portfolio"
-  | "refresh";
+  | "refresh"
+  | "unlock";
 export type SanityQueryParams = Record<
   string,
   string | number | boolean | null | (string | number | boolean | null)[]

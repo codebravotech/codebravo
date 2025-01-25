@@ -11,7 +11,7 @@ export default function Partners({
 
   return (
     <div>
-      <div className="text-xl underline">Collaborators:</div>
+      <div className="text-xl underline">Project Collaborators:</div>
 
       {partners.map((object) => {
         const { partner_role, partner } = object;

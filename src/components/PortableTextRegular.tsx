@@ -8,6 +8,13 @@ import { merge } from "lodash";
 import { BaseComponents } from "./PortableTextBaseComponents";
 
 const components: PortableTextComponents = {
+  marks: {
+    highlighted: ({ children }) => (
+      <span className="rounded-sm bg-expanse-100 px-[2px] text-night-300">
+        {children}
+      </span>
+    ),
+  },
   block: {
     h1: ({ children }) => <div className="h1">{children}</div>,
     h2: ({ children }) => <div className="h2">{children}</div>,

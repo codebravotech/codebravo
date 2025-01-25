@@ -18,8 +18,8 @@ export default function TechnologyTools({
 
   return (
     <div>
-      <div className="text-xl underline">Tech:</div>
-      <ul className="flex flex-col items-start text-lg">
+      <div className="text-xl underline">Project Tech:</div>
+      <ul className="flex flex-col items-center text-lg">
         {technology_tools.map((object) => {
           const { used_for, technology_tool } = object;
           if (!technology_tool) {

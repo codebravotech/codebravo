@@ -206,20 +206,15 @@ export default function ProjectModalContents({
           </div>
         )}
       </motion.div>
+
+      {/* TODO: ADD A CHECK HERE FOR IF IT IS PASSWORD UNLOCKED, IF NOT, SHOW THE PRIVATE BODY (and the private modal)*/}
       {modalOpen && (
         <>
-          {isPrivate ? (
-            <ProjectModalBodyPrivate
-              project={project}
-              offset={heroHeight + contentPadding}
-            />
-          ) : (
-            <ProjectModalBody
-              project={project}
-              offset={heroHeight + contentPadding + 70}
-              handleClose={handleClose}
-            />
-          )}
+          <ProjectModalBody
+            project={project}
+            offset={heroHeight + contentPadding + 70}
+            handleClose={handleClose}
+          />
           <Footer isHomePage={false} />
         </>
       )}

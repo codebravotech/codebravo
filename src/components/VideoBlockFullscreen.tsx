@@ -24,7 +24,7 @@ export default function VideoBlockFullscreen({
   return (
     <motion.video
       id={id}
-      className={cx("relative z-20 cursor-pointer object-cover", className)}
+      className={cx("relative z-20 object-cover", className)}
       controls={!!isMobile}
       autoPlay
       muted

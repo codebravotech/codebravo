@@ -143,7 +143,7 @@ export default function AssetAndCopyContentBlock({
         >
           <img
             className={assetClasses}
-            src={image?.asset?.url}
+            src={`${image?.asset?.url}?w=${innerWidth * 2}&fit=clip&auto=format`}
             alt={image?.alt}
           />
         </ArriveDirectionally>
