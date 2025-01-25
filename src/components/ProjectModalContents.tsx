@@ -88,7 +88,7 @@ export default function ProjectModalContents({
           isPortfolio={true}
           clickedCurrentRoute={handleClose}
         />
-        <div className="relative mt-6 flex justify-center px-10 lg:px-0">
+        <div className="relative flex justify-center px-10 lg:px-0">
           <div className="underline-drawn relative flex items-center text-center font-fjalla text-5xl">
             <PortableTextRegular content={header} />
           </div>

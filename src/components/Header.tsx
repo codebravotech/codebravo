@@ -2,7 +2,7 @@ import cx from "classnames";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-import { HEADER_HEIGHT, NAV_OPTIONS } from "../config";
+import { NAV_OPTIONS } from "../config";
 import { useDisplay } from "../hooks/display";
 
 export default function Header({
@@ -25,11 +25,10 @@ export default function Header({
       {!isHomePage && (
         <div
           className={cx(
-            "flex flex-row items-start pt-2 font-fjalla lg:w-[98%]",
+            "flex h-[10vh] flex-row items-start pt-2 font-fjalla lg:w-[98%]",
             isMobile ? "justify-center" : "justify-between",
             isHomePage && "hidden",
           )}
-          style={{ height: HEADER_HEIGHT }}
         >
           <Link className="mb-2 h-full pl-6" to="/">
             <img className="h-full w-full" src={logo} />

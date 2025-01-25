@@ -71,11 +71,13 @@ export default function AssetAndCopyContentBlock({
     } else if (text_align === "right" && !isPortrait) {
       textClasses = "text-right self-end mr-8 w-1/2";
     } else if (text_align === "center") {
-      textClasses = "w-3/4 text-center";
+      textClasses = "w-2/3 text-center";
     }
   } else if (axis === "horizontal") {
     assetClasses = "rounded-2xl";
-    assetContainerClasses = `${assetIsPortrait ? "basis-1/3 grow-0" : "basis-2/3"} mx-6`;
+    assetContainerClasses = assetIsPortrait
+      ? "basis-1/2 flex flex justify-center"
+      : "basis-2/3 mx-6";
 
     if (block_ordering === "asset_copy") {
       assetArrivalDirection = "right";
@@ -91,7 +93,12 @@ export default function AssetAndCopyContentBlock({
     if (isPortrait) {
       textClasses = "w-screen px-6 text-center grow-0";
     } else {
-      textClasses = `text-left mx-8 basis-1/2 ${assetIsPortrait ? "grow-0 mx-auto" : "grow-0"}`;
+      if (assetIsPortrait) {
+        axisClasses = `flex-row-reverse`;
+        textClasses = `basis-3/4 flex text-center mx-8 justify-center`;
+      } else {
+        textClasses = "basis-1/2 mx-8 grow-0";
+      }
     }
   }
 
@@ -103,7 +110,7 @@ export default function AssetAndCopyContentBlock({
         <ArriveDirectionally
           keyBy={`content_block_${_key}_asset_video`}
           direction={assetArrivalDirection}
-          className={cx(assetContainerClasses)}
+          className={cx(assetContainerClasses, "grow-0")}
         >
           <motion.video
             id={videoId}
