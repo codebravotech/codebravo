@@ -85,13 +85,13 @@ export default function AssetAndCopyContentBlock({
     } else {
       assetArrivalDirection = "left";
       textArrivalDirection = "right";
-      axisClasses = "flex-row-reverse items-center";
+      axisClasses = "flex-row-reverse items-center ";
     }
 
     if (isPortrait) {
-      textClasses = "w-screen px-6 text-center";
+      textClasses = "w-screen px-6 text-center grow-0";
     } else {
-      textClasses = `text-left mx-8 basis-1/3 ${assetIsPortrait ? "grow" : "grow-0"}`;
+      textClasses = `text-left mx-8 basis-1/2 ${assetIsPortrait ? "grow-0 mx-auto" : "grow-0"}`;
     }
   }
 

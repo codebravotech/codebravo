@@ -14,7 +14,7 @@ export const NAV_OPTIONS: Array<NavOptions> = [
   // },
   {
     label: "Portfolio",
-    pathname: "/portfolio",
+    pathname: "/",
     icon: "portfolio",
     short_label: "Portfolio",
   },

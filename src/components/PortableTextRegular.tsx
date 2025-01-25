@@ -10,7 +10,7 @@ import { BaseComponents } from "./PortableTextBaseComponents";
 const components: PortableTextComponents = {
   marks: {
     highlighted: ({ children }) => (
-      <span className="rounded-sm bg-expanse-100 px-[2px] text-night-300">
+      <span className="rounded-sm bg-expanse-100 px-[0.5px] font-bold text-night-300">
         {children}
       </span>
     ),
