@@ -96,6 +96,7 @@ export type Content_block = {
       | 'large_body'
       | 'xl_body'
       | 'normal'
+      | 'highlighted'
       | 'h1'
       | 'h2'
       | 'h3'
@@ -155,42 +156,6 @@ export type Portfolio_page = {
     _type: 'block'
     _key: string
   }>
-  public_header?: Array<{
-    children?: Array<{
-      marks?: Array<string>
-      text?: string
-      _type: 'span'
-      _key: string
-    }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
-    listItem?: 'bullet' | 'number'
-    markDefs?: Array<{
-      href?: string
-      _type: 'link'
-      _key: string
-    }>
-    level?: number
-    _type: 'block'
-    _key: string
-  }>
-  private_header?: Array<{
-    children?: Array<{
-      marks?: Array<string>
-      text?: string
-      _type: 'span'
-      _key: string
-    }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
-    listItem?: 'bullet' | 'number'
-    markDefs?: Array<{
-      href?: string
-      _type: 'link'
-      _key: string
-    }>
-    level?: number
-    _type: 'block'
-    _key: string
-  }>
   projects?: Array<{
     _ref: string
     _type: 'reference'
@@ -213,7 +178,18 @@ export type Home_page = {
       _type: 'span'
       _key: string
     }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    style?:
+      | 'large_body'
+      | 'xl_body'
+      | 'normal'
+      | 'highlighted'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'blockquote'
     listItem?: 'bullet' | 'number'
     markDefs?: Array<{
       href?: string
@@ -241,7 +217,18 @@ export type Connect_page = {
       _type: 'span'
       _key: string
     }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    style?:
+      | 'large_body'
+      | 'xl_body'
+      | 'normal'
+      | 'highlighted'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'blockquote'
     listItem?: 'bullet' | 'number'
     markDefs?: Array<{
       href?: string
@@ -259,7 +246,18 @@ export type Connect_page = {
       _type: 'span'
       _key: string
     }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    style?:
+      | 'large_body'
+      | 'xl_body'
+      | 'normal'
+      | 'highlighted'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'blockquote'
     listItem?: 'bullet' | 'number'
     markDefs?: Array<{
       href?: string
@@ -277,7 +275,18 @@ export type Connect_page = {
       _type: 'span'
       _key: string
     }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    style?:
+      | 'large_body'
+      | 'xl_body'
+      | 'normal'
+      | 'highlighted'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'blockquote'
     listItem?: 'bullet' | 'number'
     markDefs?: Array<{
       href?: string
@@ -295,7 +304,18 @@ export type Connect_page = {
       _type: 'span'
       _key: string
     }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    style?:
+      | 'large_body'
+      | 'xl_body'
+      | 'normal'
+      | 'highlighted'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'blockquote'
     listItem?: 'bullet' | 'number'
     markDefs?: Array<{
       href?: string
@@ -371,6 +391,7 @@ export type Project = {
     crop?: SanityImageCrop
     alt?: string
     orientation?: 'landscape' | 'portrait'
+    private_version?: boolean
     _type: 'image'
     _key: string
   }>
@@ -457,7 +478,18 @@ export type Project = {
       _type: 'span'
       _key: string
     }>
-    style?: 'normal' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
+    style?:
+      | 'large_body'
+      | 'xl_body'
+      | 'normal'
+      | 'highlighted'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'blockquote'
     listItem?: 'bullet' | 'number'
     markDefs?: Array<{
       href?: string

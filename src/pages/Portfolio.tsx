@@ -1,15 +1,14 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
 import groq from "groq";
-import { get, partition } from "lodash";
+import { get } from "lodash";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import ArriveDirectionally from "../animations/ArriveDirectionally";
 import PortableTextPopcorn from "../components/PortableTextPopcorn";
-import PortableTextRegular from "../components/PortableTextRegular";
 import ProjectCard from "../components/ProjectCard";
 import ProjectModal from "../components/ProjectModal";
+import { useDisplay } from "../hooks/display";
 import { useQuery } from "../hooks/sanity";
 import { useSystemStore } from "../state/system";
 import { PortfolioPageDocument } from "../types/components";
@@ -25,6 +24,7 @@ export default function Portfolio() {
   const { openProjectId, setOpenProjectId, clickedCardBoundingBox } =
     useSystemStore();
   const [searchParams] = useSearchParams();
+  const { isDesktopOrLaptop } = useDisplay();
 
   const { documents = [] } = useQuery(query, params);
   const page = get(documents, "[0]", {}) as PortfolioPageDocument;
@@ -52,7 +52,12 @@ export default function Portfolio() {
       )}
 
       {projects.length > 0 && (
-        <div className="mb-4 flex w-full flex-row flex-wrap justify-center gap-6 px-4">
+        <div
+          className={cx(
+            "mb-4 flex w-full flex-wrap justify-center gap-6 px-4",
+            isDesktopOrLaptop ? "flex-row" : "flex-col",
+          )}
+        >
           {projects.map((project, index) => {
             return (
               <ProjectCard

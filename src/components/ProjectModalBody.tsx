@@ -54,7 +54,7 @@ export default function ProjectModalBody({
 
       <ArriveDirectionally
         keyBy={`${project?._id}_cta`}
-        className="mt-10 flex w-full flex-col items-center text-xl"
+        className="mt-10 flex w-full flex-col items-center text-center text-xl"
       >
         <PortableTextRegular content={final_cta} />
         {cta_link?.url && cta_link?.label && (

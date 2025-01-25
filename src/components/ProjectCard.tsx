@@ -115,7 +115,7 @@ export default function ProjectCard({
       whileHover="hover"
       className={cx(
         className,
-        isPortrait ? "max-w-[97%] basis-full" : "h-[42vh] basis-[47%]",
+        isPortrait ? "max-w-[97%] basis-full" : "h-[43vh] basis-[47%]",
         "group relative grow-0 cursor-pointer overflow-hidden border-night-100 bg-transparent shadow-2xl",
         roundingClass,
         isOpen && "invisible",
@@ -127,14 +127,14 @@ export default function ProjectCard({
       <motion.img
         src={`${url}?w=${innerWidth}&fit=clip&auto=format`}
         alt={alt}
-        className="h-full w-full object-contain"
+        className="h-full w-full object-fill"
         variants={imageVariants}
       />
 
       {/* Overlay */}
       <motion.div
         className={cx(
-          `absolute inset-0 flex h-full w-full flex-col items-center justify-center group-hover:!opacity-100`,
+          `absolute inset-0 flex h-full w-full flex-col items-center justify-center group-hover:scale-105 group-hover:!opacity-100`,
           roundingClass,
         )}
         style={{
