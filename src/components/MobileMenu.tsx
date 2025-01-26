@@ -15,7 +15,7 @@ export default function MobileMenu({ isHomePage = false }) {
       )}
     >
       {NAV_OPTIONS.map((button) => (
-        <div
+        <motion.div
           className={cx(
             "relative rounded-full p-[10px]",
             pathname === button.pathname
@@ -26,6 +26,7 @@ export default function MobileMenu({ isHomePage = false }) {
           )}
           key={button.label}
           onClick={() => navigate(button.pathname)}
+          onTap={() => navigate(button.pathname)}
         >
           <Icon
             icon={button.icon}
@@ -35,7 +36,7 @@ export default function MobileMenu({ isHomePage = false }) {
               button.icon === "connect" && "scale-[1.03]",
             )}
           />
-        </div>
+        </motion.div>
       ))}
     </motion.div>
   );

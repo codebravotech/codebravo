@@ -25,7 +25,6 @@ export default function VideoBlockFullscreen({
       id={id}
       className={cx("relative z-20 object-cover", className)}
       src={url}
-      controls={false}
       autoPlay
       muted
       onContextMenu={() => false}
