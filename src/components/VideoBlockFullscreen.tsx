@@ -1,8 +1,7 @@
 import cx from "classnames";
-import { motion } from "framer-motion";
 
-import { useDisplay } from "../hooks/display";
 import { ImageRefResolved, VideoRefResolved } from "../types/components";
+import VideoComponent from "./VideoComponent";
 
 export default function VideoBlockFullscreen({
   id,
@@ -16,19 +15,23 @@ export default function VideoBlockFullscreen({
   setVideoLoaded?: (videoLoaded: boolean) => void;
   className?: string;
 }) {
-  const { isMobile } = useDisplay();
   const {
     playback_speed,
     asset: { url },
   } = video;
+
   return (
-    <motion.video
+    <VideoComponent
       id={id}
       className={cx("relative z-20 object-cover", className)}
-      controls={!!isMobile}
+      src={url}
+      controls={false}
       autoPlay
       muted
+      onContextMenu={() => false}
       loop
+      playsInline
+      webkit-playsinline={"true"}
       onLoadedData={() => {
         if (setVideoLoaded) {
           setVideoLoaded(true);
@@ -43,9 +46,6 @@ export default function VideoBlockFullscreen({
           vidElem.playbackRate = playback_speed;
         }
       }}
-    >
-      <source src={url} type="video/mp4" />
-      Your browser does not support the video tag.
-    </motion.video>
+    />
   );
 }

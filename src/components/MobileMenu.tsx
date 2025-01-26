@@ -17,11 +17,11 @@ export default function MobileMenu({ isHomePage = false }) {
       {NAV_OPTIONS.map((button) => (
         <div
           className={cx(
-            "glass-menu relative rounded-full p-[10px]",
+            "relative rounded-full p-[10px]",
             pathname === button.pathname
               ? isHomePage
                 ? "border-[2px] border-night-300 bg-transparent p-[8px]"
-                : "bg-expanse-gradient"
+                : "bg-dune-gradient"
               : "border-transparent",
           )}
           key={button.label}

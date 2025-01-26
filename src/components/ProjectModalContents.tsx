@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
+import { useDisplay } from "../hooks/display";
 import { useProjectThumbnail, useProjectVideo } from "../hooks/documents";
 import { useSystemStore } from "../state/system";
 import { ModalAnimationPhase, ProjectDocument } from "../types/components";
@@ -26,6 +27,7 @@ export default function ProjectModalContents({
   setAnimationPhase: (animationPhase: ModalAnimationPhase) => void;
   roundingClass: string;
 }) {
+  const { isPortrait, isTabletOrMobile } = useDisplay();
   const { setHideAppOverflow } = useSystemStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const [videoLoaded, setVideoLoaded] = useState(false);
@@ -167,7 +169,15 @@ export default function ProjectModalContents({
               transition: { duration: swapTransitionDuration },
             },
           }}
-          animate={!(video && videoLoaded && modalOpen) ? "hidden" : "visible"}
+          animate={
+            !(
+              video &&
+              modalOpen &&
+              (videoLoaded || isPortrait || isTabletOrMobile)
+            )
+              ? "hidden"
+              : "visible"
+          }
         >
           {video && (
             <VideoBlockFullscreen
@@ -202,7 +212,13 @@ export default function ProjectModalContents({
               zIndex: -1,
             },
           }}
-          animate={video && videoLoaded && modalOpen ? "hidden" : "visible"}
+          animate={
+            video &&
+            modalOpen &&
+            (videoLoaded || isPortrait || isTabletOrMobile)
+              ? "hidden"
+              : "visible"
+          }
         />
         {!isPrivate && project_link?.url && modalOpen && (
           <div

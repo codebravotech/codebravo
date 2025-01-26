@@ -13,6 +13,7 @@ import {
   VideoRefResolved,
 } from "../../types/components";
 import PortableTextRegular from "../PortableTextRegular";
+import VideoComponent from "../VideoComponent";
 
 export default function AssetAndCopyContentBlock({
   content_block,
@@ -28,7 +29,7 @@ export default function AssetAndCopyContentBlock({
     block_ordering,
     text_align,
   } = content_block;
-  const { isPortrait, isMobile } = useDisplay();
+  const { isPortrait } = useDisplay();
   const axis = isPortrait ? "vertical" : block_axis;
   let axisClasses = "flex-col";
   let assetContainerClasses = "";
@@ -111,17 +112,20 @@ export default function AssetAndCopyContentBlock({
           direction={assetArrivalDirection}
           className={cx(assetContainerClasses, "grow-0")}
         >
-          <motion.video
+          <VideoComponent
             id={videoId}
             className={cx(
               assetClasses,
               assetIsPortrait ? "max-h-[95vh]" : "max-h-[100vh]",
               "relative cursor-pointer object-scale-down",
             )}
-            controls={!!isMobile}
+            src={video?.asset?.url}
             autoPlay
             muted
+            onContextMenu={() => false}
             loop
+            playsInline
+            webkit-playsinline={"true"}
             onLoadedData={() => {
               const vidElem = document.getElementById(
                 videoId,
@@ -135,10 +139,7 @@ export default function AssetAndCopyContentBlock({
                 vidElem.playbackRate = playback_speed;
               }
             }}
-          >
-            <source src={video?.asset?.url} type="video/mp4" />
-            Your browser does not support the video tag.
-          </motion.video>
+          />
         </ArriveDirectionally>
       )}
       {assetType === "image" && (

@@ -23,7 +23,7 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
   // const [scope, animate] = useAnimate();
   // const [isPresent, safeToRemove] = usePresence();
   const { pathname } = useLocation();
-  const { isMobile } = useDisplay();
+  const { isMobile, isPortrait } = useDisplay();
   const { hideAppOverflow } = useSystemStore();
   const isHomePage = pathname === "/home";
   const isPortfolio = pathname === "/portfolio" || pathname === "/";
@@ -32,56 +32,65 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
     "mt-2 z-50 rounded-xl bg-opacity-50 px-2 py-1 font-raleway text-xs bg-night-100 text-stars-100";
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: isHomePage ? 0 : 50 }}
-      animate={{
-        x: 0,
-        opacity: 1,
-        transition: {
-          duration: 0.6,
-        },
-      }}
-      exit={{
-        x: isHomePage ? 0 : -50,
-        opacity: 0,
-        transition: {
-          duration: 0.3,
-        },
-      }}
-      className={cx(
-        "relative flex min-h-screen w-[100%] flex-col overflow-x-hidden scrollbar-hide",
-        hideAppOverflow
-          ? "h-screen overflow-y-hidden scrollbar-hide"
-          : "overflow-y-scroll",
-        isPortfolio ? "bg-night-gradient text-stars-100" : "bg-stars-100",
-      )}
-    >
-      <Header isHomePage={isHomePage} isPortfolio={isPortfolio} />
-      {pageContents}
-
-      <div className={cx("mt-auto", isMobile && !isHomePage && "mb-32")}>
-        <Footer isHomePage={isHomePage} />
-      </div>
+    <div>
       {isMobile && <MobileMenu isHomePage={isHomePage} />}
-      <Tooltip
-        id="mailto_link_tooltip"
-        arrowColor="transparent"
-        className={cx(tooltipClassname)}
-        disableStyleInjection={true}
-      />
-      <Tooltip
-        id="copy_email_tooltip"
-        arrowColor="transparent"
-        className={cx(tooltipClassname)}
-        disableStyleInjection={true}
-      />
-      <Tooltip
-        id="visit_special_links_tooltip"
-        arrowColor="transparent"
-        className={cx(tooltipClassname)}
-        disableStyleInjection={true}
-      />
-    </motion.div>
+
+      <motion.div
+        initial={{
+          opacity: 0,
+          x: isHomePage || isPortrait ? 0 : 50,
+          y: isHomePage || !isPortrait ? 0 : -50,
+        }}
+        animate={{
+          x: 0,
+          y: 0,
+          opacity: 1,
+          transition: {
+            duration: 0.6,
+          },
+        }}
+        exit={{
+          x: isHomePage || isPortrait ? 0 : -50,
+          y: isHomePage || !isPortrait ? 0 : 50,
+          opacity: 0,
+          transition: {
+            duration: 0.3,
+          },
+        }}
+        className={cx(
+          "relative flex min-h-screen w-[100%] flex-col overflow-x-hidden scrollbar-hide",
+          hideAppOverflow
+            ? "h-screen overflow-y-hidden scrollbar-hide"
+            : "overflow-y-scroll",
+          isPortfolio ? "bg-night-gradient text-stars-100" : "bg-stars-100",
+        )}
+      >
+        <Header isHomePage={isHomePage} isPortfolio={isPortfolio} />
+        {pageContents}
+
+        <div className={cx("mt-auto", isMobile && !isHomePage && "mb-32")}>
+          <Footer isHomePage={isHomePage} />
+        </div>
+        <Tooltip
+          id="mailto_link_tooltip"
+          arrowColor="transparent"
+          className={cx(tooltipClassname)}
+          disableStyleInjection={true}
+        />
+        <Tooltip
+          id="copy_email_tooltip"
+          arrowColor="transparent"
+          className={cx(tooltipClassname)}
+          disableStyleInjection={true}
+        />
+        <Tooltip
+          id="visit_special_links_tooltip"
+          arrowColor="transparent"
+          className={cx(tooltipClassname)}
+          disableStyleInjection={true}
+        />
+      </motion.div>
+    </div>
   );
 };
 
