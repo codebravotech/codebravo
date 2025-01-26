@@ -160,7 +160,6 @@ a {
 }
 
 .glass-menu {
-  @apply relative;
 }
 
 .glass-menu::before {

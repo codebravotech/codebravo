@@ -211,7 +211,7 @@ export default function ProjectModalContents({
               top: (heroHeight || 0) - 80,
             }}
           >
-            <div className="glass-menu rounded-full">
+            <div className="glass-menu relative rounded-full">
               <CtaButton variant="white_night" url={project_link?.url || ""}>
                 {project_link?.label || "Launch Site"}
               </CtaButton>
