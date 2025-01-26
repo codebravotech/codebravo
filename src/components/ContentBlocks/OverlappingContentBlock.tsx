@@ -7,6 +7,7 @@ import ArriveDirectionally from "../../animations/ArriveDirectionally";
 import ParallaxImage from "../../animations/ParallaxImage";
 import { IMAGE_SCALE_FACTOR } from "../../config";
 import { useDisplay } from "../../hooks/display";
+import { useContentBlockImage } from "../../hooks/documents";
 import { ContentObject } from "../../types/components";
 import CtaButton from "../CtaButton";
 import PortableTextRegular from "../PortableTextRegular";
@@ -22,18 +23,21 @@ export default function OverlappingContentBlock({
   const { isMobile } = useDisplay();
   const [imgWidth, setImgWidth] = useState(0);
 
-  const { _key, cta_link, file_link, image, copy = [] } = content_block;
+  const { _key, cta_link, file_link, copy = [] } = content_block;
   const buttonLabel = get(cta_link, "label", "") || get(file_link, "label", "");
   const fileAsset = get(file_link, "file.asset");
   const buttonUrl = fileAsset
     ? get(fileAsset, "url", "")
     : get(cta_link, "url", "");
+  const image = useContentBlockImage(content_block);
 
-  const { asset: imageAsset, alt } = image;
+  console.log("IMAGE: ", image);
 
-  if (!imageAsset) {
+  if (!image?.asset) {
     return null;
   }
+  const { asset: imageAsset, alt } = image;
+
   const { url = "", metadata } = imageAsset;
   const height = metadata?.dimensions?.height || 0;
   const width = metadata?.dimensions?.width || 0;

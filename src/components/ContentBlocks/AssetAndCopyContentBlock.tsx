@@ -1,6 +1,5 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
-import { useRef } from "react";
 
 import ArriveDirectionally from "../../animations/ArriveDirectionally";
 import { useDisplay } from "../../hooks/display";

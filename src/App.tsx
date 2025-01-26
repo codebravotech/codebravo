@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { AnimatePresence, motion } from "framer-motion";
-import { ReactNode, useEffect } from "react";
+import { ReactNode } from "react";
 import {
   BrowserRouter,
   Route,

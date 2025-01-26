@@ -21,7 +21,7 @@ export default function ParallaxImage({
   alt: string;
   style?: CSSProperties;
   className?: string;
-  updatePosition: (ref: RefObject<HTMLImageElement> | undefined) => void;
+  updatePosition: (ref: RefObject<HTMLImageElement>) => void;
 }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({

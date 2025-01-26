@@ -19,9 +19,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
+    "noUncheckedSideEffectImports": true
 
-    "typeRoots": ["./src", "./node_modules/@types"]
+    // "typeRoots": ["./src", "./node_modules/@types"]
+    // "typeRoots": ["./src"]
   },
   "include": ["src"]
 }
