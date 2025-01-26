@@ -10,10 +10,9 @@ import PopcornText from "../animations/PopcornText";
 import RotatingList from "../animations/RotatingList";
 import PortableTextPopcorn from "../components/PortableTextPopcorn";
 import { NAV_OPTIONS } from "../config";
+import { usePublicQuery } from "../hooks/api";
 import { useDisplay } from "../hooks/display";
-import { useSingleton } from "../hooks/sanity";
-
-const _id = "home_page";
+import { HomePageDocument } from "../types/components";
 
 export default function Home() {
   const [skillIndex, setSkillIndex] = useState<number>(0);
@@ -21,15 +20,14 @@ export default function Home() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { isMobile } = useDisplay();
+  const { documents = [] } = usePublicQuery<HomePageDocument>("connect");
 
-  const { singleton: homePage } = useSingleton(_id);
+  const homePage = documents[0];
   const tagline = get(homePage, "tagline", []);
   const tagline_link = get(homePage, "tagline_link", "");
   const url = get(tagline_link, "url", "");
   const label = get(tagline_link, "label", "");
   const skills = get(homePage, "skills", []);
-
-  const logo = `/images/logo_black.svg`;
 
   useEffect(() => {
     let timeout = null;
@@ -47,6 +45,12 @@ export default function Home() {
       }
     };
   }, [skills, skillIndex, listAnimationComplete]);
+
+  if (!documents?.length) {
+    return null;
+  }
+
+  const logo = `/images/logo_black.svg`;
 
   const isAndMore = skills[skillIndex]?.includes("and more");
 

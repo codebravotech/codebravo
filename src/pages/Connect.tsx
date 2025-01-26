@@ -1,23 +1,25 @@
 import cx from "classnames";
 import { easeOut, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import ArriveDirectionally from "../animations/ArriveDirectionally";
 import ContactForm from "../components/ContactForm";
 import PortableTextRegular from "../components/PortableTextRegular";
+import { INQUIRIES } from "../config";
+import { usePublicQuery } from "../hooks/api";
 import { useDisplay } from "../hooks/display";
-import { useSingleton } from "../hooks/sanity";
 import { ConnectPageDocument, PostResult } from "../types/components";
-import { Connect_page } from "../types/sanity.types";
-
-const _id = "connect_page";
 
 export default function Connect() {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [postResult, setPostResult] = useState<PostResult>(null);
   const { isMobile } = useDisplay();
-  const { singleton } = useSingleton(_id);
-  const connectPage = singleton as Connect_page;
+  const { documents = [] } = usePublicQuery<ConnectPageDocument>("connect");
+  const [searchParams] = useSearchParams();
+  const inquiryParam = searchParams.get("inquiry");
+  const inquiringPrivate = inquiryParam === INQUIRIES.private_projects;
+  const connectPage = documents[0];
 
   if (!connectPage) {
     return null;
@@ -25,67 +27,92 @@ export default function Connect() {
 
   const {
     copy = [],
+    copy_private_projects = [],
     email_link,
     profile_link,
     form_header = [],
     name_placeholder = "Your Name",
     email_placeholder = "Your Email",
     message_placeholder = "Your Message",
-  } = connectPage as ConnectPageDocument;
+    message_placeholder_private_projects = "",
+  } = connectPage;
 
   const conditionalViz = postResult ? "invisible" : "";
 
   return (
-    <motion.div className="mb-10 mt-4 flex w-full flex-col-reverse gap-4 px-4 pt-4 lg:h-full lg:flex-row lg:gap-10 lg:pl-6 lg:pr-10">
-      <ArriveDirectionally
-        keyBy={"contact_form_copy"}
-        className="mb-2 flex flex-col gap-4 text-2xl leading-snug lg:basis-1/2 lg:gap-10 lg:text-3xl lg:leading-snug"
-      >
-        <div className={cx(conditionalViz)}>
-          <PortableTextRegular content={copy} />
-        </div>
-        <div
-          className={cx(
-            conditionalViz,
-            "flex flex-col gap-2 lg:flex-row lg:gap-0",
+    <motion.div>
+      <div className="mb-10 mt-4 flex w-full flex-col-reverse gap-4 px-4 pt-4 lg:h-full lg:flex-row lg:gap-10 lg:pl-6 lg:pr-10">
+        <ArriveDirectionally
+          keyBy={"contact_form_copy"}
+          className="mb-2 flex flex-col gap-4 text-2xl leading-snug lg:basis-1/2 lg:gap-10 lg:text-3xl lg:leading-snug"
+        >
+          <div className={cx(conditionalViz)}>
+            <PortableTextRegular content={copy} />
+          </div>
+
+          <div
+            className={cx(
+              conditionalViz,
+              "flex flex-col gap-2 lg:flex-row lg:gap-0",
+            )}
+          >
+            <PortableTextRegular
+              icon_color="expanse-100"
+              content={email_link}
+              message_placeholder_private_projects={
+                message_placeholder_private_projects
+              }
+            />
+            <PortableTextRegular content={profile_link} />
+          </div>
+          {inquiringPrivate && (
+            <div className="text-lg">
+              <PortableTextRegular content={copy_private_projects} />
+            </div>
           )}
+        </ArriveDirectionally>
+        <ArriveDirectionally
+          keyBy={"contact_form_inputs"}
+          className="flex flex-col gap-4 lg:basis-1/2 lg:gap-10"
         >
-          <PortableTextRegular icon_color="expanse-100" content={email_link} />
-          <PortableTextRegular content={profile_link} />
-        </div>
-      </ArriveDirectionally>
-      <ArriveDirectionally
-        keyBy={"contact_form_inputs"}
-        className="flex flex-col gap-4 lg:basis-1/2 lg:gap-10"
-      >
-        <div
-          className={cx(
-            conditionalViz,
-            "-mt-1 text-2xl leading-snug lg:text-3xl lg:leading-snug",
-          )}
-        >
-          <PortableTextRegular content={form_header} />
-        </div>
-        <motion.div
-          variants={{
-            normal: isMobile ? { y: 0 } : { x: 0 },
-            centered: isMobile ? { y: "23vh" } : { x: "-23vw" },
-          }}
-          transition={{ duration: 0.5, ease: easeOut }}
-          animate={postResult ? "centered" : "normal"}
-        >
-          <ContactForm
-            submitting={submitting}
-            setSubmitting={setSubmitting}
-            postResult={postResult}
-            setPostResult={setPostResult}
-            name_placeholder={name_placeholder}
-            email_placeholder={email_placeholder}
-            message_placeholder={message_placeholder}
-            email_link={email_link}
-          />
-        </motion.div>
-      </ArriveDirectionally>
+          <div
+            className={cx(
+              conditionalViz,
+              "-mt-1 text-2xl leading-snug lg:text-3xl lg:leading-snug",
+            )}
+          >
+            <PortableTextRegular content={form_header} />
+          </div>
+          <motion.div
+            variants={{
+              normal: isMobile ? { y: 0 } : { x: 0 },
+              centered: isMobile ? { y: "23vh" } : { x: "-23vw" },
+            }}
+            transition={{ duration: 0.5, ease: easeOut }}
+            animate={postResult ? "centered" : "normal"}
+          >
+            <ContactForm
+              submitting={submitting}
+              setSubmitting={setSubmitting}
+              postResult={postResult}
+              setPostResult={setPostResult}
+              name_placeholder={name_placeholder}
+              email_placeholder={email_placeholder}
+              message_placeholder={
+                inquiringPrivate
+                  ? message_placeholder_private_projects
+                  : message_placeholder
+              }
+              message_prefill={
+                inquiringPrivate
+                  ? message_placeholder_private_projects
+                  : undefined
+              }
+              email_link={email_link}
+            />
+          </motion.div>
+        </ArriveDirectionally>
+      </div>
     </motion.div>
   );
 }

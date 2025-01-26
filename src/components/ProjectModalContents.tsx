@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { useProjectThumbnail, useProjectVideo } from "../hooks/documents";
@@ -13,7 +13,6 @@ import Header from "./Header";
 import Icon from "./Icon";
 import PortableTextRegular from "./PortableTextRegular";
 import ProjectModalBody from "./ProjectModalBody";
-import ProjectModalBodyPrivate from "./ProjectModalBodyPrivate";
 import VideoBlockFullscreen from "./VideoBlockFullscreen";
 
 export default function ProjectModalContents({
@@ -42,10 +41,10 @@ export default function ProjectModalContents({
     heroContainerRef?.current?.getBoundingClientRect().height || 0;
 
   // Animate out
-  const handleClose = async () => {
+  const handleClose = useCallback(async () => {
     if (modalOpen) {
-      if (searchParams.get("_id")) {
-        searchParams.delete("_id");
+      if (searchParams.get("project")) {
+        searchParams.delete("project");
         setSearchParams(searchParams);
       }
 
@@ -53,7 +52,21 @@ export default function ProjectModalContents({
       setAnimationPhase("MODAL_CONTENTS_EXITING");
       setHideAppOverflow(false);
     }
-  };
+  }, [
+    searchParams,
+    modalOpen,
+    setSearchParams,
+    setAnimationPhase,
+    setHideAppOverflow,
+  ]);
+
+  useEffect(() => {
+    window.addEventListener("popstate", handleClose);
+
+    return () => {
+      window.removeEventListener("popstate", handleClose);
+    };
+  }, [handleClose]);
 
   const { _id, header, private: isPrivate, project_link } = project;
   const video = useProjectVideo(project);
@@ -214,6 +227,7 @@ export default function ProjectModalContents({
             project={project}
             offset={heroHeight + contentPadding + 70}
             handleClose={handleClose}
+            animationPhase={animationPhase}
           />
           <Footer isHomePage={false} />
         </>

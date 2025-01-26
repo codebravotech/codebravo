@@ -8,9 +8,11 @@ import Icon from "./Icon";
 export const BaseComponents = ({
   link_color = "dune-100",
   icon_color = "expanse-100",
+  message_placeholder_private_projects,
 }: {
   link_color?: string;
   icon_color?: string;
+  message_placeholder_private_projects?: string;
 }): PortableTextComponents => {
   return {
     listItem: {
@@ -26,7 +28,7 @@ export const BaseComponents = ({
         if (!value) {
           return;
         }
-        const href = value.href;
+        let href = value.href;
 
         const rel = !href.startsWith("/") ? "noreferrer noopener" : undefined;
 
@@ -35,6 +37,9 @@ export const BaseComponents = ({
         const isSpecialLink = !!SPECIAL_LINK_KEYS.some((key: string) =>
           href.includes(key),
         );
+        if (isMailTo && message_placeholder_private_projects) {
+          href = `${href}?subject=Portfolio Password Request&body=${message_placeholder_private_projects}`;
+        }
 
         const copyEmail = () => navigator.clipboard.writeText(email);
         return (
@@ -58,7 +63,7 @@ export const BaseComponents = ({
               }
               data-tooltip-float={true}
               data-tooltip-place="bottom-start"
-              href={value.href}
+              href={href}
               rel={rel}
               target="_blank"
             >

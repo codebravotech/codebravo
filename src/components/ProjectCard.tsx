@@ -1,8 +1,9 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
+import { INQUIRIES } from "../config";
 import { useDisplay } from "../hooks/display";
 import { useProjectThumbnail } from "../hooks/documents";
 import { useSystemStore } from "../state/system";
@@ -19,13 +20,15 @@ export default function ProjectCard({
   index: number;
   className?: string;
 }) {
-  const { openProjectId, setOpenProjectId, setClickedCardBoundingBox } =
+  const { openProjectId, setOpenProjectId, setClickedCardBoundingBox, token } =
     useSystemStore();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const { isPortrait } = useDisplay();
   const cardRef = useRef<HTMLDivElement>(null);
   const {
     _id,
+    slug,
     thumbnail_overlay_color = "",
     description = [],
     client_logo,
@@ -45,27 +48,32 @@ export default function ProjectCard({
   // We use state and then an effect to turn off the hover so that the bounding box will be the right size and not
   // stretch the ProjectModal that will render and grows based on the "openProjectId"
   const onClick = async () => {
-    if (isPortrait) {
-      if (cardRef.current) {
-        const originalRect = cardRef.current.getBoundingClientRect();
-        const y = originalRect.top + window.scrollY;
-        window.scrollTo({ top: y, behavior: "smooth" });
-      }
-    }
-
-    setTimeout(
-      () => {
+    if (isPrivate) {
+      navigate(`/connect?inquiry=${INQUIRIES.private_projects}`);
+    } else {
+      if (isPortrait) {
         if (cardRef.current) {
-          const rect = cardRef.current.getBoundingClientRect();
-          setClickedCardBoundingBox(rect);
-          searchParams.set("_id", _id);
-          setSearchParams(searchParams);
-
-          setOpenProjectId(_id);
+          const originalRect = cardRef.current.getBoundingClientRect();
+          const y = originalRect.top + window.scrollY;
+          window.scrollTo({ top: y, behavior: "smooth" });
         }
-      },
-      isPortrait ? 500 : 0,
-    );
+      }
+
+      setTimeout(
+        () => {
+          if (cardRef.current) {
+            const rect = cardRef.current.getBoundingClientRect();
+            setClickedCardBoundingBox(rect);
+
+            const project = slug?.current || _id;
+            searchParams.set("project", project);
+            setSearchParams(searchParams);
+            setOpenProjectId(project);
+          }
+        },
+        isPortrait ? 500 : 0,
+      );
+    }
   };
 
   useEffect(() => {
@@ -86,8 +94,12 @@ export default function ProjectCard({
   }, [isOpen]);
 
   useEffect(() => {
-    const searchParamsId = searchParams.get("_id");
-    if (searchParamsId && searchParamsId === _id && !openProjectId) {
+    const searchParamsId = searchParams.get("project");
+    if (
+      searchParamsId &&
+      (searchParamsId === _id || searchParamsId === slug?.current) &&
+      !openProjectId
+    ) {
       onClick();
     }
   }, [searchParams, openProjectId]);
@@ -134,7 +146,7 @@ export default function ProjectCard({
       {/* Overlay */}
       <motion.div
         className={cx(
-          `absolute inset-0 flex h-full w-full flex-col items-center justify-center group-hover:scale-105 group-hover:!opacity-100`,
+          "absolute inset-0 flex h-full w-full flex-col items-center justify-center group-hover:scale-105 group-hover:!opacity-100",
           roundingClass,
         )}
         style={{
@@ -145,15 +157,10 @@ export default function ProjectCard({
       ></motion.div>
       {/* Content */}
       <div className="invisible absolute inset-0 flex h-full w-full flex-col items-center justify-center gap-3 bg-night-400/50 px-6 text-center text-2xl text-stars-100 group-hover:visible">
-        {client_logo && !isPrivate ? (
+        {client_logo && !isPrivate && (
           <img
             src={logoUrl}
             alt={logoAlt}
-            className="max-h-[40%] max-w-[60%] object-contain"
-          />
-        ) : (
-          <Icon
-            icon="lock"
             className="max-h-[40%] max-w-[60%] object-contain"
           />
         )}
@@ -161,6 +168,18 @@ export default function ProjectCard({
           <PortableTextRegular content={description} />
         </div>
       </div>
+      {isPrivate && !token && (
+        <div
+          className={cx(
+            "absolute inset-0 flex h-full w-full flex-col items-center justify-center",
+          )}
+        >
+          <Icon
+            icon="lock"
+            className="font-night-100 z-40 max-h-[40%] max-w-[60%] object-contain text-night-100 group-hover:text-stars-100"
+          />
+        </div>
+      )}
     </motion.div>
   );
 }

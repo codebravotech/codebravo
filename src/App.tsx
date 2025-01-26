@@ -14,6 +14,7 @@ import ROUTES from "./Routes";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MobileMenu from "./components/MobileMenu";
+import { useToken } from "./hooks/api";
 import { useDisplay } from "./hooks/display";
 import NotFound from "./pages/NotFound";
 import { useSystemStore } from "./state/system";
@@ -86,6 +87,7 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
 
 const AnimationWrapper = () => {
   const location = useLocation();
+  useToken();
 
   return (
     <AnimatePresence mode="wait">

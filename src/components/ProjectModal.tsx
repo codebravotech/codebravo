@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { pick } from "lodash";
 import { useEffect, useState } from "react";
 
-import { useDisplay } from "../hooks/display";
 import { useProjectThumbnail } from "../hooks/documents";
 // import { useIsElementOnScreen } from "../hooks/display";
 import { useSystemStore } from "../state/system";
@@ -17,7 +16,6 @@ export default function ProjectModal({
   project: ProjectDocument;
 }) {
   const { setOpenProjectId, clickedCardBoundingBox } = useSystemStore();
-  const { isPortrait } = useDisplay();
   const [animationPhase, updateAnimationPhase] =
     useState<ModalAnimationPhase>("MODAL_CLOSED");
   const setAnimationPhase = (animationPhase: ModalAnimationPhase) => {

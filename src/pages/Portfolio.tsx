@@ -1,6 +1,5 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
-import groq from "groq";
 import { get } from "lodash";
 import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
@@ -8,36 +7,42 @@ import { useSearchParams } from "react-router-dom";
 import PortableTextPopcorn from "../components/PortableTextPopcorn";
 import ProjectCard from "../components/ProjectCard";
 import ProjectModal from "../components/ProjectModal";
+import { useAuthorizedQuery, usePublicQuery } from "../hooks/api";
 import { useDisplay } from "../hooks/display";
-import { useQuery } from "../hooks/sanity";
 import { useSystemStore } from "../state/system";
 import { PortfolioPageDocument } from "../types/components";
-
-const query = groq`
-*[_id == $page_id]{ ..., projects[]->{ ..., thumbnails[] { ..., asset-> }, client_logo { ..., asset-> }, videos[] { ..., asset-> }, technology_tools[] { ..., technology_tool-> }, partners[] { ..., partner-> }, public_content_blocks[] { ..., images[] { ..., asset-> }, videos[] { ..., asset-> } }  } }
-`;
-const params = {
-  page_id: "portfolio_page",
-};
 
 export default function Portfolio() {
   const { openProjectId, setOpenProjectId, clickedCardBoundingBox } =
     useSystemStore();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { isDesktopOrLaptop } = useDisplay();
 
-  const { documents = [] } = useQuery(query, params);
-  const page = get(documents, "[0]", {}) as PortfolioPageDocument;
+  const { documents: authorizedDocuments = [] } =
+    useAuthorizedQuery<PortfolioPageDocument>("portfolio_authorized");
+  const { documents = [] } =
+    usePublicQuery<PortfolioPageDocument>("portfolio_public");
+
+  const publicPage = get(documents, "[0]");
+  const authorizedPage = get(authorizedDocuments, "[0]");
+  const page = authorizedPage || publicPage || {};
   const header = get(page, "header", []);
   const projects = get(page, "projects", []);
 
-  const openProject = projects.find((project) => project._id === openProjectId);
-
   useEffect(() => {
-    if (!searchParams.get("_id")) {
+    if (!searchParams.get("project")) {
       setOpenProjectId(null);
     }
   }, []);
+
+  if (!(projects?.length > 0)) {
+    return null;
+  }
+  const openProject = projects.find(
+    (project) =>
+      project?.slug?.current === openProjectId ||
+      project?._id === openProjectId,
+  );
 
   return (
     <motion.div

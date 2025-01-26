@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 import ArriveDirectionally from "../animations/ArriveDirectionally";
-import { ProjectDocument } from "../types/components";
+import { ModalAnimationPhase, ProjectDocument } from "../types/components";
 import AssetAndCopyContentBlock from "./ContentBlocks/AssetAndCopyContentBlock";
 import CopyContentBlock from "./ContentBlocks/CopyContentBlock";
 import CtaButton from "./CtaButton";
@@ -14,16 +14,19 @@ export default function ProjectModalBody({
   project,
   offset = 0,
   handleClose,
+  animationPhase,
 }: {
   project: ProjectDocument;
   offset: number;
   handleClose: () => void;
+  animationPhase: ModalAnimationPhase;
 }) {
   const public_content_blocks = project?.public_content_blocks || [];
   const final_cta = project?.final_cta || [];
   const cta_link = project?.cta_link;
   const partners = project?.partners || [];
   const technology_tools = project?.technology_tools || [];
+  const isOpen = animationPhase === "MODAL_OPEN";
 
   return (
     <motion.div
@@ -76,7 +79,7 @@ export default function ProjectModalBody({
         </div>
       </ArriveDirectionally>
 
-      {(partners?.length > 0 || technology_tools?.length > 0) && (
+      {(partners?.length > 0 || technology_tools?.length > 0) && isOpen && (
         <ArriveDirectionally
           keyBy={`${project?._id}_collaborators and tech`}
           className="flex w-full flex-col justify-center gap-10 text-center lg:flex-col"

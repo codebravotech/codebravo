@@ -1,21 +1,13 @@
 import { motion } from "framer-motion";
-import groq from "groq";
 import { get } from "lodash";
 
 import OverlappingContentBlock from "../components/ContentBlocks/OverlappingContentBlock";
-import { useQuery } from "../hooks/sanity";
-import { ContentObject } from "../types/components";
-
-const query = groq`
-*[_id == $page_id]{ ..., content_blocks[]{ ..., image { ..., asset-> }, file_link{ ..., file { asset-> } } } }
-`;
-const params = {
-  page_id: "about_page",
-};
+import { usePublicQuery } from "../hooks/api";
+import { ContentObject, ExpertisePageDocument } from "../types/components";
 
 export default function Expertise() {
-  const { documents = [] } = useQuery(query, params);
-  const page = get(documents, "[0]", {}) as { content_blocks: ContentObject[] };
+  const { documents = [] } = usePublicQuery<ExpertisePageDocument>("expertise");
+  const page = get(documents, "[0]");
   const content_blocks = page?.content_blocks;
   if (!(content_blocks && content_blocks?.length)) {
     return null;

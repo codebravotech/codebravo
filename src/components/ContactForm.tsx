@@ -22,6 +22,7 @@ export default function ContactForm({
   name_placeholder,
   email_placeholder,
   message_placeholder,
+  message_prefill,
   email_link,
 }: {
   submitting: boolean;
@@ -31,6 +32,7 @@ export default function ContactForm({
   name_placeholder: string;
   email_placeholder: string;
   message_placeholder: string;
+  message_prefill: string | undefined;
   email_link: PortableTextBlock[];
 }) {
   const {
@@ -38,7 +40,11 @@ export default function ContactForm({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ContactFormBody>();
+  } = useForm<ContactFormBody>({
+    defaultValues: {
+      message: message_prefill,
+    },
+  });
 
   const onSubmit: SubmitHandler<ContactFormBody> = async (data) => {
     try {

@@ -46,12 +46,6 @@ export type Geopoint = {
   alt?: number
 }
 
-export type Slug = {
-  _type: 'slug'
-  current?: string
-  source?: string
-}
-
 export type Content_block = {
   _type: 'content_block'
   title?: string
@@ -329,6 +323,36 @@ export type Connect_page = {
   name_placeholder?: string
   email_placeholder?: string
   message_placeholder?: string
+  copy_private_projects?: Array<{
+    children?: Array<{
+      marks?: Array<string>
+      text?: string
+      _type: 'span'
+      _key: string
+    }>
+    style?:
+      | 'large_body'
+      | 'xl_body'
+      | 'normal'
+      | 'highlighted'
+      | 'h1'
+      | 'h2'
+      | 'h3'
+      | 'h4'
+      | 'h5'
+      | 'h6'
+      | 'blockquote'
+    listItem?: 'bullet' | 'number'
+    markDefs?: Array<{
+      href?: string
+      _type: 'link'
+      _key: string
+    }>
+    level?: number
+    _type: 'block'
+    _key: string
+  }>
+  message_placeholder_private_projects?: string
 }
 
 export type About_page = {
@@ -350,6 +374,7 @@ export type Project = {
   _createdAt: string
   _updatedAt: string
   _rev: string
+  slug?: Slug
   title?: string
   description?: Array<{
     children?: Array<{
@@ -598,6 +623,12 @@ export type SanityImageMetadata = {
   isOpaque?: boolean
 }
 
+export type Slug = {
+  _type: 'slug'
+  current?: string
+  source?: string
+}
+
 export type Partner = {
   _id: string
   _type: 'partner'
@@ -613,7 +644,6 @@ export type AllSanitySchemaTypes =
   | SanityImagePalette
   | SanityImageDimensions
   | Geopoint
-  | Slug
   | Content_block
   | Pdf
   | Portfolio_page
@@ -629,5 +659,6 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | SanityAssetSourceData
   | SanityImageMetadata
+  | Slug
   | Partner
 export declare const internalGroqTypeReferenceTo: unique symbol

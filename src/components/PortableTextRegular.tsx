@@ -42,6 +42,7 @@ export default function PortableTextRegular({
   content: PortableTextBlock[];
   link_color?: string;
   icon_color?: string;
+  message_placeholder_private_projects?: string;
 }) {
   return (
     <PortableText

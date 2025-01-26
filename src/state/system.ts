@@ -4,6 +4,9 @@ export interface SystemState {
   openProjectId: string | null;
   setOpenProjectId: (openProjectId: string | null) => void;
 
+  token: string | null;
+  setToken: (token: string | null) => void;
+
   clickedCardBoundingBox: DOMRect | null;
   setClickedCardBoundingBox: (clickedCardBoundingBox: DOMRect) => void;
 
@@ -12,6 +15,8 @@ export interface SystemState {
 }
 
 export const useSystemStore = create<SystemState>()((set /*, get*/) => ({
+  token: null,
+  setToken: (token) => set({ token }),
   openProjectId: null,
   setOpenProjectId: (openProjectId) => set({ openProjectId }),
   clickedCardBoundingBox: null,

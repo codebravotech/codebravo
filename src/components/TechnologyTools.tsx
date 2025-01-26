@@ -25,10 +25,12 @@ export default function TechnologyTools({
           if (!technology_tool) {
             return null;
           }
-          const { technology_link, _id } = technology_tool;
+
+          const { _id, technology_link, name } = technology_tool;
+
           return (
-            <>
-              <li key={_id} className="relative mt-1">
+            <div className="relative mt-1" key={`${_id}_list_item`}>
+              <li>
                 <a
                   className={cx("underline-appear-white")}
                   style={{
@@ -38,7 +40,7 @@ export default function TechnologyTools({
                   target="_blank"
                   rel="noreferrer noopener"
                   href={technology_link?.url}
-                  data-tooltip-id={`technology_${technology_tool?.name}`}
+                  data-tooltip-id={`technology_${name}`}
                   data-tooltip-content={used_for}
                   data-tooltip-float={true}
                   data-tooltip-place="bottom-start"
@@ -46,21 +48,30 @@ export default function TechnologyTools({
                   {technology_link?.label}
                 </a>
               </li>
-              <Tooltip
-                id={`technology_${technology_tool?.name}`}
-                arrowColor="transparent"
-                className={cx(
-                  "z-50 mt-2 rounded-xl bg-stars-100 px-2 py-1 font-raleway text-xs text-night-100",
-                )}
-                disableStyleInjection={true}
-              />
               {!isDesktopOrLaptop && (
                 <div className="mb-2 italic">{used_for}</div>
               )}
-            </>
+            </div>
           );
         })}
       </ul>
+
+      {technology_tools.map((object) => {
+        const { technology_tool } = object;
+        const { _id } = technology_tool;
+
+        return (
+          <Tooltip
+            key={`${_id}_tooltip`}
+            id={`technology_${object?.technology_tool?.name}`}
+            arrowColor="transparent"
+            className={cx(
+              "z-50 mt-2 rounded-xl bg-stars-100 px-2 py-1 font-raleway text-xs text-night-100",
+            )}
+            disableStyleInjection={true}
+          />
+        );
+      })}
     </div>
   );
 }

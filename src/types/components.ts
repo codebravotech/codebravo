@@ -1,8 +1,10 @@
 import { PortableTextBlock } from "@portabletext/types";
 
 import {
+  About_page,
   Connect_page,
   Content_block,
+  Home_page,
   Partner,
   Portfolio_page,
   Project,
@@ -10,6 +12,11 @@ import {
   SanityImageAsset,
   Technology_tool,
 } from "./sanity.types";
+
+export type JsonObject = {
+  // eslint-disable-next-line
+  [key: string]: any;
+};
 
 export type ValidRoutes = "/expertise" | "/connect" | "/" | "/portfolio";
 export type IconType =
@@ -22,10 +29,6 @@ export type IconType =
   | "portfolio"
   | "refresh"
   | "unlock";
-export type SanityQueryParams = Record<
-  string,
-  string | number | boolean | null | (string | number | boolean | null)[]
->;
 
 export type Orientation = "landscape" | "portrait";
 
@@ -45,15 +48,28 @@ export interface NavOptions {
   short_label: string;
 }
 
+export interface HomePageDocument extends Omit<Home_page, "tagline"> {
+  tagline: PortableTextBlock[];
+}
+export interface ExpertisePageDocument
+  extends Omit<About_page, "content_blocks"> {
+  content_blocks: ContentObject[];
+}
+
 export interface ConnectPageDocument
   extends Omit<
     Connect_page,
-    "copy" | "form_header" | "profile_link" | "email_link"
+    | "copy"
+    | "form_header"
+    | "profile_link"
+    | "email_link"
+    | "copy_private_projects"
   > {
   copy: PortableTextBlock[];
   form_header: PortableTextBlock[];
   profile_link: PortableTextBlock[];
   email_link: PortableTextBlock[];
+  copy_private_projects: PortableTextBlock[];
 }
 export interface PortfolioPageDocument
   extends Omit<

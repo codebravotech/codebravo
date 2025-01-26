@@ -7,6 +7,7 @@ import {
 import { useEffect } from "react";
 
 import CtaButton from "../components/CtaButton";
+import { authorizedQuery } from "../utils/api";
 
 export default function NotFound() {
   const [scope, animate] = useAnimate();
@@ -49,12 +50,12 @@ export default function NotFound() {
   }, [isPresent]);
 
   return (
-    <motion.div className="bg-trash-panda-100 flex h-screen w-screen flex-col items-center justify-center overflow-clip scrollbar-hide">
+    <motion.div className="flex h-screen w-screen flex-col items-center justify-center overflow-clip bg-trash-panda-100 scrollbar-hide">
       <div className="width-screen absolute bottom-0 left-0 right-0 top-[30%] z-0 flex w-screen justify-center overflow-clip font-fjalla text-[15rem] text-night-300 opacity-70 lg:top-8 lg:text-[30rem]">
         404
       </div>
       <div className="z-10 flex flex-col items-start justify-center">
-        <div className="text-trash-panda-button font-fjalla text-xl">
+        <div className="font-fjalla text-xl text-trash-panda-button">
           Oops! You seem to be lost...
         </div>
 
@@ -74,6 +75,18 @@ export default function NotFound() {
         >
           Follow me home!
         </CtaButton>
+        <button
+          onClick={() => {
+            const query_name = "portfolio_authorized";
+            const token = localStorage.getItem("codebravo_auth_token");
+            if (query_name && token) {
+              console.log("RUNNING THE BUTTON VERSION", token);
+              authorizedQuery(query_name, token);
+            }
+          }}
+        >
+          REMOVE THIS LATER!!!
+        </button>
       </div>
     </motion.div>
   );
