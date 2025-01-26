@@ -20,7 +20,7 @@ export default function OverlappingContentBlock({
 
   justified: "left" | "right";
 }) {
-  const { isMobile } = useDisplay();
+  const { isPortrait } = useDisplay();
   const [imgWidth, setImgWidth] = useState(0);
 
   const { _key, cta_link, file_link, copy = [] } = content_block;
@@ -30,9 +30,6 @@ export default function OverlappingContentBlock({
     ? get(fileAsset, "url", "")
     : get(cta_link, "url", "");
   const image = useContentBlockImage(content_block);
-
-  console.log("IMAGE: ", image);
-
   if (!image?.asset) {
     return null;
   }
@@ -42,7 +39,7 @@ export default function OverlappingContentBlock({
   const height = metadata?.dimensions?.height || 0;
   const width = metadata?.dimensions?.width || 0;
   const orientation = height > width ? "portrait" : "landscape";
-  const paddingX = !isMobile ? 35 : 0;
+  const paddingX = !isPortrait ? 35 : 0;
   const justifiedLeft = justified === "left";
   const justifiedRight = justified === "right";
   const isWideImage = imgWidth >= innerWidth / 2;
@@ -88,15 +85,16 @@ export default function OverlappingContentBlock({
   return (
     <motion.div
       className={cx(
-        "relative flex flex-col items-center lg:h-screen lg:flex-row lg:items-start",
-        justifiedRight && "lg:flex-row-reverse",
+        "relative flex flex-col items-center",
+        !isPortrait && "lg:h-screen lg:flex-row lg:items-start",
+        !isPortrait && justifiedRight && "lg:flex-row-reverse",
       )}
       style={{ paddingLeft: `${paddingX}px`, paddingRight: `${paddingX}px` }}
     >
       <motion.div
         key={`container_${url}`}
         initial={{
-          x: isMobile ? 0 : 100 * (justifiedLeft ? -1 : 1),
+          x: isPortrait ? 0 : 100 * (justifiedLeft ? -1 : 1),
           opacity: 0,
           filter: "blur(44px)",
         }}
@@ -105,11 +103,11 @@ export default function OverlappingContentBlock({
         viewport={{ once: true }}
         className={cx(
           "relative overflow-hidden bg-transparent lg:rounded-2xl",
-          !isMobile && orientation === "portrait" && "h-[75vh] max-w-[50vw]",
-          !isMobile && orientation === "landscape" && "max-w-[70vw]",
-          isMobile && "w-screen",
+          !isPortrait && orientation === "portrait" && "h-[75vh] max-w-[50vw]",
+          !isPortrait && orientation === "landscape" && "max-w-[70vw]",
+          isPortrait && "w-screen",
         )}
-        style={isMobile ? {} : imgContainerStyle}
+        style={isPortrait ? {} : imgContainerStyle}
       >
         <ParallaxImage
           src={url}
@@ -122,10 +120,11 @@ export default function OverlappingContentBlock({
         <div
           className={cx(
             !(imgWidth > 0) && "invisible",
-            !isMobile && "max-h-[40vh] text-xl lg:absolute lg:bottom-32",
-            isMobile && "relative mt-2 w-full",
+            !isPortrait &&
+              "max-h-[40vh] text-xl lg:absolute lg:bottom-32 2xl:bottom-48",
+            isPortrait && "relative mt-2 w-full",
           )}
-          style={isMobile ? {} : copyStyle}
+          style={isPortrait ? {} : copyStyle}
         >
           <ArriveDirectionally
             keyBy={`content_block_copy_${_key}`}
