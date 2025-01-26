@@ -58,19 +58,19 @@ export default function AssetAndCopyContentBlock({
 
   if (axis === "vertical") {
     if (block_ordering === "asset_copy") {
-      axisClasses = "flex-col items-center justify-center";
+      axisClasses = "w-full flex-col items-center justify-center";
     } else {
-      axisClasses = "flex-col-reverse items-center justify-center";
+      axisClasses = "w-full flex-col-reverse items-center justify-center";
     }
 
     if (isPortrait) {
       textClasses = "w-screen px-5 text-center";
     } else if (text_align === "left" && !isPortrait) {
-      textClasses = "text-left self-start ml-8 w-1/2";
+      textClasses = "text-left self-start ml-8 w-1/2 2xl:w-1/3";
     } else if (text_align === "right" && !isPortrait) {
-      textClasses = "text-right self-end mr-8 w-1/2";
+      textClasses = "text-right self-end mr-8 w-1/2 2xl:w-1/3";
     } else if (text_align === "center") {
-      textClasses = "w-2/3 text-center";
+      textClasses = "w-2/3 2xl:w-1/3 text-center";
     }
   } else if (axis === "horizontal") {
     assetClasses = "rounded-2xl";
@@ -82,21 +82,21 @@ export default function AssetAndCopyContentBlock({
       assetArrivalDirection = "right";
       textArrivalDirection = "left";
 
-      axisClasses = "flex-row items-center";
+      axisClasses = "w-full flex-row items-center";
     } else {
       assetArrivalDirection = "left";
       textArrivalDirection = "right";
-      axisClasses = "flex-row-reverse items-center ";
+      axisClasses = "w-full flex-row-reverse items-center ";
     }
 
     if (isPortrait) {
       textClasses = "w-screen px-6 text-center grow-0";
     } else {
       if (assetIsPortrait) {
-        axisClasses = `flex-row-reverse`;
-        textClasses = `basis-3/4 flex text-center mx-8 justify-center`;
+        axisClasses = `w-full flex-row-reverse justify-evenly`;
+        textClasses = `basis-1/2 2xl:basis-1/3 flex text-center mx-8 justify-center`;
       } else {
-        textClasses = "basis-1/2 mx-8 grow-0";
+        textClasses = "basis-1/2 2xl:basis-1/3 mx-8 grow-0";
       }
     }
   }

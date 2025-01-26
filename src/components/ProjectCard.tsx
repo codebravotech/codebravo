@@ -48,7 +48,7 @@ export default function ProjectCard({
   // We use state and then an effect to turn off the hover so that the bounding box will be the right size and not
   // stretch the ProjectModal that will render and grows based on the "openProjectId"
   const onClick = async () => {
-    if (isPrivate) {
+    if (isPrivate && !token) {
       navigate(`/connect?inquiry=${INQUIRIES.private_projects}`);
     } else {
       if (isPortrait) {
