@@ -38,6 +38,7 @@ export default function PortableTextRegular({
   content,
   link_color = "dune-100",
   icon_color = "expanse-100",
+  message_placeholder_private_projects,
 }: {
   content: PortableTextBlock[];
   link_color?: string;
@@ -47,7 +48,14 @@ export default function PortableTextRegular({
   return (
     <PortableText
       value={content}
-      components={merge(BaseComponents({ link_color, icon_color }), components)}
+      components={merge(
+        BaseComponents({
+          link_color,
+          icon_color,
+          message_placeholder_private_projects,
+        }),
+        components,
+      )}
     />
   );
 }

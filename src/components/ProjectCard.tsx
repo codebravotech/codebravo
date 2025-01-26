@@ -49,7 +49,7 @@ export default function ProjectCard({
   // stretch the ProjectModal that will render and grows based on the "openProjectId"
   const onClick = async () => {
     if (isPrivate && !token) {
-      navigate(`/connect?inquiry=${INQUIRIES.private_projects}`);
+      navigate(`/connect?inquiry=${INQUIRIES.locked_projects}`);
     } else {
       if (isPortrait) {
         if (cardRef.current) {

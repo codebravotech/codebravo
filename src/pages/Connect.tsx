@@ -18,7 +18,7 @@ export default function Connect() {
   const { documents = [] } = usePublicQuery<ConnectPageDocument>("connect");
   const [searchParams] = useSearchParams();
   const inquiryParam = searchParams.get("inquiry");
-  const inquiringPrivate = inquiryParam === INQUIRIES.private_projects;
+  const inquiringLocked = inquiryParam === INQUIRIES.locked_projects;
   const connectPage = documents[0];
 
   if (!connectPage) {
@@ -44,32 +44,34 @@ export default function Connect() {
       <div className="mb-10 mt-4 flex w-full flex-col-reverse gap-4 px-4 pt-4 lg:h-full lg:flex-row lg:gap-10 lg:pl-6 lg:pr-10">
         <ArriveDirectionally
           keyBy={"contact_form_copy"}
-          className="mb-2 flex flex-col gap-4 text-2xl leading-snug lg:basis-1/2 lg:gap-10 lg:text-3xl lg:leading-snug"
+          className="mb-2 flex flex-col items-center gap-4 text-2xl leading-snug lg:basis-1/2 lg:gap-10 lg:text-3xl lg:leading-snug"
         >
-          <div className={cx(conditionalViz)}>
-            <PortableTextRegular content={copy} />
-          </div>
-
-          <div
-            className={cx(
-              conditionalViz,
-              "flex flex-col gap-2 lg:flex-row lg:gap-0",
-            )}
-          >
-            <PortableTextRegular
-              icon_color="expanse-100"
-              content={email_link}
-              message_placeholder_private_projects={
-                message_placeholder_private_projects
-              }
-            />
-            <PortableTextRegular content={profile_link} />
-          </div>
-          {inquiringPrivate && (
-            <div className="text-lg">
-              <PortableTextRegular content={copy_private_projects} />
+          <div>
+            <div className={cx(conditionalViz)}>
+              <PortableTextRegular content={copy} />
             </div>
-          )}
+
+            <div
+              className={cx(
+                conditionalViz,
+                "flex flex-col gap-2 lg:flex-row lg:gap-0",
+              )}
+            >
+              <PortableTextRegular
+                icon_color="expanse-100"
+                content={email_link}
+                message_placeholder_private_projects={
+                  message_placeholder_private_projects
+                }
+              />
+              <PortableTextRegular content={profile_link} />
+            </div>
+            {inquiringLocked && (
+              <div className="text-lg">
+                <PortableTextRegular content={copy_private_projects} />
+              </div>
+            )}
+          </div>
         </ArriveDirectionally>
         <ArriveDirectionally
           keyBy={"contact_form_inputs"}
@@ -99,12 +101,12 @@ export default function Connect() {
               name_placeholder={name_placeholder}
               email_placeholder={email_placeholder}
               message_placeholder={
-                inquiringPrivate
+                inquiringLocked
                   ? message_placeholder_private_projects
                   : message_placeholder
               }
               message_prefill={
-                inquiringPrivate
+                inquiringLocked
                   ? message_placeholder_private_projects
                   : undefined
               }

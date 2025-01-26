@@ -22,8 +22,8 @@ export const useToken = () => {
         setSearchParams(searchParams);
         localStorage.setItem(localStorageKey, token);
       } catch (e) {
-        // localStorage.removeItem(localStorageKey);
         console.error("AUTHORIZATION SERVER ERROR", e);
+        localStorage.removeItem(localStorageKey);
       }
     };
 
@@ -79,6 +79,7 @@ export const useAuthorizedQuery = <T>(query_name: string) => {
           setDocuments(result);
         }
       } catch (e) {
+        console.log("E: ", e);
         console.error("ERROR IN AUTHORIZED QUERY", e);
         if (tries < 3) {
           return await fetch(token, tries + 1);
