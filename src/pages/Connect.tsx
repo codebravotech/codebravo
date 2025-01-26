@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { easeOut, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import ArriveDirectionally from "../animations/ArriveDirectionally";

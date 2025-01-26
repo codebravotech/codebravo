@@ -15,7 +15,7 @@ import { PortfolioPageDocument } from "../types/components";
 export default function Portfolio() {
   const { openProjectId, setOpenProjectId, clickedCardBoundingBox } =
     useSystemStore();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const { isDesktopOrLaptop } = useDisplay();
 
   const { documents: authorizedDocuments = [] } =
