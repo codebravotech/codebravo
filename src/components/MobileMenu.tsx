@@ -11,13 +11,13 @@ export default function MobileMenu({ isHomePage = false }) {
   return (
     <motion.div
       className={cx(
-        "glass-menu fixed bottom-4 left-0 right-0 z-50 mx-4 mb-2 flex flex-row items-center justify-evenly rounded-full p-2 shadow-xl",
+        "fixed bottom-4 left-0 right-0 z-50 mx-4 mb-2 flex flex-row items-center justify-evenly rounded-full p-2 shadow-xl",
       )}
     >
       {NAV_OPTIONS.map((button) => (
         <div
           className={cx(
-            "relative rounded-full p-[10px]",
+            "glass-menu relative rounded-full p-[10px]",
             pathname === button.pathname
               ? isHomePage
                 ? "border-[2px] border-night-300 bg-transparent p-[8px]"
