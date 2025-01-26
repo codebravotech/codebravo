@@ -1,20 +1,20 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
-import { useCallback, useEffect, useRef, useState } from "react";
+// import { useCallback, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { useDisplay } from "../hooks/display";
 import { useProjectThumbnail, useProjectVideo } from "../hooks/documents";
-import { useSystemStore } from "../state/system";
+// import { useSystemStore } from "../state/system";
 import { ModalAnimationPhase, ProjectDocument } from "../types/components";
 import { animationPhaseIn } from "../utils/animation";
 import CtaButton from "./CtaButton";
 import Footer from "./Footer";
-import Header from "./Header";
+// import Header from "./Header";
 import Icon from "./Icon";
 import PortableTextRegular from "./PortableTextRegular";
 import ProjectModalBody from "./ProjectModalBody";
-import VideoBlockFullscreen from "./VideoBlockFullscreen";
+import VideoComponent from "./VideoComponent";
 
 export default function ProjectModalContents({
   project,
@@ -27,8 +27,6 @@ export default function ProjectModalContents({
   setAnimationPhase: (animationPhase: ModalAnimationPhase) => void;
   roundingClass: string;
 }) {
-  const { isPortrait, isTabletOrMobile } = useDisplay();
-  const { setHideAppOverflow } = useSystemStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const [videoLoaded, setVideoLoaded] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -43,7 +41,8 @@ export default function ProjectModalContents({
     heroContainerRef?.current?.getBoundingClientRect().height || 0;
 
   // Animate out
-  const handleClose = useCallback(async () => {
+  const handleClose = async () => {
+    // const handleClose = useCallback(async () => {
     if (modalOpen) {
       if (searchParams.get("project")) {
         searchParams.delete("project");
@@ -52,23 +51,23 @@ export default function ProjectModalContents({
 
       // STEP 4: MODAL CONTENTS START TO DO EXIT ANIMATION
       setAnimationPhase("MODAL_CONTENTS_EXITING");
-      setHideAppOverflow(false);
     }
-  }, [
-    searchParams,
-    modalOpen,
-    setSearchParams,
-    setAnimationPhase,
-    setHideAppOverflow,
-  ]);
+  };
 
-  useEffect(() => {
-    window.addEventListener("popstate", handleClose);
+  // [
+  //   searchParams,
+  //   modalOpen,
+  //   setSearchParams,
+  //   setAnimationPhase,
+  // ]);
 
-    return () => {
-      window.removeEventListener("popstate", handleClose);
-    };
-  }, [handleClose]);
+  // useEffect(() => {
+  //   window.addEventListener("popstate", handleClose);
+
+  //   return () => {
+  //     window.removeEventListener("popstate", handleClose);
+  //   };
+  // }, [handleClose]);
 
   const { _id, header, private: isPrivate, project_link } = project;
   const video = useProjectVideo(project);
@@ -80,7 +79,8 @@ export default function ProjectModalContents({
   return (
     <motion.div
       className={cx(
-        "absolute bottom-0 left-0 right-0 top-0 overflow-y-scroll overscroll-none bg-night-gradient scrollbar-hide",
+        "absolute bottom-0 left-0 right-0 top-0 overflow-y-scroll bg-night-gradient scrollbar-hide",
+        // overscroll-none
         !animationPhaseIn(
           ["MODAL_CONTENTS_ENTERING", "MODAL_CONTENTS_EXITING", "MODAL_OPEN"],
           animationPhase,
@@ -98,29 +98,27 @@ export default function ProjectModalContents({
         animate={modalOpen ? "visible" : "hidden"}
         className={cx("relative z-20")}
       >
-        <Header
+        {/* <Header
           isHomePage={false}
           isPortfolio={true}
           clickedCurrentRoute={handleClose}
-        />
+        /> */}
         <div className="relative flex justify-center px-10 lg:px-0">
           <div className="underline-drawn relative flex items-center text-center font-fjalla text-5xl">
             <PortableTextRegular content={header} />
           </div>
-          <div className="absolute right-4 top-0 flex h-full flex-col justify-center text-stars-100 hover:scale-150">
+          <div className="ml-4 flex flex-col justify-center text-stars-100 hover:scale-150">
             <Icon className="h-6 w-6" icon="back" onClick={handleClose} />
           </div>
         </div>
       </motion.div>
       {/* Invisible video to start load while animation is running */}
       {video && !videoLoaded && (
-        <VideoBlockFullscreen
-          key={`project_${_id}_loader_video`}
+        <VideoComponent
           id={`project_${_id}_loader_video`}
-          video={video}
-          thumbnail={thumbnail}
-          setVideoLoaded={() => setVideoLoaded(true)}
+          src={video?.asset?.url}
           className={cx("absolute hidden")}
+          onLoadedData={() => setVideoLoaded(true)}
         />
       )}
       {/* Video/image header that fills the card during animate and sits at the top of the modal page when animation is done*/}
@@ -169,26 +167,17 @@ export default function ProjectModalContents({
               transition: { duration: swapTransitionDuration },
             },
           }}
-          animate={
-            !(
-              video &&
-              modalOpen &&
-              (videoLoaded || isPortrait || isTabletOrMobile)
-            )
-              ? "hidden"
-              : "visible"
-          }
+          animate={video && modalOpen ? "visible" : "hidden"}
         >
           {video && (
-            <VideoBlockFullscreen
-              key={`project_${_id}_display_video`}
-              id={`project_${_id}_display_video`}
-              video={video}
-              thumbnail={thumbnail}
+            <VideoComponent
+              id={`project_${_id}_loader_video`}
+              src={video?.asset?.url}
               className={cx(
                 roundingClassConditional,
                 "absolute bottom-0 left-0 right-0 top-0 z-10 h-full w-full",
               )}
+              onLoadedData={() => null}
             />
           )}
         </motion.div>
@@ -212,13 +201,7 @@ export default function ProjectModalContents({
               zIndex: -1,
             },
           }}
-          animate={
-            video &&
-            modalOpen &&
-            (videoLoaded || isPortrait || isTabletOrMobile)
-              ? "hidden"
-              : "visible"
-          }
+          animate={!video || !modalOpen ? "visible" : "hidden"}
         />
         {!isPrivate && project_link?.url && modalOpen && (
           <div
@@ -235,8 +218,6 @@ export default function ProjectModalContents({
           </div>
         )}
       </motion.div>
-
-      {/* TODO: ADD A CHECK HERE FOR IF IT IS PASSWORD UNLOCKED, IF NOT, SHOW THE PRIVATE BODY (and the private modal)*/}
       {modalOpen && (
         <>
           <ProjectModalBody

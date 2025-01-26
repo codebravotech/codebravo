@@ -14,17 +14,16 @@ import ROUTES from "./Routes";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MobileMenu from "./components/MobileMenu";
+import SyncToModal from "./components/SyncToModal";
 import { useToken } from "./hooks/api";
 import { useDisplay } from "./hooks/display";
 import NotFound from "./pages/NotFound";
-import { useSystemStore } from "./state/system";
 
 const Page = ({ children: pageContents }: { children: ReactNode }) => {
   // const [scope, animate] = useAnimate();
   // const [isPresent, safeToRemove] = usePresence();
   const { pathname } = useLocation();
   const { isMobile, isPortrait } = useDisplay();
-  const { hideAppOverflow } = useSystemStore();
   const isHomePage = pathname === "/home";
   const isPortfolio = pathname === "/portfolio" || pathname === "/";
 
@@ -59,16 +58,16 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
         }}
         className={cx(
           "relative flex min-h-screen w-[100%] flex-col overflow-x-hidden scrollbar-hide",
-          hideAppOverflow
-            ? "h-screen overflow-y-hidden scrollbar-hide"
-            : "overflow-y-scroll",
+          "overflow-y-scroll",
           isPortfolio ? "bg-night-gradient text-stars-100" : "bg-stars-100",
         )}
       >
         <Header isHomePage={isHomePage} isPortfolio={isPortfolio} />
         {pageContents}
-
-        <div className={cx("mt-auto", isMobile && !isHomePage && "mb-32")}>
+        <div
+          id="footer_container"
+          className={cx("mt-auto", isMobile && !isHomePage && "mb-32")}
+        >
           <Footer isHomePage={isHomePage} />
         </div>
         <Tooltip
@@ -90,6 +89,7 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
           disableStyleInjection={true}
         />
       </motion.div>
+      <SyncToModal />
     </div>
   );
 };

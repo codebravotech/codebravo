@@ -25,18 +25,18 @@ export default function Header({
       {!isHomePage && (
         <div
           className={cx(
-            "flex h-[10vh] flex-row items-start pt-2 font-fjalla lg:w-[98%]",
+            "my-4 flex h-32 flex-row items-start font-fjalla lg:h-20 lg:w-[98%]",
             isMobile ? "justify-center" : "justify-between",
             isHomePage && "hidden",
           )}
         >
-          <Link className="mb-2 h-full pl-6" to="/">
+          <Link className="mt-1 h-full pl-6" to="/">
             <img className="h-full w-full" src={logo} />
           </Link>
           {!isMobile && (
             <div
               className={cx(
-                "flex flex-row justify-evenly gap-4 pr-4 pt-8",
+                "flex flex-row justify-evenly gap-4 pr-4 pt-6",
                 isHomePage || isPortfolio ? "text-stars-100" : "text-night-400",
               )}
             >

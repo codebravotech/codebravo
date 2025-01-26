@@ -1,23 +1,19 @@
 import cx from "classnames";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { get } from "lodash";
-import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { createPortal } from "react-dom";
 
-import PortableTextPopcorn from "../components/PortableTextPopcorn";
+import ModalOverlayProject from "../components/ModalOverlayProject";
 import ProjectCard from "../components/ProjectCard";
-import ProjectModal from "../components/ProjectModal";
 import { useAuthorizedQuery, usePublicQuery } from "../hooks/api";
 import { useDisplay } from "../hooks/display";
 import { useSystemStore } from "../state/system";
+// import { useSystemStore } from "../state/system";
 import { PortfolioPageDocument } from "../types/components";
 
 export default function Portfolio() {
-  const { openProjectId, setOpenProjectId, clickedCardBoundingBox } =
-    useSystemStore();
-  const [searchParams] = useSearchParams();
+  const { openProjectId, setOpenProjectId } = useSystemStore();
   const { isDesktopOrLaptop } = useDisplay();
-
   const { documents: authorizedDocuments = [] } =
     useAuthorizedQuery<PortfolioPageDocument>("portfolio_authorized");
   const { documents = [] } =
@@ -26,54 +22,67 @@ export default function Portfolio() {
   const publicPage = get(documents, "[0]");
   const authorizedPage = get(authorizedDocuments, "[0]");
   const page = authorizedPage || publicPage || {};
-  const header = get(page, "header", []);
+  // const header = get(page, "header", []);
   const projects = get(page, "projects", []);
 
-  useEffect(() => {
-    if (!searchParams.get("project")) {
-      setOpenProjectId(null);
-    }
-  }, []);
+  const handleClose = () => {
+    // Control the layout effect! This might need to be moved elsewhere for
+    // the multi-step animation
+    setOpenProjectId(null);
+  };
 
   if (!(projects?.length > 0)) {
     return null;
   }
-  const openProject = projects.find(
-    (project) =>
-      project?.slug?.current === openProjectId ||
-      project?._id === openProjectId,
-  );
 
   return (
-    <motion.div
-      className={cx("relative flex h-full w-full flex-col items-center")}
+    <div
+      id="portfolio_flex_container"
+      className={cx(
+        isDesktopOrLaptop ? "flex-row" : "flex-col",
+        "flex flex-wrap items-center justify-center gap-32 lg:mt-10 lg:gap-8",
+      )}
     >
-      <div className="highlighter-underline relative mb-10">
-        <PortableTextPopcorn content={header} />
-      </div>
+      {projects.map((project) => {
+        const { _id } = project;
 
-      {openProject && clickedCardBoundingBox && (
-        <ProjectModal project={openProject} />
-      )}
+        const handleOpen = () => {
+          setOpenProjectId(_id);
+        };
 
-      {projects.length > 0 && (
-        <div
-          className={cx(
-            "mb-4 flex w-full flex-wrap justify-center gap-6 px-4",
-            isDesktopOrLaptop ? "flex-row" : "flex-col",
-          )}
-        >
-          {projects.map((project, index) => {
-            return (
-              <ProjectCard
-                project={project}
-                key={`project_card_${project?._id}`}
-                index={index}
+        return (
+          <motion.div
+            key={_id}
+            layout
+            layoutId={_id}
+            onClick={handleOpen}
+            className="flex flex-col items-center gap-10"
+          >
+            <ProjectCard project={project} />
+          </motion.div>
+        );
+      })}
+
+      {/* Modal overlay (in a portal) for the expanded card */}
+
+      <>
+        {createPortal(
+          <AnimatePresence>
+            {openProjectId && (
+              <ModalOverlayProject
+                project={projects.find(
+                  (p) =>
+                    p?.slug?.current === openProjectId ||
+                    p?._id === openProjectId,
+                )}
+                handleClose={handleClose}
               />
-            );
-          })}
-        </div>
-      )}
-    </motion.div>
+            )}
+            ,
+          </AnimatePresence>,
+          document.body,
+        )}
+      </>
+    </div>
   );
 }

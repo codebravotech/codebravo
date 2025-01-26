@@ -6,12 +6,6 @@ export interface SystemState {
 
   token: string | null;
   setToken: (token: string | null) => void;
-
-  clickedCardBoundingBox: DOMRect | null;
-  setClickedCardBoundingBox: (clickedCardBoundingBox: DOMRect) => void;
-
-  hideAppOverflow: boolean;
-  setHideAppOverflow: (hideAppOverflow: boolean) => void;
 }
 
 export const useSystemStore = create<SystemState>()((set /*, get*/) => ({
@@ -19,10 +13,4 @@ export const useSystemStore = create<SystemState>()((set /*, get*/) => ({
   setToken: (token) => set({ token }),
   openProjectId: null,
   setOpenProjectId: (openProjectId) => set({ openProjectId }),
-  clickedCardBoundingBox: null,
-  setClickedCardBoundingBox: (clickedCardBoundingBox) =>
-    set({ clickedCardBoundingBox }),
-
-  hideAppOverflow: false,
-  setHideAppOverflow: (hideAppOverflow) => set({ hideAppOverflow }),
 }));

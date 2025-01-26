@@ -39,7 +39,7 @@ export default function AssetAndCopyContentBlock({
   let textArrivalDirection: "up" | "left" | "right" = "up";
   let assetType: "video" | "image" | "" = "";
   let orientation = "landscape";
-  let playback_speed = 1;
+  // let playback_speed = 1;
 
   const image: ImageRefResolved | undefined =
     useContentBlockImage(content_block);
@@ -48,7 +48,7 @@ export default function AssetAndCopyContentBlock({
 
   if (video) {
     orientation = video?.orientation || "landscape";
-    playback_speed = video?.playback_speed || 1;
+    // playback_speed = video?.playback_speed || 1;
     assetType = "video";
   } else if (image) {
     orientation = image?.orientation || "landscape";
@@ -120,25 +120,7 @@ export default function AssetAndCopyContentBlock({
               "relative cursor-pointer object-scale-down",
             )}
             src={video?.asset?.url}
-            autoPlay
-            muted
-            onContextMenu={() => false}
-            loop
-            playsInline
-            webkit-playsinline={"true"}
-            onLoadedData={() => {
-              const vidElem = document.getElementById(
-                videoId,
-              ) as HTMLVideoElement;
-              if (
-                vidElem &&
-                typeof playback_speed === "number" &&
-                0 < playback_speed &&
-                playback_speed < 1
-              ) {
-                vidElem.playbackRate = playback_speed;
-              }
-            }}
+            onLoadedData={() => null}
           />
         </ArriveDirectionally>
       )}
