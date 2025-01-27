@@ -84,7 +84,8 @@ export default function ExpandedProjectCard({
   return (
     <motion.div
       className={cx(
-        "relative overflow-x-hidden overflow-y-scroll overscroll-none rounded bg-night-gradient bg-white text-stars-100 shadow-lg scrollbar-hide",
+        "relative overflow-y-scroll rounded bg-night-gradient bg-white text-stars-100 scrollbar-hide",
+        // "relative overflow-y-scroll rounded bg-night-gradient bg-white text-stars-100",
         className,
       )}
       id="expanded_proj_card"
@@ -196,13 +197,11 @@ export default function ExpandedProjectCard({
         )}
       </AnimatePresence>
 
-      {animationPhase === "MODAL_OPEN" && (!video || videoLoaded) && (
-        <ProjectModalBody
-          project={project}
-          handleClose={handleRequestClose}
-          animationPhase={animationPhase}
-        />
-      )}
+      <ProjectModalBody
+        project={project}
+        handleClose={handleRequestClose}
+        animationPhase={animationPhase}
+      />
     </motion.div>
   );
 }
