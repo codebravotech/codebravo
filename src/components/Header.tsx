@@ -2,7 +2,7 @@ import cx from "classnames";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-import { NAV_OPTIONS } from "../config";
+import { HEADER_VH, NAV_OPTIONS } from "../config";
 import { useDisplay } from "../hooks/display";
 
 export default function Header({
@@ -25,10 +25,11 @@ export default function Header({
       {!isHomePage && (
         <div
           className={cx(
-            "my-4 flex h-32 flex-row items-start font-fjalla lg:h-20 lg:w-[98%]",
-            isMobile ? "justify-center" : "justify-between",
+            "my-4 flex flex-row items-start font-fjalla lg:w-[98%]",
+            isMobile ? "h-[15vh] justify-center" : "h-[10vh] justify-between",
             isHomePage && "hidden",
           )}
+          style={{ height: `${isMobile ? HEADER_VH * 2 : HEADER_VH}vh` }}
         >
           <Link className="mt-1 h-full pl-6" to="/">
             <img className="h-full w-full" src={logo} />

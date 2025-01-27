@@ -14,7 +14,7 @@ import ROUTES from "./Routes";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MobileMenu from "./components/MobileMenu";
-import SyncToModal from "./components/SyncToModal";
+// import SyncToModal from "./components/SyncToModal";
 import { useToken } from "./hooks/api";
 import { useDisplay } from "./hooks/display";
 import NotFound from "./pages/NotFound";
@@ -56,8 +56,10 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
             duration: 0.3,
           },
         }}
+        layoutScroll
+        style={{ overflow: "scroll" }}
         className={cx(
-          "relative flex min-h-screen w-[100%] flex-col overflow-hidden scrollbar-hide",
+          "relative flex flex-col overflow-hidden",
           isPortfolio ? "bg-night-gradient text-stars-100" : "bg-stars-100",
         )}
       >
@@ -65,9 +67,9 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
         {pageContents}
         <div
           id="footer_container"
-          className={cx("mt-auto", isMobile && !isHomePage && "mb-32")}
+          className={cx(isMobile && !isHomePage && "mb-32")}
         >
-          <Footer isHomePage={isHomePage} />
+          <Footer />
         </div>
         <Tooltip
           id="mailto_link_tooltip"
@@ -88,7 +90,9 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
           disableStyleInjection={true}
         />
       </motion.div>
-      <SyncToModal />
+
+      {/* TODO PUT THIS BACK!! */}
+      {/* <SyncToModal /> */}
     </div>
   );
 };

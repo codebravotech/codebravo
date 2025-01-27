@@ -2,7 +2,7 @@ import cx from "classnames";
 
 import { useDisplay } from "../hooks/display";
 
-export default function Footer({ isHomePage }: { isHomePage: boolean }) {
+export default function Footer() {
   const { isMobile } = useDisplay();
 
   const logo = `/images/logo_black.svg`;
@@ -13,7 +13,6 @@ export default function Footer({ isHomePage }: { isHomePage: boolean }) {
         isMobile
           ? "flex-col-reverse justify-start"
           : "flex-row justify-between",
-        isHomePage && "hidden",
         "flex items-center px-6 pb-2 pt-10 text-xs lg:text-sm",
       )}
     >
