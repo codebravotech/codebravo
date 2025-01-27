@@ -4,6 +4,7 @@ import { get } from "lodash";
 import { createPortal } from "react-dom";
 
 import ModalOverlayProject from "../components/ModalOverlayProject";
+// import PortableTextPopcorn from "../components/PortableTextPopcorn";
 import ProjectCard from "../components/ProjectCard";
 import { useAuthorizedQuery, usePublicQuery } from "../hooks/api";
 import { useDisplay } from "../hooks/display";
@@ -36,17 +37,24 @@ export default function Portfolio() {
   }
 
   return (
-    <div
+    <motion.div
+      layoutScroll
+      // style={{ overflow: "scroll" }}
       id="portfolio_flex_container"
       className={cx(
         isDesktopOrLaptop ? "flex-row" : "flex-col",
-        "flex flex-wrap items-center justify-center gap-32 lg:mt-10 lg:gap-8",
+        "flex w-screen flex-wrap items-center justify-center gap-10 overflow-clip lg:mt-10 lg:gap-8",
       )}
     >
+      {/* <div className="highlighter-underline relative mb-10">
+        <PortableTextPopcorn content={header} />
+      </div> */}
       {projects.map((project) => {
         const { _id } = project;
 
         const handleOpen = () => {
+          console.log("PROJECT LAYOUT ID", _id);
+
           setOpenProjectId(_id);
         };
 
@@ -56,6 +64,7 @@ export default function Portfolio() {
             layout
             layoutId={_id}
             onClick={handleOpen}
+            onTap={handleOpen}
             className="flex flex-col items-center gap-10"
           >
             <ProjectCard project={project} />
@@ -67,6 +76,7 @@ export default function Portfolio() {
 
       <>
         {createPortal(
+          // <AnimatePresence>
           <AnimatePresence>
             {openProjectId && (
               <ModalOverlayProject
@@ -78,11 +88,10 @@ export default function Portfolio() {
                 handleClose={handleClose}
               />
             )}
-            ,
           </AnimatePresence>,
           document.body,
         )}
       </>
-    </div>
+    </motion.div>
   );
 }
