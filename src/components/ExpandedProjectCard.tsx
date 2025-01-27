@@ -123,6 +123,17 @@ export default function ExpandedProjectCard({
           )}
         </div>
       )}
+
+      {isPortrait && (
+        <Icon
+          icon="back"
+          onClick={handleAssertClose}
+          className={cx(
+            "fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-night-100 p-2",
+          )}
+        />
+      )}
+
       <AnimatePresence>
         {hasVideo &&
           animationPhaseIn(
