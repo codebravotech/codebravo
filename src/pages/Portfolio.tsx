@@ -49,16 +49,16 @@ export default function Portfolio() {
     }
   };
 
-  // useEffect(() => {
-  //   if (paramsId && !openProjectId) {
-  //     // Give the layout animation components time to figure their shit out if we
-  //     // are joining via link
-  //     setTimeout(() => {
-  //       setAnimationPhase("CARD_SCALING_OPEN");
-  //       setOpenProjectId(paramsId);
-  //     }, 1000);
-  //   }
-  // }, [paramsId]);
+  useEffect(() => {
+    if (paramsId && !openProjectId) {
+      // Give the layout animation components time to figure their shit out if we
+      // are joining via link
+      setTimeout(() => {
+        setAnimationPhase("CARD_SCALING_OPEN");
+        setOpenProjectId(paramsId);
+      }, 1000);
+    }
+  }, [paramsId, openProjectId]);
 
   if (!(projects?.length > 0 || !animationPhase)) {
     return null;
