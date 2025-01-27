@@ -57,7 +57,8 @@ export default function ExpandedProjectCard({
 
   const handleAssertClose = () => {
     const latestAnimationPhase = useSystemStore.getState().animationPhase;
-
+    searchParams.delete("p");
+    setSearchParams(searchParams);
     if (latestAnimationPhase === "MODAL_OPEN") {
       setAnimationPhase("MODAL_CONTENTS_EXITING");
     } else if (
