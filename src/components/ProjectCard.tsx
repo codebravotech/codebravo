@@ -57,7 +57,7 @@ export default function ProjectCard({
       transition={
         animationPhase === "MODAL_CLOSED"
           ? { duration: 0 }
-          : { layout: { duration: 0.5, ease: "easeOut", delay: 0.3 } }
+          : { layout: { duration: 0.5, ease: "easeOut", delay: 0 } }
       }
       onLayoutAnimationComplete={() => {
         const latestAnimationPhase = useSystemStore.getState().animationPhase;

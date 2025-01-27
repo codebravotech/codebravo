@@ -22,6 +22,9 @@ export default function ExpandedProjectCard({
   const thumbnail = useProjectThumbnail(project);
   const video = useProjectVideo(project);
   const hasVideo = !!video?.asset?.url;
+  const headerHeight = "10vh";
+  const bodyOffset = "12vh";
+  // const bodyOffset = 0;
 
   const { animationPhase, setAnimationPhase, setOpenProjectId } =
     useSystemStore();
@@ -83,25 +86,27 @@ export default function ExpandedProjectCard({
       style={{ height: "100vh", width: "100vw", z: 20 }}
       onClick={handleRequestClose}
     >
-      {/* <div className="relative flex justify-center pt-10">
-        <div className="underline-drawn relative mb-2 flex items-center text-center font-fjalla text-5xl">
-          <PortableTextRegular content={header} />
-        </div>
+      {animationPhase === "MODAL_OPEN" && (
+        <div
+          className="relative flex justify-center pt-10"
+          style={{ height: headerHeight }}
+        >
+          <div className="underline-drawn relative mb-2 flex items-center text-center font-fjalla text-5xl">
+            <PortableTextRegular content={header} />
+          </div>
 
-        <div className="ml-4 flex flex-col justify-center text-stars-100 hover:scale-150">
-          <Icon
-            className={cx(
-              "h-6 w-6",
-              animationPhase !== "MODAL_OPEN" && "invisible",
-            )}
-            icon="back"
-            onClick={handleRequestClose}
-          />
+          <div className="ml-4 flex flex-col justify-center text-stars-100 hover:scale-150">
+            <Icon
+              className={cx(
+                "h-6 w-6",
+                animationPhase !== "MODAL_OPEN" && "invisible",
+              )}
+              icon="back"
+              onClick={handleRequestClose}
+            />
+          </div>
         </div>
-      </div>
-      <div>
-        ANIMATION PHASE: {animationPhase}. IS VIDEO? {hasVideo.toString()}
-      </div> */}
+      )}
 
       <AnimatePresence>
         {hasVideo &&
@@ -111,7 +116,8 @@ export default function ExpandedProjectCard({
           ) && (
             <motion.div
               key={`${_id}_modal_hero_video`}
-              className="absolute left-0 top-0"
+              className="absolute left-0"
+              style={{ top: bodyOffset }}
               initial={{ opacity: 0 }}
               animate={videoLoaded ? { opacity: 1 } : { opacity: 0 }}
               exit={{ opacity: 0 }}
@@ -128,29 +134,30 @@ export default function ExpandedProjectCard({
                 }
               }}
             >
-              <VideoComponent
-                src={video?.asset.url}
-                onLoadedData={() => setVideoLoaded(true)}
-              />
+              {
+                <VideoComponent
+                  src={video?.asset.url}
+                  onLoadedData={() => setVideoLoaded(true)}
+                />
+              }
             </motion.div>
           )}
         {(!hasVideo || (hasVideo && animationPhase !== "MODAL_OPEN")) && (
           <motion.img
             key={`${_id}_modal_hero_image`}
             className={cx(
-              "left-0 top-0 h-full h-screen w-full w-screen rounded object-cover",
+              "absolute left-0 top-0 h-full h-screen w-full w-screen rounded object-cover",
             )}
             initial={
               animationPhase === "MODAL_CLOSED" ||
               animationPhase === "CARD_SCALING_OPEN"
-                ? { opacity: 1 }
-                : { opacity: 0 }
+                ? { opacity: 1, y: 0 }
+                : { opacity: 0, y: bodyOffset }
             }
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: bodyOffset }}
             transition={{
-              duration: 1,
-              delay: 0.3,
+              duration: 0.5,
             }}
             src={thumbnail?.asset?.url}
             alt={project.title}
