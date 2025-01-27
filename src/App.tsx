@@ -55,15 +55,8 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
           },
         }}
         layoutScroll
-        // style={
-        //   animationPhase === "MODAL_CLOSED"
-        //     ? { overflowY: "scroll" }
-        //     : { overflowY: "hidden" }
-        // }
         className={cx(
           "relative flex w-screen flex-col overflow-hidden scrollbar-hide",
-          // "relative flex w-screen flex-col scrollbar-hide",
-          // "relative flex w-screen flex-col",
           isPortfolio ? "bg-night-gradient text-stars-100" : "bg-stars-100",
         )}
       >
