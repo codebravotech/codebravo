@@ -2,9 +2,10 @@ import cx from "classnames";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
+import { useDisplay } from "../hooks/display";
 import { useProjectThumbnail, useProjectVideo } from "../hooks/documents";
 import { useSystemStore } from "../state/system";
-import { ModalAnimationPhase, ProjectDocument } from "../types/components";
+import { ProjectDocument } from "../types/components";
 import { animationPhaseIn } from "../utils/animation";
 import Icon from "./Icon";
 import PortableTextRegular from "./PortableTextRegular";
@@ -26,10 +27,9 @@ export default function ExpandedProjectCard({
   const bodyOffset = "12vh";
   // const bodyOffset = 0;
 
-  const { animationPhase, setAnimationPhase, setOpenProjectId } =
-    useSystemStore();
-  // const [modalOpen, setModalOpen] = useState(false);
+  const { animationPhase, setAnimationPhase } = useSystemStore();
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const { isPortrait } = useDisplay();
 
   const { _id, header } = project;
   // useEffect(() => {
@@ -53,9 +53,6 @@ export default function ExpandedProjectCard({
 
   const handleFinishedCrossfade = () => {
     const latestAnimationPhase = useSystemStore.getState().animationPhase;
-
-    console.log("CROSSFADE", latestAnimationPhase);
-
     if (latestAnimationPhase === "MODAL_CONTENTS_ENTERING") {
       setAnimationPhase("MODAL_OPEN");
     } else if (latestAnimationPhase === "MODAL_CONTENTS_EXITING") {
@@ -88,20 +85,22 @@ export default function ExpandedProjectCard({
           className="relative flex justify-center pt-10"
           style={{ height: headerHeight }}
         >
-          <div className="underline-drawn relative mb-2 flex items-center text-center font-fjalla text-5xl">
+          <div className="underline-drawn relative mb-2 flex items-center text-center font-fjalla text-3xl lg:text-5xl">
             <PortableTextRegular content={header} />
           </div>
 
-          <div className="ml-4 flex flex-col justify-center text-stars-100 hover:scale-150">
-            <Icon
-              className={cx(
-                "h-6 w-6",
-                animationPhase !== "MODAL_OPEN" && "invisible",
-              )}
-              icon="back"
-              onClick={handleRequestClose}
-            />
-          </div>
+          {!isPortrait && (
+            <div className="relative ml-4 flex flex-col justify-center text-stars-100 hover:scale-150">
+              <Icon
+                className={cx(
+                  "h-6 w-6",
+                  animationPhase !== "MODAL_OPEN" && "invisible",
+                )}
+                icon="back"
+                onClick={handleRequestClose}
+              />
+            </div>
+          )}
         </div>
       )}
 
@@ -120,8 +119,6 @@ export default function ExpandedProjectCard({
               exit={{ opacity: 0 }}
               transition={{ duration: 1, delay: 0.3 }}
               onAnimationComplete={() => {
-                console.log("VIDEO CROSS:");
-
                 handleFinishedCrossfade();
               }}
             >
@@ -129,6 +126,7 @@ export default function ExpandedProjectCard({
                 <VideoComponent
                   src={video?.asset.url}
                   onLoadedData={() => setVideoLoaded(true)}
+                  className={cx(isPortrait && "h-screen object-cover")}
                 />
               }
             </motion.div>

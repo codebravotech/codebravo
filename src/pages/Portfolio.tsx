@@ -44,7 +44,7 @@ export default function Portfolio() {
         className={cx(
           isDesktopOrLaptop
             ? "flex flex-row flex-wrap items-center justify-center gap-8"
-            : "flex flex-col items-center justify-start",
+            : "flex flex-col items-center justify-start gap-10",
           // "flex flex-col items-center justify-center gap-10 lg:mt-10 lg:gap-8",
         )}
       >

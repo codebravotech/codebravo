@@ -7,7 +7,6 @@ import {
 import { useEffect } from "react";
 
 import CtaButton from "../components/CtaButton";
-import { authorizedQuery } from "../utils/api";
 
 export default function NotFound() {
   const [scope, animate] = useAnimate();

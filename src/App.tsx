@@ -14,7 +14,6 @@ import ROUTES from "./Routes";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MobileMenu from "./components/MobileMenu";
-import SyncToModal from "./components/SyncToModal";
 import { useToken } from "./hooks/api";
 import { useDisplay } from "./hooks/display";
 import NotFound from "./pages/NotFound";
@@ -32,8 +31,6 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
 
   return (
     <div>
-      {isMobile && <MobileMenu isHomePage={isHomePage} />}
-
       <motion.div
         initial={{
           opacity: 0,
@@ -67,6 +64,8 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
           isPortfolio ? "bg-night-gradient text-stars-100" : "bg-stars-100",
         )}
       >
+        {isMobile && <MobileMenu isHomePage={isHomePage} />}
+
         <Header isHomePage={isHomePage} isPortfolio={isPortfolio} />
         {pageContents}
         <div
@@ -94,8 +93,6 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
           disableStyleInjection={true}
         />
       </motion.div>
-
-      <SyncToModal />
     </div>
   );
 };

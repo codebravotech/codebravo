@@ -3,10 +3,12 @@ import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { NAV_OPTIONS } from "../config";
+import { useSystemStore } from "../state/system";
 import Icon from "./Icon";
 
 export default function MobileMenu({ isHomePage = false }) {
   const navigate = useNavigate();
+  const { animationPhase, setAnimationPhase } = useSystemStore();
   const { pathname } = useLocation();
   return (
     <motion.div
@@ -14,30 +16,41 @@ export default function MobileMenu({ isHomePage = false }) {
         "glass-menu fixed bottom-4 left-0 right-0 z-50 mx-4 mb-2 flex flex-row items-center justify-evenly rounded-full p-2 shadow-xl",
       )}
     >
-      {NAV_OPTIONS.map((button) => (
-        <motion.div
-          className={cx(
-            "relative rounded-full p-[10px]",
-            pathname === button.pathname
-              ? isHomePage
-                ? "border-[2px] border-night-300 bg-transparent p-[8px]"
-                : "bg-dune-gradient"
-              : "border-transparent",
-          )}
-          key={button.label}
-          onClick={() => navigate(button.pathname)}
-          onTap={() => navigate(button.pathname)}
+      {animationPhase === "MODAL_OPEN" && (
+        <div
+          key="mobile_back_button"
+          className={cx("relative rounded-full p-[10px]")}
+          onClick={() => setAnimationPhase("MODAL_CONTENTS_EXITING")}
         >
-          <Icon
-            icon={button.icon}
+          <Icon icon="back" className="h-10 w-10" />
+        </div>
+      )}
+      {NAV_OPTIONS.slice()
+        .reverse()
+        .map((button) => (
+          <motion.div
             className={cx(
-              "h-10 w-10",
-              button.icon === "portfolio" && "relative bottom-[2px]",
-              button.icon === "connect" && "scale-[1.03]",
+              "relative rounded-full p-[10px]",
+              pathname === button.pathname
+                ? isHomePage
+                  ? "border-[2px] border-night-300 bg-transparent p-[8px]"
+                  : "bg-dune-gradient"
+                : "border-transparent",
             )}
-          />
-        </motion.div>
-      ))}
+            key={button.label}
+            onClick={() => navigate(button.pathname)}
+            onTap={() => navigate(button.pathname)}
+          >
+            <Icon
+              icon={button.icon}
+              className={cx(
+                "h-10 w-10",
+                button.icon === "portfolio" && "relative bottom-[2px]",
+                button.icon === "connect" && "scale-[1.03]",
+              )}
+            />
+          </motion.div>
+        ))}
     </motion.div>
   );
 }

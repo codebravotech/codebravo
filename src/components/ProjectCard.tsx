@@ -51,7 +51,7 @@ export default function ProjectCard({
       key={`project_expanded_card_${_id}`}
       layoutId={`layout_sibling_card_${_id}`}
       className={cx(
-        "group relative z-50 basis-1/2 rounded-2xl shadow-2xl",
+        "group relative basis-1/2 rounded-2xl shadow-2xl",
         className,
       )}
       transition={
@@ -62,10 +62,6 @@ export default function ProjectCard({
       onLayoutAnimationComplete={() => {
         const latestAnimationPhase = useSystemStore.getState().animationPhase;
         if (latestAnimationPhase === "CARD_SCALING_CLOSED") {
-          console.log(
-            "CARD SCALE DOWN LAYOUT ANIMATION COMPLETED! PHASE: ",
-            animationPhase,
-          );
           setOpenProjectId(null);
           setAnimationPhase("MODAL_CLOSED");
         }
@@ -82,7 +78,7 @@ export default function ProjectCard({
             }),
       }}
     >
-      {/* Main bg image */}
+      {/* Main body of card is image */}
       <img
         src={thumbnail?.asset?.url}
         alt={thumbnail?.alt}
@@ -113,33 +109,32 @@ export default function ProjectCard({
             }}
           />
           {/* Logo/text overlay */}
-
-          {/* <div
-        className={cx(
-          overlayClasses,
-          visibilityClasses,
-          "gap-4 bg-night-400/50 text-center text-stars-100 opacity-0",
-        )}
-      >
-        {client_logo && (
-          <img
-            src={client_logo.asset?.url}
-            alt={client_logo.alt}
-            className="max-h-[40%] max-w-[60%] object-contain"
-          />
-        )}
-        <div className="h6 max-w-[70%] font-raleway font-bold">
-          <PortableTextRegular content={description} />
-        </div>
-      </div>
-      {isPrivate && !token && (
-        <div className={cx(overlayClasses)}>
-          <Icon
-            icon="lock"
-            className="font-night-100 z-20 max-h-[40%] max-w-[60%] object-contain text-night-100 group-hover:text-stars-100"
-          />
-        </div>
-      )} */}
+          <div
+            className={cx(
+              overlayClasses,
+              visibilityClasses,
+              "gap-4 bg-night-400/50 text-center text-stars-100 opacity-0",
+            )}
+          >
+            {client_logo && (
+              <img
+                src={client_logo.asset?.url}
+                alt={client_logo.alt}
+                className="max-h-[40%] max-w-[60%] object-contain"
+              />
+            )}
+            <div className="h6 max-w-[70%] font-raleway font-bold">
+              <PortableTextRegular content={description} />
+            </div>
+          </div>
+          {isPrivate && !token && (
+            <div className={cx(overlayClasses)}>
+              <Icon
+                icon="lock"
+                className="font-night-100 z-20 max-h-[40%] max-w-[60%] object-contain text-night-100 group-hover:text-stars-100"
+              />
+            </div>
+          )}
         </>
       )}
     </motion.div>
