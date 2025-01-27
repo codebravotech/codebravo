@@ -129,7 +129,7 @@ export default function ExpandedProjectCard({
           icon="back"
           onClick={handleAssertClose}
           className={cx(
-            "fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-night-100 p-2",
+            "fixed bottom-20 right-6 z-50 h-14 w-14 rounded-full bg-night-100 p-2",
           )}
         />
       )}
@@ -156,6 +156,7 @@ export default function ExpandedProjectCard({
                 <VideoComponent
                   src={video?.asset.url}
                   onLoadedData={() => setVideoLoaded(true)}
+                  playback_speed={video?.playback_speed}
                   className={cx(isPortrait && "h-screen object-cover")}
                 />
               }

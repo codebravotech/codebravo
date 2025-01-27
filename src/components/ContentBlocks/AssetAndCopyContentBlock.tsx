@@ -120,6 +120,7 @@ export default function AssetAndCopyContentBlock({
               "relative cursor-pointer object-scale-down",
             )}
             src={video?.asset?.url}
+            playback_speed={video?.playback_speed}
             onLoadedData={() => null}
           />
         </ArriveDirectionally>
