@@ -56,25 +56,30 @@ export default function ExpandedProjectCard({
     }
   };
 
-  // const handleAssertClose = () => {
-  //   const latestAnimationPhase = useSystemStore.getState().animationPhase;
+  const handleAssertClose = () => {
+    const latestAnimationPhase = useSystemStore.getState().animationPhase;
 
-  //   if (latestAnimationPhase === "MODAL_OPEN") {
-  //     setAnimationPhase("MODAL_CONTENTS_EXITING");
-  //   } else {
-  //     finalizeClose();
-  //   }
-  // };
+    if (latestAnimationPhase === "MODAL_OPEN") {
+      setAnimationPhase("MODAL_CONTENTS_EXITING");
+    } else if (
+      !animationPhaseIn(
+        ["MODAL_CONTENTS_EXITING", "CARD_SCALING_CLOSED"],
+        animationPhase,
+      )
+    ) {
+      finalizeClose();
+    }
+  };
 
-  // useEffect(() => {
-  //   if (
-  //     prevSearch?.includes("?p=") &&
-  //     !search?.includes("?p=") &&
-  //     openProjectId
-  //   ) {
-  //     handleAssertClose();
-  //   }
-  // }, [prevSearch, search, openProjectId]);
+  useEffect(() => {
+    if (
+      prevSearch?.includes("?p=") &&
+      !search?.includes("?p=") &&
+      openProjectId
+    ) {
+      handleAssertClose();
+    }
+  }, [prevSearch, search, openProjectId]);
 
   return (
     <motion.div
