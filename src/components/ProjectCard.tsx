@@ -54,7 +54,11 @@ export default function ProjectCard({
         "group relative z-50 basis-1/2 rounded-2xl shadow-2xl",
         className,
       )}
-      transition={{ layout: { duration: 0.7, ease: "easeIn", delay: 0.1 } }}
+      transition={
+        animationPhase === "MODAL_CLOSED"
+          ? { duration: 0 }
+          : { layout: { duration: 0.5, ease: "easeOut", delay: 0.3 } }
+      }
       onLayoutAnimationComplete={() => {
         const latestAnimationPhase = useSystemStore.getState().animationPhase;
         if (latestAnimationPhase === "CARD_SCALING_CLOSED") {
@@ -88,27 +92,29 @@ export default function ProjectCard({
         )}
       />
 
-      {/* Hidden video in the BG to preload */}
-      {video?.asset?.url && !videoLoaded && (
-        <VideoComponent
-          className="absolute left-0 top-0 -z-10 h-10 w-10"
-          src={video.asset.url}
-          onLoadedData={() => setVideoLoaded(true)}
-        />
-      )}
+      {animationPhase === "MODAL_CLOSED" && (
+        <>
+          {/* Hidden video in the BG to preload */}
+          {video?.asset?.url && !videoLoaded && (
+            <VideoComponent
+              className="absolute left-0 top-0 -z-10 h-10 w-10"
+              src={video.asset.url}
+              onLoadedData={() => setVideoLoaded(true)}
+            />
+          )}
 
-      {/* Color overlay */}
-      <div
-        className={cx(overlayClasses, visibilityClasses)}
-        style={{
-          backgroundColor: thumbnail_overlay_color?.trim(),
-          opacity: 0,
-          mixBlendMode: "multiply",
-        }}
-      />
-      {/* Logo/text overlay */}
+          {/* Color overlay */}
+          <div
+            className={cx(overlayClasses, visibilityClasses)}
+            style={{
+              backgroundColor: thumbnail_overlay_color?.trim(),
+              opacity: 0,
+              mixBlendMode: "multiply",
+            }}
+          />
+          {/* Logo/text overlay */}
 
-      <div
+          {/* <div
         className={cx(
           overlayClasses,
           visibilityClasses,
@@ -133,6 +139,8 @@ export default function ProjectCard({
             className="font-night-100 z-20 max-h-[40%] max-w-[60%] object-contain text-night-100 group-hover:text-stars-100"
           />
         </div>
+      )} */}
+        </>
       )}
     </motion.div>
   );

@@ -79,7 +79,7 @@ export default function ExpandedProjectCard({
           setAnimationPhase("MODAL_CONTENTS_ENTERING");
         }
       }}
-      transition={{ layout: { duration: 1, ease: "easeIn" } }}
+      transition={{ layout: { duration: 0.7, ease: "easeOut" } }}
       style={{ height: "100vh", width: "100vw", z: 20 }}
       onClick={handleRequestClose}
     >
@@ -140,7 +140,12 @@ export default function ExpandedProjectCard({
             className={cx(
               "left-0 top-0 h-full h-screen w-full w-screen rounded object-cover",
             )}
-            initial={{ opacity: 0 }}
+            initial={
+              animationPhase === "MODAL_CLOSED" ||
+              animationPhase === "CARD_SCALING_OPEN"
+                ? { opacity: 1 }
+                : { opacity: 0 }
+            }
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{

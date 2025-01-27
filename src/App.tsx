@@ -18,10 +18,12 @@ import SyncToModal from "./components/SyncToModal";
 import { useToken } from "./hooks/api";
 import { useDisplay } from "./hooks/display";
 import NotFound from "./pages/NotFound";
+import { useSystemStore } from "./state/system";
 
 const Page = ({ children: pageContents }: { children: ReactNode }) => {
   const { pathname } = useLocation();
   const { isMobile, isPortrait } = useDisplay();
+  const { animationPhase } = useSystemStore();
   const isHomePage = pathname === "/home";
   const isPortfolio = pathname === "/portfolio" || pathname === "/";
 
@@ -55,9 +57,13 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
           },
         }}
         layoutScroll
-        style={{ overflow: "scroll" }}
+        style={
+          animationPhase === "MODAL_CLOSED"
+            ? { overflowY: "scroll" }
+            : { overflowY: "hidden" }
+        }
         className={cx(
-          "relative flex flex-col overflow-hidden",
+          "relative flex w-screen flex-col overflow-hidden scrollbar-hide",
           isPortfolio ? "bg-night-gradient text-stars-100" : "bg-stars-100",
         )}
       >
