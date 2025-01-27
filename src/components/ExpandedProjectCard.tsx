@@ -51,10 +51,11 @@ export default function ExpandedProjectCard({
     }
   };
 
-  const handleFinishedCrossfade = (
-    latestAnimationPhase: ModalAnimationPhase,
-  ) => {
-    console.log("FINISHED CROSSFADE");
+  const handleFinishedCrossfade = () => {
+    const latestAnimationPhase = useSystemStore.getState().animationPhase;
+
+    console.log("CROSSFADE", latestAnimationPhase);
+
     if (latestAnimationPhase === "MODAL_CONTENTS_ENTERING") {
       setAnimationPhase("MODAL_OPEN");
     } else if (latestAnimationPhase === "MODAL_CONTENTS_EXITING") {
@@ -74,10 +75,6 @@ export default function ExpandedProjectCard({
       layoutId={`layout_sibling_card_${_id}`}
       onLayoutAnimationComplete={() => {
         const latestAnimationPhase = useSystemStore.getState().animationPhase;
-        console.log(
-          "CARD SCALE UP LAYOUT ANIMATION COMPLETED! PHASE: ",
-          latestAnimationPhase,
-        );
         if (latestAnimationPhase === "CARD_SCALING_OPEN") {
           setAnimationPhase("MODAL_CONTENTS_ENTERING");
         }
@@ -123,15 +120,9 @@ export default function ExpandedProjectCard({
               exit={{ opacity: 0 }}
               transition={{ duration: 1, delay: 0.3 }}
               onAnimationComplete={() => {
-                const latestAnimationPhase =
-                  useSystemStore.getState().animationPhase;
-                if (hasVideo) {
-                  console.log(
-                    "VIDEO ANIMATION COMPLETE, PHASE IS",
-                    latestAnimationPhase,
-                  );
-                  handleFinishedCrossfade(latestAnimationPhase);
-                }
+                console.log("VIDEO CROSS:");
+
+                handleFinishedCrossfade();
               }}
             >
               {
@@ -142,9 +133,9 @@ export default function ExpandedProjectCard({
               }
             </motion.div>
           )}
-        {(!hasVideo || (hasVideo && animationPhase !== "MODAL_OPEN")) && (
+        {hasVideo && animationPhase !== "MODAL_OPEN" && (
           <motion.img
-            key={`${_id}_modal_hero_image`}
+            key={`${_id}_modal_hero_image_with_vid`}
             className={cx(
               "absolute left-0 top-0 h-full h-screen w-full w-screen rounded object-cover",
             )}
@@ -161,18 +152,30 @@ export default function ExpandedProjectCard({
             }}
             src={thumbnail?.asset?.url}
             alt={project.title}
+          />
+        )}
+        {!hasVideo && (
+          <motion.img
+            key={`${_id}_modal_hero_image_with_vid`}
+            className={cx(
+              "absolute left-0 top-0 h-full h-screen w-full w-screen rounded object-cover",
+            )}
+            initial={{ y: 0 }}
+            animate={
+              animationPhaseIn(
+                ["MODAL_CONTENTS_ENTERING", "MODAL_OPEN"],
+                animationPhase,
+              )
+                ? { y: bodyOffset }
+                : { y: 0 }
+            }
+            exit={{ y: 0 }}
             onAnimationComplete={() => {
-              const latestAnimationPhase =
-                useSystemStore.getState().animationPhase;
-
-              if (!hasVideo) {
-                console.log(
-                  "IMAGE ANIMATION COMPLETE, PHASE IS",
-                  latestAnimationPhase,
-                );
-                handleFinishedCrossfade(latestAnimationPhase);
-              }
+              console.log("IMAGE CROSS:");
+              handleFinishedCrossfade();
             }}
+            src={thumbnail?.asset?.url}
+            alt={project.title}
           />
         )}
       </AnimatePresence>

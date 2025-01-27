@@ -34,8 +34,6 @@ export default function Portfolio() {
 
   return (
     <>
-      <div>ANIMATION PHASE: {animationPhase}</div>
-
       <div className="relative flex h-full w-full flex-row justify-center">
         <div className="highlighter-underline relative mb-10">
           <PortableTextPopcorn content={header} />

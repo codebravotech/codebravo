@@ -75,18 +75,6 @@ export default function NotFound() {
         >
           Follow me home!
         </CtaButton>
-        <button
-          onClick={() => {
-            const query_name = "portfolio_authorized";
-            const token = localStorage.getItem("codebravo_auth_token");
-            if (query_name && token) {
-              console.log("RUNNING THE BUTTON VERSION", token);
-              authorizedQuery(query_name, token);
-            }
-          }}
-        >
-          REMOVE THIS LATER!!!
-        </button>
       </div>
     </motion.div>
   );
