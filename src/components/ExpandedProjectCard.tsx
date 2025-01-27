@@ -196,11 +196,13 @@ export default function ExpandedProjectCard({
         )}
       </AnimatePresence>
 
-      <ProjectModalBody
-        project={project}
-        handleClose={handleRequestClose}
-        animationPhase={animationPhase}
-      />
+      {animationPhase === "MODAL_OPEN" && (!video || videoLoaded) && (
+        <ProjectModalBody
+          project={project}
+          handleClose={handleRequestClose}
+          animationPhase={animationPhase}
+        />
+      )}
     </motion.div>
   );
 }

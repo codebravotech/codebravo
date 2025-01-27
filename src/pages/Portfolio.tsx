@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { get } from "lodash";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
@@ -124,7 +124,7 @@ export default function Portfolio() {
         {/* Modal overlay (in a react portal rooted on the document body) for the expanded card */}
         <>
           {createPortal(
-            <div>
+            <AnimatePresence>
               {animationPhase &&
                 animationPhase !== "MODAL_CLOSED" &&
                 openProjectId && (
@@ -142,7 +142,7 @@ export default function Portfolio() {
                     })}
                   />
                 )}
-            </div>,
+            </AnimatePresence>,
             document.body,
           )}
         </>
