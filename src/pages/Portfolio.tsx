@@ -11,6 +11,7 @@ import { useDisplay } from "../hooks/display";
 import { useSystemStore } from "../state/system";
 // import { useSystemStore } from "../state/system";
 import { PortfolioPageDocument } from "../types/components";
+import { animationPhaseIn } from "../utils/animation";
 
 export default function Portfolio() {
   const { openProjectId, setOpenProjectId, animationPhase, setAnimationPhase } =
@@ -74,7 +75,10 @@ export default function Portfolio() {
                 }}
                 className="flex flex-col items-center gap-10"
               >
-                <ProjectCard project={project} />
+                {animationPhaseIn(
+                  ["MODAL_CLOSED", "CARD_SCALING_OPEN", "CARD_SCALING_CLOSED"],
+                  animationPhase,
+                ) && <ProjectCard project={project} />}
               </motion.div>
             );
           })}
@@ -94,7 +98,6 @@ export default function Portfolio() {
                 />
               )}
             </div>,
-
             document.body,
           )}
         </>

@@ -25,16 +25,20 @@ export default function ProjectCard({
     description,
   } = project;
   const { isTabletOrMobile } = useDisplay();
-  const { token, animationPhase, setAnimationPhase } = useSystemStore();
+  const { token, animationPhase, setAnimationPhase, setOpenProjectId } =
+    useSystemStore();
   const [videoLoaded, setVideoLoaded] = useState(false);
   const thumbnail = useProjectThumbnail(project);
   const video = useProjectVideo(project);
 
   const overlayClasses =
     "absolute inset-0 z-10 flex h-full w-full flex-col items-center justify-center rounded-2xl";
-  const visibilityClasses = !isTabletOrMobile
-    ? "group-hover:scale-105 group-hover:!opacity-100 group-hover:!visible"
-    : "group-active:scale-105 group-active:!opacity-100 group-active:!visible";
+  const visibilityClasses =
+    animationPhase !== "MODAL_CLOSED"
+      ? ""
+      : !isTabletOrMobile
+        ? "group-hover:scale-105 group-hover:!opacity-100 group-hover:!visible"
+        : "group-active:scale-105 group-active:!opacity-100 group-active:!visible";
 
   if (!_id) {
     return null;
@@ -47,21 +51,23 @@ export default function ProjectCard({
       key={`project_expanded_card_${_id}`}
       layoutId={`layout_sibling_card_${_id}`}
       className={cx(
-        "group relative basis-1/2 rounded-2xl shadow-2xl",
+        "group relative z-50 basis-1/2 rounded-2xl shadow-2xl",
         className,
       )}
-      transition={{ duration: 0.7, ease: "easeIn" }}
+      transition={{ layout: { duration: 0.7, ease: "easeIn", delay: 0.1 } }}
       onLayoutAnimationComplete={() => {
-        console.log(
-          "CARD SCALE DOWN LAYOUT ANIMATION COMPLETED! PHASE: ",
-          animationPhase,
-        );
-        if (animationPhase === "CARD_SCALING_CLOSED") {
+        const latestAnimationPhase = useSystemStore.getState().animationPhase;
+        if (latestAnimationPhase === "CARD_SCALING_CLOSED") {
+          console.log(
+            "CARD SCALE DOWN LAYOUT ANIMATION COMPLETED! PHASE: ",
+            animationPhase,
+          );
+          setOpenProjectId(null);
           setAnimationPhase("MODAL_CLOSED");
         }
       }}
-      style={
-        isTabletOrMobile
+      style={{
+        ...(isTabletOrMobile
           ? {
               height: "auto",
               width: "97vw",
@@ -69,8 +75,8 @@ export default function ProjectCard({
           : {
               height: "43vh",
               width: "auto",
-            }
-      }
+            }),
+      }}
     >
       {/* Main bg image */}
       <img
@@ -124,7 +130,7 @@ export default function ProjectCard({
         <div className={cx(overlayClasses)}>
           <Icon
             icon="lock"
-            className="font-night-100 z-40 max-h-[40%] max-w-[60%] object-contain text-night-100 group-hover:text-stars-100"
+            className="font-night-100 z-20 max-h-[40%] max-w-[60%] object-contain text-night-100 group-hover:text-stars-100"
           />
         </div>
       )}
