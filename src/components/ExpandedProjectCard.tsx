@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 
 import { usePrevious } from "../hooks/common";
-import { useDisplay } from "../hooks/display";
+import { useDisplay, useFinalizeCloseModal } from "../hooks/display";
 import { useProjectThumbnail, useProjectVideo } from "../hooks/documents";
 import { useSystemStore } from "../state/system";
 import { ProjectDocument } from "../types/components";
@@ -30,20 +30,14 @@ export default function ExpandedProjectCard({
   const headerHeight = 100;
   const contentPadding = 20;
   const bodyOffset = headerHeight + contentPadding;
-
   const { animationPhase, setAnimationPhase, openProjectId, setOpenProjectId } =
     useSystemStore();
+  const finalizeClose = useFinalizeCloseModal();
+
   const [videoLoaded, setVideoLoaded] = useState(false);
   const { isPortrait } = useDisplay();
 
   const { _id, header } = project;
-
-  const finalizeClose = () => {
-    setAnimationPhase("MODAL_CLOSED");
-    setOpenProjectId(null);
-    // searchParams.delete("p");
-    // setSearchParams(searchParams);
-  };
 
   const handleRequestClose = () => {
     searchParams.delete("p");

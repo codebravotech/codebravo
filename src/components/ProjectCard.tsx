@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-import { useDisplay } from "../hooks/display";
+import { useDisplay, useFinalizeCloseModal } from "../hooks/display";
 import { useProjectThumbnail, useProjectVideo } from "../hooks/documents";
 import { useSystemStore } from "../state/system";
 import { ProjectDocument } from "../types/components";
@@ -32,13 +32,7 @@ export default function ProjectCard({
   const [videoLoaded, setVideoLoaded] = useState(false);
   const thumbnail = useProjectThumbnail(project);
   const video = useProjectVideo(project);
-
-  const finalizeClose = () => {
-    setOpenProjectId(null);
-    setAnimationPhase("MODAL_CLOSED");
-    // searchParams.delete("p");
-    // setSearchParams(searchParams);
-  };
+  const finalizeClose = useFinalizeCloseModal();
 
   const overlayClasses =
     "absolute inset-0 z-10 flex h-full w-full flex-col items-center justify-center rounded-2xl";

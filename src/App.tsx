@@ -64,7 +64,7 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
           isPortfolio ? "bg-night-gradient text-stars-100" : "bg-stars-100",
         )}
       >
-        {/* {isMobile && <MobileMenu isHomePage={isHomePage} />} */}
+        {/* {isMobile && animationPhase === 'MODAL_CLOSED' && <MobileMenu isHomePage={isHomePage} />} */}
 
         <Header isHomePage={isHomePage} isPortfolio={isPortfolio} />
         {pageContents}

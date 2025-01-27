@@ -81,21 +81,18 @@ export default function Portfolio() {
       >
         {projects
           .filter((project) => project?._id)
-          .map((project, index) => {
+          .map((project) => {
             const { _id, slug, private: isPrivate } = project;
             const paramsId = slug?.current || _id;
 
             return (
               <motion.div
                 key={`project_card_${_id}`}
-                initial={{
-                  x: !isPortrait ? -50 : 0,
-                  y: isPortrait ? 50 : 0,
-                  opacity: 0,
-                }}
-                animate={{ x: 0, y: 0, opacity: 1 }}
-                transition={{ duration: 0.7, delay: 0.5 * index }}
-                style={{ zIndex: index }}
+                // initial={{
+                //   opacity: 0,
+                // }}
+                // animate={{ opacity: 1 }}
+                // transition={{ duration: 0.7 }}
                 onClick={() => {
                   if (isDesktopOrLaptop) {
                     if (isPrivate && !token) {
