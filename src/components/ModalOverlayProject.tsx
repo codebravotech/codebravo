@@ -17,7 +17,7 @@ export default function ModalOverlayProject({
     <motion.div
       id="MODAL_OVERLAY"
       key={`project_modal_overlay_${_id}`}
-      className="fixed inset-0 z-40 flex h-screen w-screen items-center justify-center"
+      className="fixed inset-0 z-40 flex h-screen w-screen items-center justify-center overflow-hidden overscroll-none"
     >
       <ExpandedProjectCard project={project} />
     </motion.div>

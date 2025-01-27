@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 
 import { usePrevious } from "../hooks/common";
@@ -11,6 +11,7 @@ import { ProjectDocument } from "../types/components";
 import { animationPhaseIn } from "../utils/animation";
 import Icon from "./Icon";
 import PortableTextRegular from "./PortableTextRegular";
+import ProjectModalBody from "./ProjectModalBody";
 import VideoComponent from "./VideoComponent";
 
 export default function ExpandedProjectCard({
@@ -26,8 +27,9 @@ export default function ExpandedProjectCard({
   const thumbnail = useProjectThumbnail(project);
   const video = useProjectVideo(project);
   const hasVideo = !!video?.asset?.url;
-  const headerHeight = "10vh";
-  const bodyOffset = "12vh";
+  const headerHeight = 100;
+  const contentPadding = 20;
+  const bodyOffset = headerHeight + contentPadding;
 
   const { animationPhase, setAnimationPhase, openProjectId, setOpenProjectId } =
     useSystemStore();
@@ -81,7 +83,7 @@ export default function ExpandedProjectCard({
   return (
     <motion.div
       className={cx(
-        "relative overflow-x-hidden overflow-y-scroll rounded bg-night-gradient bg-white text-stars-100 shadow-lg scrollbar-hide",
+        "relative overflow-x-hidden overflow-y-scroll overscroll-none rounded bg-night-gradient bg-white text-stars-100 shadow-lg scrollbar-hide",
         className,
       )}
       id="expanded_proj_card"
@@ -90,7 +92,6 @@ export default function ExpandedProjectCard({
       layoutId={`layout_sibling_card_${_id}`}
       onLayoutAnimationComplete={() => {
         const latestAnimationPhase = useSystemStore.getState().animationPhase;
-        console.log("FINISHED LAYOUT ANIM", latestAnimationPhase);
         if (latestAnimationPhase === "CARD_SCALING_OPEN") {
           setAnimationPhase("MODAL_CONTENTS_ENTERING");
         }
@@ -121,7 +122,6 @@ export default function ExpandedProjectCard({
           )}
         </div>
       )}
-
       <AnimatePresence>
         {hasVideo &&
           animationPhaseIn(
@@ -194,6 +194,14 @@ export default function ExpandedProjectCard({
           />
         )}
       </AnimatePresence>
+
+      {animationPhase === "MODAL_OPEN" && (!video || videoLoaded) && (
+        <ProjectModalBody
+          project={project}
+          handleClose={handleRequestClose}
+          animationPhase={animationPhase}
+        />
+      )}
     </motion.div>
   );
 }

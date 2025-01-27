@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 
 import ArriveDirectionally from "../animations/ArriveDirectionally";
+import { useDisplay } from "../hooks/display";
 import { ModalAnimationPhase, ProjectDocument } from "../types/components";
 import AssetAndCopyContentBlock from "./ContentBlocks/AssetAndCopyContentBlock";
 import CopyContentBlock from "./ContentBlocks/CopyContentBlock";
@@ -12,12 +13,10 @@ import TechnologyTools from "./TechnologyTools";
 
 export default function ProjectModalBody({
   project,
-  offset = 0,
   handleClose,
   animationPhase,
 }: {
   project: ProjectDocument;
-  offset: number;
   handleClose: () => void;
   animationPhase: ModalAnimationPhase;
 }) {
@@ -27,11 +26,12 @@ export default function ProjectModalBody({
   const partners = project?.partners || [];
   const technology_tools = project?.technology_tools || [];
   const isOpen = animationPhase === "MODAL_OPEN";
+  const { isPortrait } = useDisplay();
 
   return (
     <motion.div
       className="flex w-full flex-col items-center gap-4 text-stars-100 lg:gap-20"
-      style={{ marginTop: offset }}
+      style={{ marginTop: "100vh", paddingTop: isPortrait ? "100px" : "50px" }}
     >
       {public_content_blocks.map((content_block) => {
         const { _key, block_type } = content_block;

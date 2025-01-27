@@ -65,8 +65,6 @@ export default function Portfolio() {
     return null;
   }
 
-  console.log("PHASE: ", useSystemStore.getState().animationPhase);
-
   return (
     <>
       <div className="relative flex h-full w-full flex-row justify-center">
