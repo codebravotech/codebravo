@@ -14,14 +14,12 @@ import ROUTES from "./Routes";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MobileMenu from "./components/MobileMenu";
-// import SyncToModal from "./components/SyncToModal";
+import SyncToModal from "./components/SyncToModal";
 import { useToken } from "./hooks/api";
 import { useDisplay } from "./hooks/display";
 import NotFound from "./pages/NotFound";
 
 const Page = ({ children: pageContents }: { children: ReactNode }) => {
-  // const [scope, animate] = useAnimate();
-  // const [isPresent, safeToRemove] = usePresence();
   const { pathname } = useLocation();
   const { isMobile, isPortrait } = useDisplay();
   const isHomePage = pathname === "/home";
@@ -91,8 +89,7 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
         />
       </motion.div>
 
-      {/* TODO PUT THIS BACK!! */}
-      {/* <SyncToModal /> */}
+      <SyncToModal />
     </div>
   );
 };
