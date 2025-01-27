@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 
 import { usePrevious } from "../hooks/common";
@@ -97,7 +97,7 @@ export default function ExpandedProjectCard({
         }
       }}
       transition={{ layout: { duration: 0.7, ease: "easeOut" } }}
-      style={{ height: "100vh", width: "100vw", z: 20 }}
+      style={{ position: "relative", height: "100vh", width: "100vw" }}
     >
       {animationPhase === "MODAL_OPEN" && (
         <div

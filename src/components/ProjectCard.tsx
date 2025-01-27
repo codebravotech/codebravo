@@ -45,9 +45,7 @@ export default function ProjectCard({
   const visibilityClasses =
     animationPhase !== "MODAL_CLOSED"
       ? ""
-      : !isTabletOrMobile
-        ? "group-hover:scale-105 group-hover:!opacity-100 group-hover:!visible"
-        : "group-active:scale-105 group-active:!opacity-100 group-active:!visible";
+      : "group-hover:scale-105 group-hover:!opacity-100 group-hover:!visible";
 
   if (!_id) {
     return null;
@@ -59,14 +57,11 @@ export default function ProjectCard({
       layout
       key={`project_expanded_card_${_id}`}
       layoutId={`layout_sibling_card_${_id}`}
-      className={cx(
-        "group relative basis-1/2 rounded-2xl shadow-2xl",
-        className,
-      )}
+      className={cx("group rounded-2xl shadow-2xl", className)}
       transition={
         animationPhase === "MODAL_CLOSED"
           ? { duration: 0 }
-          : { layout: { duration: 0.5, ease: "easeOut", delay: 0 } }
+          : { layout: { duration: 0.5, ease: "easeOut", delay: 0.3 } }
       }
       onLayoutAnimationComplete={() => {
         const latestAnimationPhase = useSystemStore.getState().animationPhase;
@@ -75,14 +70,15 @@ export default function ProjectCard({
         }
       }}
       style={{
+        position: "relative",
         ...(isTabletOrMobile
           ? {
-              height: "auto",
+              height: "100vh",
               width: "97vw",
             }
           : {
-              height: "43vh",
-              width: "auto",
+              height: "42.5vh",
+              width: "45vw",
             }),
       }}
     >
@@ -95,8 +91,7 @@ export default function ProjectCard({
           visibilityClasses,
         )}
       />
-
-      {animationPhase === "MODAL_CLOSED" && (
+      {animationPhase === "MODAL_CLOSED" && !isTabletOrMobile && (
         <>
           {/* Hidden video in the BG to preload */}
           {video?.asset?.url && !videoLoaded && (
