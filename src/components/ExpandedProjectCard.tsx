@@ -9,8 +9,8 @@ import { useProjectThumbnail, useProjectVideo } from "../hooks/documents";
 import { useSystemStore } from "../state/system";
 import { ProjectDocument } from "../types/components";
 import { animationPhaseIn } from "../utils/animation";
-import Icon from "./Icon";
-import PortableTextRegular from "./PortableTextRegular";
+// import Icon from "./Icon";
+// import PortableTextRegular from "./PortableTextRegular";
 import ProjectModalBody from "./ProjectModalBody";
 import VideoComponent from "./VideoComponent";
 
@@ -27,16 +27,17 @@ export default function ExpandedProjectCard({
   const thumbnail = useProjectThumbnail(project);
   const video = useProjectVideo(project);
   const hasVideo = !!video?.asset?.url;
-  const headerHeight = 100;
-  const contentPadding = 20;
-  const bodyOffset = headerHeight + contentPadding;
+  // const headerHeight = 100;
+  // const contentPadding = 20;
+  // const bodyOffset = headerHeight + contentPadding;
   const { animationPhase, setAnimationPhase, openProjectId } = useSystemStore();
   const finalizeClose = useFinalizeCloseModal();
 
   const [videoLoaded, setVideoLoaded] = useState(false);
   const { isPortrait } = useDisplay();
 
-  const { _id, header } = project;
+  // const { _id, header } = project;
+  const { _id } = project;
 
   const handleRequestClose = () => {
     searchParams.delete("p");
@@ -83,8 +84,7 @@ export default function ExpandedProjectCard({
   return (
     <motion.div
       className={cx(
-        "relative overflow-y-scroll rounded bg-night-gradient bg-white text-stars-100 scrollbar-hide",
-        // "relative overflow-y-scroll rounded bg-night-gradient bg-white text-stars-100",
+        "overflow-y-scroll bg-night-gradient bg-white text-stars-100 scrollbar-hide",
         className,
       )}
       id="expanded_proj_card"
@@ -97,10 +97,11 @@ export default function ExpandedProjectCard({
           setAnimationPhase("MODAL_CONTENTS_ENTERING");
         }
       }}
+      onClick={handleRequestClose}
       transition={{ layout: { duration: 0.7, ease: "easeOut" } }}
       style={{ position: "relative", height: "100vh", width: "100vw" }}
     >
-      {animationPhase === "MODAL_OPEN" && (
+      {/* {animationPhase === "MODAL_OPEN" && (
         <div
           className="relative flex justify-center pt-10"
           style={{ height: headerHeight }}
@@ -122,8 +123,8 @@ export default function ExpandedProjectCard({
             </div>
           )}
         </div>
-      )}
-      <AnimatePresence>
+      )} */}
+      <AnimatePresence mode="popLayout">
         {hasVideo &&
           animationPhaseIn(
             ["MODAL_CONTENTS_ENTERING", "MODAL_OPEN"],
@@ -132,7 +133,7 @@ export default function ExpandedProjectCard({
             <motion.div
               key={`${_id}_modal_hero_video`}
               className="absolute left-0"
-              style={{ top: bodyOffset }}
+              style={{ top: 0 }}
               initial={{ opacity: 0 }}
               animate={videoLoaded ? { opacity: 1 } : { opacity: 0 }}
               exit={{ opacity: 0 }}
@@ -143,7 +144,7 @@ export default function ExpandedProjectCard({
             >
               {
                 <VideoComponent
-                  src={video?.asset.url}
+                  src={video?.asset.url + "blep"}
                   onLoadedData={() => setVideoLoaded(true)}
                   className={cx(isPortrait && "h-screen object-cover")}
                 />
@@ -154,16 +155,16 @@ export default function ExpandedProjectCard({
           <motion.img
             key={`${_id}_modal_hero_image_with_vid`}
             className={cx(
-              "absolute left-0 top-0 h-full h-screen w-full w-screen rounded object-cover",
+              "relative left-0 top-0 h-full h-screen w-full w-screen object-cover",
             )}
             initial={
               animationPhase === "MODAL_CLOSED" ||
               animationPhase === "CARD_SCALING_OPEN"
-                ? { opacity: 1, y: 0 }
-                : { opacity: 0, y: bodyOffset }
+                ? { opacity: 1 }
+                : { opacity: 0 }
             }
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: bodyOffset }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{
               duration: 0.5,
             }}
@@ -171,11 +172,11 @@ export default function ExpandedProjectCard({
             alt={project.title}
           />
         )}
-        {!hasVideo && (
+        {/* {!hasVideo && (
           <motion.img
             key={`${_id}_modal_hero_image_with_vid`}
             className={cx(
-              "absolute left-0 top-0 h-full h-screen w-full w-screen rounded object-cover",
+              "absolute left-0 top-0 h-full h-screen w-full w-screen object-cover",
             )}
             initial={{ y: 0 }}
             animate={
@@ -193,16 +194,16 @@ export default function ExpandedProjectCard({
             src={thumbnail?.asset?.url}
             alt={project.title}
           />
-        )}
+        )} */}
       </AnimatePresence>
 
-      {animationPhase === "MODAL_OPEN" && (!video || videoLoaded) && (
-        <ProjectModalBody
-          project={project}
-          handleClose={handleRequestClose}
-          animationPhase={animationPhase}
-        />
-      )}
+      {/* {animationPhase === "MODAL_OPEN" && (!video || videoLoaded) && ( */}
+      <ProjectModalBody
+        project={project}
+        handleClose={handleRequestClose}
+        animationPhase={animationPhase}
+      />
+      {/* )} */}
     </motion.div>
   );
 }

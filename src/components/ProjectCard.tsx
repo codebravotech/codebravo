@@ -25,14 +25,14 @@ export default function ProjectCard({
     description,
   } = project;
   const { isTabletOrMobile } = useDisplay();
-  const { token, animationPhase } = useSystemStore();
+  const { animationPhase, token } = useSystemStore();
   const [videoLoaded, setVideoLoaded] = useState(false);
   const thumbnail = useProjectThumbnail(project);
   const video = useProjectVideo(project);
   const finalizeClose = useFinalizeCloseModal();
 
   const overlayClasses =
-    "absolute inset-0 z-10 flex h-full w-full flex-col items-center justify-center rounded-2xl";
+    "absolute inset-0 z-10 flex h-full w-full flex-col items-center justify-center";
   const visibilityClasses =
     animationPhase !== "MODAL_CLOSED"
       ? ""
@@ -48,7 +48,7 @@ export default function ProjectCard({
       layout
       key={`project_expanded_card_${_id}`}
       layoutId={`layout_sibling_card_${_id}`}
-      className={cx("group rounded-2xl shadow-2xl", className)}
+      className={cx("group rounded-2xl", className)}
       transition={
         animationPhase === "MODAL_CLOSED"
           ? { duration: 0 }
@@ -77,11 +77,9 @@ export default function ProjectCard({
       <img
         src={thumbnail?.asset?.url}
         alt={thumbnail?.alt}
-        className={cx(
-          "h-full w-full rounded-2xl object-fill",
-          visibilityClasses,
-        )}
+        className={cx("h-full w-full object-fill", visibilityClasses)}
       />
+
       {animationPhase === "MODAL_CLOSED" && !isTabletOrMobile && (
         <>
           {/* Hidden video in the BG to preload */}

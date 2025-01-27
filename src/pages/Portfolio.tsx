@@ -124,7 +124,7 @@ export default function Portfolio() {
         {/* Modal overlay (in a react portal rooted on the document body) for the expanded card */}
         <>
           {createPortal(
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               {animationPhase &&
                 animationPhase !== "MODAL_CLOSED" &&
                 openProjectId && (
