@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import { NAV_OPTIONS } from "../config";
 import { useSystemStore } from "../state/system";
@@ -9,7 +9,16 @@ import Icon from "./Icon";
 export default function MobileMenu({ isHomePage = false }) {
   const navigate = useNavigate();
   const { animationPhase, setAnimationPhase } = useSystemStore();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const { pathname } = useLocation();
+
+  const closeProject = () => {
+    searchParams.delete("p");
+    setSearchParams(searchParams);
+    setAnimationPhase("MODAL_CONTENTS_EXITING");
+  };
+
   return (
     <motion.div
       className={cx(
@@ -17,13 +26,13 @@ export default function MobileMenu({ isHomePage = false }) {
       )}
     >
       {animationPhase === "MODAL_OPEN" && (
-        <div
+        <motion.div
           key="mobile_back_button"
           className={cx("relative rounded-full p-[10px]")}
-          onClick={() => setAnimationPhase("MODAL_CONTENTS_EXITING")}
+          onClick={closeProject}
         >
           <Icon icon="back" className="h-10 w-10" />
-        </div>
+        </motion.div>
       )}
       {NAV_OPTIONS.slice()
         .reverse()

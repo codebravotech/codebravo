@@ -1,6 +1,7 @@
 import cx from "classnames";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { useDisplay } from "../hooks/display";
 import { useProjectThumbnail, useProjectVideo } from "../hooks/documents";
@@ -20,6 +21,7 @@ export default function ExpandedProjectCard({
   className?: string;
 }) {
   // const timeout = useRef<NodeJS.Timeout>();
+  const [searchParams, setSearchParams] = useSearchParams();
   const thumbnail = useProjectThumbnail(project);
   const video = useProjectVideo(project);
   const hasVideo = !!video?.asset?.url;
@@ -44,9 +46,10 @@ export default function ExpandedProjectCard({
   // }, []);
 
   const handleRequestClose = () => {
-    // Control the layout effect! This might need to be moved elsewhere for
-    // the multi-step animation
     if (animationPhase === "MODAL_OPEN") {
+      searchParams.delete("p");
+      setSearchParams(searchParams);
+
       setAnimationPhase("MODAL_CONTENTS_EXITING");
     }
   };

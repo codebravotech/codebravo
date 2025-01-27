@@ -1,6 +1,7 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { useDisplay } from "../hooks/display";
 import { useProjectThumbnail, useProjectVideo } from "../hooks/documents";
@@ -27,6 +28,7 @@ export default function ProjectCard({
   const { isTabletOrMobile } = useDisplay();
   const { token, animationPhase, setAnimationPhase, setOpenProjectId } =
     useSystemStore();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [videoLoaded, setVideoLoaded] = useState(false);
   const thumbnail = useProjectThumbnail(project);
   const video = useProjectVideo(project);
@@ -64,6 +66,8 @@ export default function ProjectCard({
         if (latestAnimationPhase === "CARD_SCALING_CLOSED") {
           setOpenProjectId(null);
           setAnimationPhase("MODAL_CLOSED");
+          searchParams.delete("p");
+          setSearchParams(searchParams);
         }
       }}
       style={{

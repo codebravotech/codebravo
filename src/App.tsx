@@ -13,7 +13,7 @@ import { Tooltip } from "react-tooltip";
 import ROUTES from "./Routes";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
-import MobileMenu from "./components/MobileMenu";
+// import MobileMenu from "./components/MobileMenu";
 import { useToken } from "./hooks/api";
 import { useDisplay } from "./hooks/display";
 import NotFound from "./pages/NotFound";
@@ -64,7 +64,7 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
           isPortfolio ? "bg-night-gradient text-stars-100" : "bg-stars-100",
         )}
       >
-        {isMobile && <MobileMenu isHomePage={isHomePage} />}
+        {/* {isMobile && <MobileMenu isHomePage={isHomePage} />} */}
 
         <Header isHomePage={isHomePage} isPortfolio={isPortfolio} />
         {pageContents}

@@ -1,7 +1,9 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
 import { get } from "lodash";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useSearchParams } from "react-router-dom";
 
 import ModalOverlayProject from "../components/ModalOverlayProject";
 import PortableTextPopcorn from "../components/PortableTextPopcorn";
@@ -16,6 +18,7 @@ import { animationPhaseIn } from "../utils/animation";
 export default function Portfolio() {
   const { openProjectId, setOpenProjectId, animationPhase, setAnimationPhase } =
     useSystemStore();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { isDesktopOrLaptop } = useDisplay();
   const { documents: authorizedDocuments = [] } =
     useAuthorizedQuery<PortfolioPageDocument>("portfolio_authorized");
@@ -27,6 +30,20 @@ export default function Portfolio() {
   const page = authorizedPage || publicPage || {};
   const header = get(page, "header", []);
   const projects = get(page, "projects", []);
+
+  const openProject = (id: string) => {
+    setOpenProjectId(id);
+    setAnimationPhase("CARD_SCALING_OPEN");
+  };
+
+  useEffect(() => {
+    const id = searchParams.get("p");
+    if (!openProjectId && id) {
+      openProject(id);
+      searchParams.delete("p");
+      setSearchParams(searchParams);
+    }
+  }, []);
 
   if (!(projects?.length > 0)) {
     return null;
@@ -54,8 +71,9 @@ export default function Portfolio() {
             const { _id } = project;
 
             const handleOpen = () => {
-              setOpenProjectId(_id);
-              setAnimationPhase("CARD_SCALING_OPEN");
+              openProject(_id);
+              searchParams.set("p", _id);
+              setSearchParams(searchParams);
             };
 
             return (
