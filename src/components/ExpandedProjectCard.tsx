@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import { useDisplay } from "../hooks/display";
@@ -14,7 +14,6 @@ import VideoComponent from "./VideoComponent";
 
 export default function ExpandedProjectCard({
   project,
-
   className = "",
 }: {
   project: ProjectDocument;
@@ -29,21 +28,12 @@ export default function ExpandedProjectCard({
   const bodyOffset = "12vh";
   // const bodyOffset = 0;
 
-  const { animationPhase, setAnimationPhase } = useSystemStore();
+  const { animationPhase, setAnimationPhase, setOpenProjectId } =
+    useSystemStore();
   const [videoLoaded, setVideoLoaded] = useState(false);
   const { isPortrait } = useDisplay();
 
   const { _id, header } = project;
-  // useEffect(() => {
-  // CYA for if layout animation callback doesn't fire (seen occasionally on mobile in prod)
-  // timeout.current = setTimeout(() => {
-  //   setAnimationPhase("MODAL_OPEN");
-  // }, 3000);
-
-  // return () => {
-  // clearTimeout(timeout.current);
-  // };
-  // }, []);
 
   const handleRequestClose = () => {
     if (animationPhase === "MODAL_OPEN") {
@@ -62,6 +52,26 @@ export default function ExpandedProjectCard({
       setAnimationPhase("CARD_SCALING_CLOSED");
     }
   };
+
+  const handleAssertClose = () => {
+    const latestAnimationPhase = useSystemStore.getState().animationPhase;
+    searchParams.delete("p");
+    setSearchParams(searchParams);
+    if (latestAnimationPhase === "MODAL_OPEN") {
+      setAnimationPhase("MODAL_CONTENTS_EXITING");
+    } else {
+      setOpenProjectId(null);
+      setAnimationPhase("MODAL_CLOSED");
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("popstate", handleAssertClose);
+
+    return () => {
+      window.removeEventListener("popstate", handleAssertClose);
+    };
+  }, []);
 
   return (
     <motion.div
