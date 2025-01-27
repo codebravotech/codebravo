@@ -5,10 +5,8 @@ import ExpandedProjectCard from "./ExpandedProjectCard";
 
 export default function ModalOverlayProject({
   project,
-  handleClose,
 }: {
   project: ProjectDocument | undefined;
-  handleClose: () => void;
 }) {
   if (!project) {
     return null;
@@ -21,7 +19,7 @@ export default function ModalOverlayProject({
       key={`project_modal_overlay_${_id}`}
       className="fixed inset-0 z-50 flex h-screen w-screen items-center justify-center"
     >
-      <ExpandedProjectCard project={project} handleClose={handleClose} />
+      <ExpandedProjectCard project={project} />
     </motion.div>
   );
 }

@@ -25,7 +25,7 @@ export default function ProjectCard({
     description,
   } = project;
   const { isTabletOrMobile } = useDisplay();
-  const { token } = useSystemStore();
+  const { token, animationPhase, setAnimationPhase } = useSystemStore();
   const [videoLoaded, setVideoLoaded] = useState(false);
   const thumbnail = useProjectThumbnail(project);
   const video = useProjectVideo(project);
@@ -51,6 +51,15 @@ export default function ProjectCard({
         className,
       )}
       transition={{ duration: 0.7, ease: "easeIn" }}
+      onLayoutAnimationComplete={() => {
+        console.log(
+          "CARD SCALE DOWN LAYOUT ANIMATION COMPLETED! PHASE: ",
+          animationPhase,
+        );
+        if (animationPhase === "CARD_SCALING_CLOSED") {
+          setAnimationPhase("MODAL_CLOSED");
+        }
+      }}
       style={
         isTabletOrMobile
           ? {

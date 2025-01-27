@@ -14,7 +14,7 @@ export default function SyncToModal() {
       setSearchParams(searchParams);
     } else {
       // Remove it if there's no selected project
-      searchParams.delete("p");
+      // searchParams.delete("p");
       setSearchParams(searchParams);
     }
   }, [openProjectId, searchParams, setSearchParams]);

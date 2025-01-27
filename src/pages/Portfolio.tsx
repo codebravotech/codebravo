@@ -13,7 +13,8 @@ import { useSystemStore } from "../state/system";
 import { PortfolioPageDocument } from "../types/components";
 
 export default function Portfolio() {
-  const { openProjectId, setOpenProjectId } = useSystemStore();
+  const { openProjectId, setOpenProjectId, animationPhase, setAnimationPhase } =
+    useSystemStore();
   const { isDesktopOrLaptop } = useDisplay();
   const { documents: authorizedDocuments = [] } =
     useAuthorizedQuery<PortfolioPageDocument>("portfolio_authorized");
@@ -26,18 +27,14 @@ export default function Portfolio() {
   const header = get(page, "header", []);
   const projects = get(page, "projects", []);
 
-  const handleClose = () => {
-    // Control the layout effect! This might need to be moved elsewhere for
-    // the multi-step animation
-    setOpenProjectId(null);
-  };
-
   if (!(projects?.length > 0)) {
     return null;
   }
 
   return (
     <>
+      <div>ANIMATION PHASE: {animationPhase}</div>
+
       <div className="relative flex h-full w-full flex-row justify-center">
         <div className="highlighter-underline relative mb-10">
           <PortableTextPopcorn content={header} />
@@ -59,6 +56,7 @@ export default function Portfolio() {
 
             const handleOpen = () => {
               setOpenProjectId(_id);
+              setAnimationPhase("CARD_SCALING_OPEN");
             };
 
             return (
@@ -85,14 +83,14 @@ export default function Portfolio() {
         <>
           {createPortal(
             <div>
-              {openProjectId && (
+              {animationPhase !== "MODAL_CLOSED" && openProjectId && (
+                // {openProjectId && (
                 <ModalOverlayProject
                   project={projects.find(
                     (p) =>
                       p?.slug?.current === openProjectId ||
                       p?._id === openProjectId,
                   )}
-                  handleClose={handleClose}
                 />
               )}
             </div>,
