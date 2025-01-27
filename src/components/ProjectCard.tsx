@@ -34,10 +34,10 @@ export default function ProjectCard({
   const video = useProjectVideo(project);
 
   const finalizeClose = () => {
-    setAnimationPhase("MODAL_CLOSED");
     setOpenProjectId(null);
-    searchParams.delete("p");
-    setSearchParams(searchParams);
+    setAnimationPhase("MODAL_CLOSED");
+    // searchParams.delete("p");
+    // setSearchParams(searchParams);
   };
 
   const overlayClasses =

@@ -41,25 +41,24 @@ export default function Portfolio() {
   const paramsId = searchParams.get("p");
 
   const handleOpenProject = (id: string) => {
+    setOpenProjectId(id);
+    setAnimationPhase("CARD_SCALING_OPEN");
     if (!searchParams.get("p")) {
       searchParams.set("p", id);
       setSearchParams(searchParams);
     }
-    console.log("SETTING THIS SHIT");
-    setAnimationPhase("CARD_SCALING_OPEN");
-    setOpenProjectId(id);
   };
 
-  useEffect(() => {
-    if (paramsId && !openProjectId) {
-      // Give the layout animation components time to figure their shit out if we
-      // are joining via link
-      setTimeout(() => {
-        setAnimationPhase("CARD_SCALING_OPEN");
-        setOpenProjectId(paramsId);
-      }, 1000);
-    }
-  }, [paramsId]);
+  // useEffect(() => {
+  //   if (paramsId && !openProjectId) {
+  //     // Give the layout animation components time to figure their shit out if we
+  //     // are joining via link
+  //     setTimeout(() => {
+  //       setAnimationPhase("CARD_SCALING_OPEN");
+  //       setOpenProjectId(paramsId);
+  //     }, 1000);
+  //   }
+  // }, [paramsId]);
 
   if (!(projects?.length > 0 || !animationPhase)) {
     return null;

@@ -41,11 +41,13 @@ export default function ExpandedProjectCard({
   const finalizeClose = () => {
     setAnimationPhase("MODAL_CLOSED");
     setOpenProjectId(null);
-    searchParams.delete("p");
-    setSearchParams(searchParams);
+    // searchParams.delete("p");
+    // setSearchParams(searchParams);
   };
 
   const handleRequestClose = () => {
+    searchParams.delete("p");
+    setSearchParams(searchParams);
     if (animationPhase === "MODAL_OPEN") {
       setAnimationPhase("MODAL_CONTENTS_EXITING");
     }
@@ -60,25 +62,25 @@ export default function ExpandedProjectCard({
     }
   };
 
-  const handleAssertClose = () => {
-    const latestAnimationPhase = useSystemStore.getState().animationPhase;
+  // const handleAssertClose = () => {
+  //   const latestAnimationPhase = useSystemStore.getState().animationPhase;
 
-    if (latestAnimationPhase === "MODAL_OPEN") {
-      setAnimationPhase("MODAL_CONTENTS_EXITING");
-    } else {
-      finalizeClose();
-    }
-  };
+  //   if (latestAnimationPhase === "MODAL_OPEN") {
+  //     setAnimationPhase("MODAL_CONTENTS_EXITING");
+  //   } else {
+  //     finalizeClose();
+  //   }
+  // };
 
-  useEffect(() => {
-    if (
-      prevSearch?.includes("?p=") &&
-      !search?.includes("?p=") &&
-      openProjectId
-    ) {
-      handleAssertClose();
-    }
-  }, [prevSearch, search, openProjectId]);
+  // useEffect(() => {
+  //   if (
+  //     prevSearch?.includes("?p=") &&
+  //     !search?.includes("?p=") &&
+  //     openProjectId
+  //   ) {
+  //     handleAssertClose();
+  //   }
+  // }, [prevSearch, search, openProjectId]);
 
   return (
     <motion.div
