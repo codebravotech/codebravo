@@ -1,8 +1,9 @@
 import cx from "classnames";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 
+import { usePrevious } from "../hooks/common";
 import { useDisplay } from "../hooks/display";
 import { useProjectThumbnail, useProjectVideo } from "../hooks/documents";
 import { useSystemStore } from "../state/system";
@@ -19,27 +20,31 @@ export default function ExpandedProjectCard({
   project: ProjectDocument;
   className?: string;
 }) {
-  // const timeout = useRef<NodeJS.Timeout>();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { search } = useLocation();
+  const prevSearch = usePrevious<string>(search);
   const thumbnail = useProjectThumbnail(project);
   const video = useProjectVideo(project);
   const hasVideo = !!video?.asset?.url;
   const headerHeight = "10vh";
   const bodyOffset = "12vh";
-  // const bodyOffset = 0;
 
-  const { animationPhase, setAnimationPhase, setOpenProjectId } =
+  const { animationPhase, setAnimationPhase, openProjectId, setOpenProjectId } =
     useSystemStore();
   const [videoLoaded, setVideoLoaded] = useState(false);
   const { isPortrait } = useDisplay();
 
   const { _id, header } = project;
 
+  const finalizeClose = () => {
+    setAnimationPhase("MODAL_CLOSED");
+    setOpenProjectId(null);
+    searchParams.delete("p");
+    setSearchParams(searchParams);
+  };
+
   const handleRequestClose = () => {
     if (animationPhase === "MODAL_OPEN") {
-      searchParams.delete("p");
-      setSearchParams(searchParams);
-
       setAnimationPhase("MODAL_CONTENTS_EXITING");
     }
   };
@@ -55,23 +60,23 @@ export default function ExpandedProjectCard({
 
   const handleAssertClose = () => {
     const latestAnimationPhase = useSystemStore.getState().animationPhase;
-    searchParams.delete("p");
-    setSearchParams(searchParams);
+
     if (latestAnimationPhase === "MODAL_OPEN") {
       setAnimationPhase("MODAL_CONTENTS_EXITING");
     } else {
-      setOpenProjectId(null);
-      setAnimationPhase("MODAL_CLOSED");
+      finalizeClose();
     }
   };
 
   useEffect(() => {
-    window.addEventListener("popstate", handleAssertClose);
-
-    return () => {
-      window.removeEventListener("popstate", handleAssertClose);
-    };
-  }, []);
+    if (
+      prevSearch?.includes("?p=") &&
+      !search?.includes("?p=") &&
+      openProjectId
+    ) {
+      handleAssertClose();
+    }
+  }, [prevSearch, search, openProjectId]);
 
   return (
     <motion.div
@@ -85,13 +90,13 @@ export default function ExpandedProjectCard({
       layoutId={`layout_sibling_card_${_id}`}
       onLayoutAnimationComplete={() => {
         const latestAnimationPhase = useSystemStore.getState().animationPhase;
+        console.log("FINISHED LAYOUT ANIM", latestAnimationPhase);
         if (latestAnimationPhase === "CARD_SCALING_OPEN") {
           setAnimationPhase("MODAL_CONTENTS_ENTERING");
         }
       }}
       transition={{ layout: { duration: 0.7, ease: "easeOut" } }}
       style={{ height: "100vh", width: "100vw", z: 20 }}
-      onClick={handleRequestClose}
     >
       {animationPhase === "MODAL_OPEN" && (
         <div
@@ -182,10 +187,9 @@ export default function ExpandedProjectCard({
             }
             exit={{ y: 0 }}
             onAnimationComplete={() => {
-              console.log("IMAGE CROSS:");
               handleFinishedCrossfade();
             }}
-            src={thumbnail?.asset?.url}
+            src={thumbnail?.asset?.url + "broken"}
             alt={project.title}
           />
         )}

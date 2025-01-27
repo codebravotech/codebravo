@@ -41,7 +41,7 @@ export default function Connect() {
 
   return (
     <motion.div>
-      <div className="mb-10 mt-4 flex w-full flex-col-reverse gap-4 px-4 pt-4 lg:h-full lg:flex-row lg:gap-10 lg:pl-6 lg:pr-10">
+      <div className="mb-10 mt-4 flex h-screen w-full flex-col-reverse gap-4 overflow-hidden bg-stars-100 px-4 pt-4 lg:h-full lg:flex-row lg:gap-10 lg:pl-6 lg:pr-10">
         <ArriveDirectionally
           keyBy={"contact_form_copy"}
           className="mb-2 flex flex-col items-end gap-4 text-2xl leading-snug lg:basis-1/2 lg:items-center lg:gap-10 lg:text-3xl lg:leading-snug"

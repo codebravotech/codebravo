@@ -1,23 +1,14 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { NAV_OPTIONS } from "../config";
-import { useSystemStore } from "../state/system";
 import Icon from "./Icon";
 
 export default function MobileMenu({ isHomePage = false }) {
   const navigate = useNavigate();
-  const { animationPhase, setAnimationPhase } = useSystemStore();
-  const [searchParams, setSearchParams] = useSearchParams();
 
   const { pathname } = useLocation();
-
-  const closeProject = () => {
-    searchParams.delete("p");
-    setSearchParams(searchParams);
-    setAnimationPhase("MODAL_CONTENTS_EXITING");
-  };
 
   return (
     <motion.div
@@ -25,15 +16,6 @@ export default function MobileMenu({ isHomePage = false }) {
         "glass-menu fixed bottom-4 left-0 right-0 z-50 mx-4 mb-2 flex flex-row items-center justify-evenly rounded-full p-2 shadow-xl",
       )}
     >
-      {animationPhase === "MODAL_OPEN" && (
-        <motion.div
-          key="mobile_back_button"
-          className={cx("relative rounded-full p-[10px]")}
-          onClick={closeProject}
-        >
-          <Icon icon="back" className="h-10 w-10" />
-        </motion.div>
-      )}
       {NAV_OPTIONS.slice()
         .reverse()
         .map((button) => (

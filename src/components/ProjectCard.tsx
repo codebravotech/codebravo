@@ -33,6 +33,13 @@ export default function ProjectCard({
   const thumbnail = useProjectThumbnail(project);
   const video = useProjectVideo(project);
 
+  const finalizeClose = () => {
+    setAnimationPhase("MODAL_CLOSED");
+    setOpenProjectId(null);
+    searchParams.delete("p");
+    setSearchParams(searchParams);
+  };
+
   const overlayClasses =
     "absolute inset-0 z-10 flex h-full w-full flex-col items-center justify-center rounded-2xl";
   const visibilityClasses =
@@ -64,10 +71,7 @@ export default function ProjectCard({
       onLayoutAnimationComplete={() => {
         const latestAnimationPhase = useSystemStore.getState().animationPhase;
         if (latestAnimationPhase === "CARD_SCALING_CLOSED") {
-          setOpenProjectId(null);
-          setAnimationPhase("MODAL_CLOSED");
-          searchParams.delete("p");
-          setSearchParams(searchParams);
+          finalizeClose();
         }
       }}
       style={{

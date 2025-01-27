@@ -4,14 +4,12 @@
 
 #root {
   width: 100%;
+  min-height: 100vh;
   display: relative;
   font-family: "Raleway Variable", sans-serif;
   --dune-100: #eca400;
   --expanse-100: #2dbfd4;
   background: #f4efe8;
-}
-
-#root.modal_open {
 }
 
 /* Change the white to any color */
