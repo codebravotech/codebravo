@@ -189,7 +189,7 @@ export default function ExpandedProjectCard({
             onAnimationComplete={() => {
               handleFinishedCrossfade();
             }}
-            src={thumbnail?.asset?.url + "broken"}
+            src={thumbnail?.asset?.url}
             alt={project.title}
           />
         )}
