@@ -1,7 +1,7 @@
 import cx from "classnames";
 import { AnimatePresence, motion } from "framer-motion";
 import { get } from "lodash";
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
