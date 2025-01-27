@@ -1,7 +1,6 @@
 import cx from "classnames";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
 
 import { useDisplay, useFinalizeCloseModal } from "../hooks/display";
 import { useProjectThumbnail, useProjectVideo } from "../hooks/documents";
@@ -26,9 +25,7 @@ export default function ProjectCard({
     description,
   } = project;
   const { isTabletOrMobile } = useDisplay();
-  const { token, animationPhase, setAnimationPhase, setOpenProjectId } =
-    useSystemStore();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { token, animationPhase } = useSystemStore();
   const [videoLoaded, setVideoLoaded] = useState(false);
   const thumbnail = useProjectThumbnail(project);
   const video = useProjectVideo(project);

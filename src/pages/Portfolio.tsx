@@ -1,5 +1,5 @@
 import cx from "classnames";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { get } from "lodash";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
@@ -27,7 +27,7 @@ export default function Portfolio() {
   const navigate = useNavigate();
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const { isDesktopOrLaptop, isPortrait } = useDisplay();
+  const { isDesktopOrLaptop } = useDisplay();
   const { documents: authorizedDocuments = [] } =
     useAuthorizedQuery<PortfolioPageDocument>("portfolio_authorized");
   const { documents = [] } =

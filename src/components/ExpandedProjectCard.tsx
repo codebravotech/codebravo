@@ -30,8 +30,7 @@ export default function ExpandedProjectCard({
   const headerHeight = 100;
   const contentPadding = 20;
   const bodyOffset = headerHeight + contentPadding;
-  const { animationPhase, setAnimationPhase, openProjectId, setOpenProjectId } =
-    useSystemStore();
+  const { animationPhase, setAnimationPhase, openProjectId } = useSystemStore();
   const finalizeClose = useFinalizeCloseModal();
 
   const [videoLoaded, setVideoLoaded] = useState(false);
