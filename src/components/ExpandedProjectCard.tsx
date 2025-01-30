@@ -213,6 +213,7 @@ export default function ExpandedProjectCard({
         <ProjectModalBody
           project={project}
           handleClose={handleRequestClose}
+          handleAssertClose={handleAssertClose}
           animationPhase={animationPhase}
         />
       )}

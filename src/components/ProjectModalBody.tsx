@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
+import { useSearchParams } from "react-router-dom";
 
 import ArriveDirectionally from "../animations/ArriveDirectionally";
 import { useDisplay } from "../hooks/display";
 import { ModalAnimationPhase, ProjectDocument } from "../types/components";
 import AssetAndCopyContentBlock from "./ContentBlocks/AssetAndCopyContentBlock";
 import CopyContentBlock from "./ContentBlocks/CopyContentBlock";
-import CtaButton from "./CtaButton";
 import Icon from "./Icon";
 import Partners from "./Partners";
 import PortableTextRegular from "./PortableTextRegular";
@@ -20,6 +20,8 @@ export default function ProjectModalBody({
   handleClose: () => void;
   animationPhase: ModalAnimationPhase;
 }) {
+  const { isDesktopOrLaptop } = useDisplay();
+  const [searchParams, setSearchParams] = useSearchParams();
   const public_content_blocks = project?.public_content_blocks || [];
   const final_cta = project?.final_cta || [];
   const cta_link = project?.cta_link;
@@ -61,13 +63,25 @@ export default function ProjectModalBody({
       >
         <PortableTextRegular content={final_cta} />
         {cta_link?.url && cta_link?.label && (
-          <CtaButton
-            url={cta_link?.url}
-            variant="black_dune"
-            className="mt-4 grow-0"
+          <motion.div
+            className="mt-3 flex min-w-48 cursor-pointer flex-col items-center rounded-full border-2 border-stars-100 px-6 py-4 text-center font-fjalla text-2xl font-bold leading-tight tracking-wider text-stars-100 shadow-xl transition-all duration-300 ease-in-out hover:scale-110 lg:text-2xl"
+            onClick={() => {
+              if (isDesktopOrLaptop) {
+                searchParams.delete("p");
+                setSearchParams(searchParams);
+                window.location.pathname = cta_link.url || "/404";
+              }
+            }}
+            onTap={() => {
+              if (!isDesktopOrLaptop) {
+                searchParams.delete("p");
+                setSearchParams(searchParams);
+                window.location.pathname = cta_link.url || "/404";
+              }
+            }}
           >
             {cta_link?.label}
-          </CtaButton>
+          </motion.div>
         )}
 
         <div

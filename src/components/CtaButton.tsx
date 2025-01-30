@@ -27,7 +27,7 @@ export default function CtaButton({
   let colorClass = "bg-stars-100 text-expanse-100 hover:text-dune-100";
   switch (variant) {
     case "white_night":
-      colorClass = " border-2 border-stars-100 text-stars-100 ";
+      colorClass = "border-2 border-stars-100 text-stars-100";
       break;
     case "white":
       colorClass = "bg-transparent border-2 border-stars-100 text-stars-100 ";
