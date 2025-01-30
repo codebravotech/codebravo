@@ -30,7 +30,7 @@ export default function ProjectModalBody({
 
   return (
     <motion.div
-      className="flex w-full flex-col items-center gap-4 text-stars-100 lg:gap-20"
+      className="flex w-full flex-col items-center gap-4 pb-20 text-stars-100 lg:gap-20"
       style={{ marginTop: "100vh", paddingTop: isPortrait ? "100px" : "50px" }}
     >
       {public_content_blocks.map((content_block) => {
