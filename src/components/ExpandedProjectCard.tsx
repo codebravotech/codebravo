@@ -158,7 +158,7 @@ export default function ExpandedProjectCard({
                   src={video?.asset.url}
                   onLoadedData={() => setVideoLoaded(true)}
                   playback_speed={video?.playback_speed}
-                  className={cx(isPortrait && "h-screen object-cover")}
+                  className={"h-screen min-w-[100vw] object-cover"}
                 />
               }
             </motion.div>
