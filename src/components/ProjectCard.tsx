@@ -52,7 +52,6 @@ export default function ProjectCard({
       transition={
         animationPhase === "MODAL_CLOSED"
           ? { layout: { duration: 0 } }
-          : // : { layout: { duration: 0.5, ease: "easeOut", delay: 0.3 } }
             { layout: { duration: 0, ease: "easeOut", delay: 0.3 } }
       }
       onLayoutAnimationComplete={() => {
@@ -79,7 +78,7 @@ export default function ProjectCard({
         src={thumbnail?.asset?.url}
         alt={thumbnail?.alt}
         className={cx(
-          "h-full w-full rounded-2xl object-fill",
+          "h-full w-full rounded-2xl object-cover",
           visibilityClasses,
         )}
       />

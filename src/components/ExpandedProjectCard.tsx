@@ -41,9 +41,12 @@ export default function ExpandedProjectCard({
   const handleRequestClose = () => {
     searchParams.delete("p");
     setSearchParams(searchParams);
-    if (animationPhase === "MODAL_OPEN") {
-      setAnimationPhase("MODAL_CONTENTS_EXITING");
-    }
+    // if (animationPhase === "MODAL_OPEN") {
+    // setAnimationPhase("MODAL_CONTENTS_EXITING");
+    // }
+    // setTimeout(() => {
+    setAnimationPhase("MODAL_CLOSED");
+    // }, 100);
   };
 
   const handleFinishedCrossfade = () => {
@@ -143,7 +146,7 @@ export default function ExpandedProjectCard({
           ) && (
             <motion.div
               key={`${_id}_modal_hero_video`}
-              className="absolute left-0"
+              className="absolute left-0 h-screen w-screen object-cover"
               style={{ top: bodyOffset }}
               initial={{ opacity: 0 }}
               animate={videoLoaded ? { opacity: 1 } : { opacity: 0 }}
@@ -167,7 +170,7 @@ export default function ExpandedProjectCard({
           <motion.img
             key={`${_id}_modal_hero_image_with_vid`}
             className={cx(
-              "absolute left-0 top-0 h-full h-screen w-full w-screen rounded object-cover",
+              "absolute left-0 top-0 h-screen w-screen rounded object-cover",
             )}
             initial={
               animationPhase === "MODAL_CLOSED" ||
@@ -188,7 +191,7 @@ export default function ExpandedProjectCard({
           <motion.img
             key={`${_id}_modal_hero_image_with_vid`}
             className={cx(
-              "absolute left-0 top-0 h-full h-screen w-full w-screen rounded object-cover",
+              "absolute left-0 top-0 h-screen w-screen rounded object-cover",
             )}
             initial={{ y: 0 }}
             animate={
