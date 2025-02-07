@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "deploy": "yarn build && firebase deploy",
-    "deploy:login": "yarn build && firebase login --reauth && firebase deploy",
+    "deploy:login": "yarn build && firebase logout && firebase login --reauth && firebase deploy",
     "lint": "eslint .",
     "preview": "vite preview"
   },
