@@ -51,8 +51,9 @@ export default function ProjectCard({
       className={cx("group rounded-2xl shadow-2xl", className)}
       transition={
         animationPhase === "MODAL_CLOSED"
-          ? { duration: 0 }
-          : { layout: { duration: 0.5, ease: "easeOut", delay: 0.3 } }
+          ? { layout: { duration: 0 } }
+          : // : { layout: { duration: 0.5, ease: "easeOut", delay: 0.3 } }
+            { layout: { duration: 0, ease: "easeOut", delay: 0.3 } }
       }
       onLayoutAnimationComplete={() => {
         const latestAnimationPhase = useSystemStore.getState().animationPhase;

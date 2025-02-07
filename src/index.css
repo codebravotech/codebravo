@@ -58,7 +58,7 @@ a {
   left: 0;
   height: 2px;
   animation: appear-width 1s ease-in-out forwards;
-  animation-delay: 2s;
+  animation-delay: 1s;
 }
 
 .link-highlight {
