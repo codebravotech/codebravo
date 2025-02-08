@@ -20,7 +20,7 @@ import { useDisplay } from "./hooks/display";
 import NotFound from "./pages/NotFound";
 import { useSystemStore } from "./state/system";
 import { PortfolioPageDocument } from "./types/components";
-import { scrollToTop } from "./utils/animation";
+import { scrollToTop } from "./utils/common";
 
 const Page = ({ children: pageContents }: { children: ReactNode }) => {
   const { pathname } = useLocation();
