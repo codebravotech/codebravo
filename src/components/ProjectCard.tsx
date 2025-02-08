@@ -56,7 +56,7 @@ export default function ProjectCard({
         src={thumbnail?.asset?.url}
         alt={thumbnail?.alt}
         className={cx(
-          "h-full w-full rounded-2xl object-contain",
+          "h-full w-full rounded-2xl object-fill",
           visibilityClasses,
         )}
       />
