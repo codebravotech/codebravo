@@ -86,9 +86,9 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
             duration: 0.3,
           },
         }}
-        layoutScroll
+        // layoutScroll
         className={cx(
-          "relative flex w-screen flex-col overflow-hidden scrollbar-hide",
+          "relative flex min-h-[100vh] w-full flex-col justify-between overflow-hidden scrollbar-hide",
           isPortfolio || isProject
             ? "bg-night-gradient text-stars-100"
             : "bg-stars-100",
@@ -104,12 +104,7 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
           isPortfolio={isPortfolio}
         />
         {pageContents}
-        <div
-          id="footer_container"
-          className={cx(isMobile && !isHomePage && "mb-32")}
-        >
-          <Footer />
-        </div>
+        <Footer />
         <Tooltip
           id="mailto_link_tooltip"
           arrowColor="transparent"

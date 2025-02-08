@@ -11,7 +11,7 @@ export default function Footer() {
     <div
       className={cx(
         isMobile
-          ? "flex-col-reverse justify-start"
+          ? "mb-32 flex-col-reverse justify-start"
           : "flex-row justify-between",
         "flex items-center px-6 pb-2 pt-10 text-xs lg:text-sm",
       )}

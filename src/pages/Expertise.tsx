@@ -14,7 +14,7 @@ export default function Expertise() {
   }
 
   return (
-    <motion.div className="flex flex-col gap-10 px-4 font-raleway lg:px-0">
+    <motion.div className="flex w-screen flex-col gap-10 overflow-hidden px-4 font-raleway scrollbar-hide lg:px-0">
       {content_blocks.map((content_block: ContentObject, index: number) => (
         <OverlappingContentBlock
           key={`content_block_${index}`}
