@@ -19,6 +19,10 @@ const call = async <T>(
 
   const response = await fetch(url, options);
 
+  if (response.status < 200 || 400 <= response.status) {
+    throw new Error(response.status.toString());
+  }
+
   return (await response.json()) as T;
 };
 

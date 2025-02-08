@@ -1,7 +1,7 @@
 import cx from "classnames";
 import { AnimatePresence, motion } from "framer-motion";
-import { get } from "lodash";
-import { ReactNode, useEffect, useLayoutEffect } from "react";
+import { get, isEqual } from "lodash";
+import { ReactNode, useEffect, useLayoutEffect, useMemo } from "react";
 import {
   BrowserRouter,
   Route,
@@ -16,6 +16,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import MobileMenu from "./components/MobileMenu";
 import { useAuthorizedQuery, usePublicQuery, useToken } from "./hooks/api";
+import { usePrevious } from "./hooks/common";
 import { useDisplay } from "./hooks/display";
 import NotFound from "./pages/NotFound";
 import { useSystemStore } from "./state/system";
@@ -37,20 +38,29 @@ const Page = ({ children: pageContents }: { children: ReactNode }) => {
   const { documents = [], loading: loadingPublicQuery } =
     usePublicQuery<PortfolioPageDocument>("portfolio_public");
 
+  const publicPortfolioPage = get(documents, "[0]");
+  const authorizedPortfolioPage = get(authorizedDocuments, "[0]");
+  const chosenPortfolioPage = useMemo(
+    () => authorizedPortfolioPage || publicPortfolioPage || {},
+    [publicPortfolioPage, authorizedPortfolioPage],
+  );
+  const prevChosenPortfolioPage = usePrevious(chosenPortfolioPage);
+
   useEffect(() => {
     if (!loadingAuthorizedQuery && !loadingPublicQuery) {
-      const publicPage = get(documents, "[0]");
-      const authorizedPage = get(authorizedDocuments, "[0]");
-      const portfolioPageResult = authorizedPage || publicPage || {};
-      if (portfolioPageResult && !portfolioPage) {
-        setPortfolioPage(portfolioPageResult);
+      if (
+        chosenPortfolioPage &&
+        (!portfolioPage ||
+          !isEqual(chosenPortfolioPage, prevChosenPortfolioPage))
+      ) {
+        setPortfolioPage(chosenPortfolioPage);
       }
     }
   }, [
+    prevChosenPortfolioPage,
+    chosenPortfolioPage,
     loadingAuthorizedQuery,
-    authorizedDocuments,
     loadingPublicQuery,
-    documents,
     portfolioPage,
     setPortfolioPage,
   ]);

@@ -33,7 +33,7 @@ export default function ProjectCard({
   const overlayClasses =
     "absolute inset-0 z-10 flex h-full w-full flex-col items-center justify-center rounded-2xl";
   const visibilityClasses =
-    animationPhase !== "MODAL_CLOSED"
+    !isTabletOrMobile && animationPhase !== "MODAL_CLOSED"
       ? ""
       : "group-hover:scale-105 group-hover:!opacity-100 group-hover:!visible";
 

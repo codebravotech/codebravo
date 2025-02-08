@@ -18,13 +18,15 @@ export const useToken = () => {
       try {
         await checkToken(token);
         setToken(token);
-        searchParams.delete("token");
-        setSearchParams(searchParams);
         localStorage.setItem(localStorageKey, token);
-      } catch (e) {
-        console.error("AUTHORIZATION SERVER ERROR", e);
+      } catch {
         localStorage.removeItem(localStorageKey);
+        alert(
+          "Your locked projects session has expired, please visit Connect page and request a new secure link if you'd like to view locked projects.",
+        );
       }
+      searchParams.delete("token");
+      setSearchParams(searchParams);
     };
 
     if (currentToken) {
@@ -44,6 +46,7 @@ export const usePublicQuery = <T>(query_name: string) => {
       try {
         if (query_name) {
           const result = await publicQuery<T>(query_name);
+
           if (isArray(result) && result.length > 0) {
             setDocuments(result);
             setLoading(false);
@@ -83,9 +86,10 @@ export const useAuthorizedQuery = <T>(query_name: string) => {
           setLoading(false);
         }
       } catch (e) {
-        console.log("E: ", e);
-        console.error("ERROR IN AUTHORIZED QUERY", e);
-        if (tries < 3) {
+        if (e instanceof Error && e?.message?.includes("401")) {
+          console.log("Unauthorized");
+          return;
+        } else if (tries < 3) {
           return await fetch(token, tries + 1);
         } else {
           return navigate("/404");
