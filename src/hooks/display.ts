@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 
-import { useSystemStore } from "../state/system";
-
 export const useDisplay = () => {
   const isDesktopOrLaptop = useMediaQuery({
     query: "(min-width: 1224px)",
@@ -45,14 +43,4 @@ export const useIsElementOnScreen = (id: string) => {
   }, [id]);
 
   return isOnScreen;
-};
-
-export const useFinalizeCloseModal = () => {
-  const { setOpenProjectId, setAnimationPhase } = useSystemStore();
-
-  const finalizeClose = () => {
-    setOpenProjectId(null);
-    setAnimationPhase("MODAL_CLOSED");
-  };
-  return finalizeClose;
 };
