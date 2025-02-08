@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 
 import ArriveDirectionally from "../animations/ArriveDirectionally";
 import { useDisplay } from "../hooks/display";
-import { ModalAnimationPhase, ProjectDocument } from "../types/components";
+import { ProjectDocument } from "../types/components";
 import AssetAndCopyContentBlock from "./ContentBlocks/AssetAndCopyContentBlock";
 import CopyContentBlock from "./ContentBlocks/CopyContentBlock";
 import Icon from "./Icon";
@@ -14,11 +14,9 @@ import TechnologyTools from "./TechnologyTools";
 export default function ProjectModalBody({
   project,
   handleClose,
-  animationPhase,
 }: {
   project: ProjectDocument;
   handleClose: () => void;
-  animationPhase: ModalAnimationPhase;
 }) {
   const { isDesktopOrLaptop } = useDisplay();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,7 +25,6 @@ export default function ProjectModalBody({
   const cta_link = project?.cta_link;
   const partners = project?.partners || [];
   const technology_tools = project?.technology_tools || [];
-  const isOpen = animationPhase === "MODAL_OPEN";
   const { isPortrait } = useDisplay();
 
   return (
@@ -93,7 +90,7 @@ export default function ProjectModalBody({
         </div>
       </ArriveDirectionally>
 
-      {(partners?.length > 0 || technology_tools?.length > 0) && isOpen && (
+      {(partners?.length > 0 || technology_tools?.length > 0) && (
         <ArriveDirectionally
           keyBy={`${project?._id}_collaborators and tech`}
           className="flex w-full flex-col justify-center gap-10 text-center lg:flex-col"

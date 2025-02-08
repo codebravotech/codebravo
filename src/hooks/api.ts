@@ -37,6 +37,7 @@ export const usePublicQuery = <T>(query_name: string) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [documents, setDocuments] = useState<T[] | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetch = async (tries = 0) => {
@@ -45,6 +46,7 @@ export const usePublicQuery = <T>(query_name: string) => {
           const result = await publicQuery<T>(query_name);
           if (isArray(result) && result.length > 0) {
             setDocuments(result);
+            setLoading(false);
           }
         }
       } catch (e) {
@@ -62,7 +64,7 @@ export const usePublicQuery = <T>(query_name: string) => {
     }
   }, [pathname, documents, query_name, navigate]);
 
-  return { documents };
+  return { documents, loading };
 };
 
 export const useAuthorizedQuery = <T>(query_name: string) => {
@@ -70,6 +72,7 @@ export const useAuthorizedQuery = <T>(query_name: string) => {
   const { pathname } = useLocation();
   const [documents, setDocuments] = useState<T[] | undefined>(undefined);
   const { token: currentToken } = useSystemStore();
+  const [loading, setLoading] = useState(!!currentToken);
 
   useEffect(() => {
     const fetch = async (token: string, tries = 0) => {
@@ -77,6 +80,7 @@ export const useAuthorizedQuery = <T>(query_name: string) => {
         const result = await authorizedQuery<T>(query_name, token);
         if (isArray(result) && result.length > 0) {
           setDocuments(result);
+          setLoading(false);
         }
       } catch (e) {
         console.log("E: ", e);
@@ -94,5 +98,5 @@ export const useAuthorizedQuery = <T>(query_name: string) => {
     }
   }, [pathname, documents, query_name, currentToken, navigate]);
 
-  return { documents };
+  return { documents, loading };
 };

@@ -1,8 +1,13 @@
 import { ContentObject, ProjectDocument } from "../types/components";
 import { useDisplay } from "./display";
 
-export const useProjectThumbnail = (project: ProjectDocument) => {
+export const useProjectThumbnail = (project: ProjectDocument | undefined) => {
   const { isPortrait } = useDisplay();
+
+  if (!project) {
+    return undefined;
+  }
+
   const thumbnails = project?.thumbnails || [];
 
   return (
@@ -11,8 +16,11 @@ export const useProjectThumbnail = (project: ProjectDocument) => {
     ) || thumbnails.find((elem) => elem.asset.url)
   );
 };
-export const useProjectVideo = (project: ProjectDocument) => {
+export const useProjectVideo = (project: ProjectDocument | undefined) => {
   const { isPortrait } = useDisplay();
+  if (!project) {
+    return undefined;
+  }
   const videos = project?.videos || [];
 
   return (
