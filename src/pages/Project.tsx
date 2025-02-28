@@ -106,7 +106,7 @@ export default function Project({ className = "" }: { className?: string }) {
           style={{ top: bodyOffset }}
           initial={{ opacity: 0, y: animationOffset }}
           whileInView={{ opacity: 1, y: 0 }}
-          src={thumbnail?.asset?.url}
+          src={`${thumbnail?.asset?.url}?w=${innerWidth}&fit=clip&auto=format`}
           alt={project.title}
           transition={{ duration: 0.5, delay: 0.3 }}
         />

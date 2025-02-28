@@ -53,7 +53,7 @@ export default function ProjectCard({
     >
       {/* Main body of card is image */}
       <img
-        src={thumbnail?.asset?.url}
+        src={`${thumbnail?.asset?.url}?w=800&fit=clip&auto=format`}
         alt={thumbnail?.alt}
         className={cx(
           "h-full w-full rounded-2xl object-fill",
