@@ -7,23 +7,26 @@ import { useDisplay } from "../hooks/display";
 
 export default function Header({
   isHomePage,
+  isProject,
   isPortfolio,
   clickedCurrentRoute,
 }: {
   isHomePage: boolean;
+  isProject: boolean;
   isPortfolio: boolean;
   clickedCurrentRoute?: () => void;
 }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { isMobile } = useDisplay();
-  const logoColor = isPortfolio ? "white" : "black";
+  const logoColor = isPortfolio || isProject ? "white" : "black";
   const logo = `/images/logo_${logoColor}.svg`;
 
   return (
     <>
       {!isHomePage && (
         <div
+          id="site-header"
           className={cx(
             "my-4 flex flex-row items-start font-fjalla lg:w-[98%]",
             isMobile ? "h-[15vh] justify-center" : "h-[10vh] justify-between",
@@ -38,7 +41,9 @@ export default function Header({
             <div
               className={cx(
                 "flex flex-row justify-evenly gap-4 pr-4 pt-6",
-                isHomePage || isPortfolio ? "text-stars-100" : "text-night-400",
+                isHomePage || isPortfolio || isProject
+                  ? "text-stars-100"
+                  : "text-night-400",
               )}
             >
               {NAV_OPTIONS.map((button) => (

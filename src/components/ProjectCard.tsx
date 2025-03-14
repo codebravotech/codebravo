@@ -2,7 +2,7 @@ import cx from "classnames";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-import { useDisplay, useFinalizeCloseModal } from "../hooks/display";
+import { useDisplay } from "../hooks/display";
 import { useProjectThumbnail, useProjectVideo } from "../hooks/documents";
 import { useSystemStore } from "../state/system";
 import { ProjectDocument } from "../types/components";
@@ -29,12 +29,11 @@ export default function ProjectCard({
   const [videoLoaded, setVideoLoaded] = useState(false);
   const thumbnail = useProjectThumbnail(project);
   const video = useProjectVideo(project);
-  const finalizeClose = useFinalizeCloseModal();
 
   const overlayClasses =
     "absolute inset-0 z-10 flex h-full w-full flex-col items-center justify-center rounded-2xl";
   const visibilityClasses =
-    animationPhase !== "MODAL_CLOSED"
+    !isTabletOrMobile && animationPhase !== "MODAL_CLOSED"
       ? ""
       : "group-hover:scale-105 group-hover:!opacity-100 group-hover:!visible";
 
@@ -45,40 +44,19 @@ export default function ProjectCard({
   return (
     <motion.div
       id="project_card"
-      layout
       key={`project_expanded_card_${_id}`}
-      layoutId={`layout_sibling_card_${_id}`}
-      className={cx("group rounded-2xl shadow-2xl", className)}
-      transition={
-        animationPhase === "MODAL_CLOSED"
-          ? { layout: { duration: 0 } }
-          : { layout: { duration: 0, ease: "easeOut", delay: 0.3 } }
-      }
-      onLayoutAnimationComplete={() => {
-        const latestAnimationPhase = useSystemStore.getState().animationPhase;
-        if (latestAnimationPhase === "CARD_SCALING_CLOSED") {
-          finalizeClose();
-        }
-      }}
-      style={{
-        position: "relative",
-        ...(isTabletOrMobile
-          ? {
-              height: "100vh",
-              width: "97vw",
-            }
-          : {
-              height: "42.5vh",
-              width: "45vw",
-            }),
-      }}
+      className={cx(
+        "group relative rounded-2xl shadow-2xl",
+        className,
+        isTabletOrMobile ? "h-[100vh] w-[97vw]" : "h-[42.5vh] w-[45vw]",
+      )}
     >
       {/* Main body of card is image */}
       <img
-        src={thumbnail?.asset?.url}
+        src={`${thumbnail?.asset?.url}?w=800&fit=clip&auto=format`}
         alt={thumbnail?.alt}
         className={cx(
-          "h-full w-full rounded-2xl object-cover",
+          "h-full w-full rounded-2xl object-fill",
           visibilityClasses,
         )}
       />

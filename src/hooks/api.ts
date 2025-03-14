@@ -18,13 +18,15 @@ export const useToken = () => {
       try {
         await checkToken(token);
         setToken(token);
-        searchParams.delete("token");
-        setSearchParams(searchParams);
         localStorage.setItem(localStorageKey, token);
-      } catch (e) {
-        console.error("AUTHORIZATION SERVER ERROR", e);
+      } catch {
         localStorage.removeItem(localStorageKey);
+        alert(
+          "Your locked projects session has expired, please visit Connect page and request a new secure link if you'd like to view locked projects.",
+        );
       }
+      searchParams.delete("token");
+      setSearchParams(searchParams);
     };
 
     if (currentToken) {
@@ -37,14 +39,17 @@ export const usePublicQuery = <T>(query_name: string) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [documents, setDocuments] = useState<T[] | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetch = async (tries = 0) => {
       try {
         if (query_name) {
           const result = await publicQuery<T>(query_name);
+
           if (isArray(result) && result.length > 0) {
             setDocuments(result);
+            setLoading(false);
           }
         }
       } catch (e) {
@@ -62,7 +67,7 @@ export const usePublicQuery = <T>(query_name: string) => {
     }
   }, [pathname, documents, query_name, navigate]);
 
-  return { documents };
+  return { documents, loading };
 };
 
 export const useAuthorizedQuery = <T>(query_name: string) => {
@@ -70,6 +75,7 @@ export const useAuthorizedQuery = <T>(query_name: string) => {
   const { pathname } = useLocation();
   const [documents, setDocuments] = useState<T[] | undefined>(undefined);
   const { token: currentToken } = useSystemStore();
+  const [loading, setLoading] = useState(!!currentToken);
 
   useEffect(() => {
     const fetch = async (token: string, tries = 0) => {
@@ -77,11 +83,13 @@ export const useAuthorizedQuery = <T>(query_name: string) => {
         const result = await authorizedQuery<T>(query_name, token);
         if (isArray(result) && result.length > 0) {
           setDocuments(result);
+          setLoading(false);
         }
       } catch (e) {
-        console.log("E: ", e);
-        console.error("ERROR IN AUTHORIZED QUERY", e);
-        if (tries < 3) {
+        if (e instanceof Error && e?.message?.includes("401")) {
+          console.log("Unauthorized");
+          return;
+        } else if (tries < 3) {
           return await fetch(token, tries + 1);
         } else {
           return navigate("/404");
@@ -94,5 +102,5 @@ export const useAuthorizedQuery = <T>(query_name: string) => {
     }
   }, [pathname, documents, query_name, currentToken, navigate]);
 
-  return { documents };
+  return { documents, loading };
 };

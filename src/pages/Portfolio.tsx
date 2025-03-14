@@ -1,66 +1,29 @@
 import cx from "classnames";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { get } from "lodash";
-import { useEffect } from "react";
-import { createPortal } from "react-dom";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import ModalOverlayProject from "../components/ModalOverlayProject";
 import PortableTextPopcorn from "../components/PortableTextPopcorn";
 import ProjectCard from "../components/ProjectCard";
 import { INQUIRIES } from "../config";
-import { useAuthorizedQuery, usePublicQuery } from "../hooks/api";
 import { useDisplay } from "../hooks/display";
 import { useSystemStore } from "../state/system";
-// import { useSystemStore } from "../state/system";
-import { PortfolioPageDocument } from "../types/components";
-import { animationPhaseIn } from "../utils/animation";
+import { ProjectDocument } from "../types/components";
 
 export default function Portfolio() {
-  const {
-    openProjectId,
-    setOpenProjectId,
-    animationPhase,
-    setAnimationPhase,
-    token,
-  } = useSystemStore();
+  const { portfolioPage, token } = useSystemStore();
   const navigate = useNavigate();
-
-  const [searchParams, setSearchParams] = useSearchParams();
   const { isDesktopOrLaptop } = useDisplay();
-  const { documents: authorizedDocuments = [] } =
-    useAuthorizedQuery<PortfolioPageDocument>("portfolio_authorized");
-  const { documents = [] } =
-    usePublicQuery<PortfolioPageDocument>("portfolio_public");
 
-  const publicPage = get(documents, "[0]");
-  const authorizedPage = get(authorizedDocuments, "[0]");
-  const page = authorizedPage || publicPage || {};
-  const header = get(page, "header", []);
-  const projects = get(page, "projects", []);
-  const paramsId = searchParams.get("p");
+  const header = get(portfolioPage, "header", []);
+  const projects = get(portfolioPage, "projects", []);
 
-  const handleOpenProject = (id: string) => {
-    setOpenProjectId(id);
-    setAnimationPhase("CARD_SCALING_OPEN");
-    if (!searchParams.get("p")) {
-      searchParams.set("p", id);
-      setSearchParams(searchParams);
-    }
+  const handleOpenProject = (project: ProjectDocument) => {
+    const routeId = project?.slug?.current || project?._id;
+    navigate(`/project/${routeId}`);
   };
 
-  useEffect(() => {
-    if (paramsId && !openProjectId) {
-      // Give the layout animation components time to figure their shit out if we
-      // are joining via link
-      setTimeout(() => {
-        setAnimationPhase("CARD_SCALING_OPEN");
-        setOpenProjectId(paramsId);
-      }, 1000);
-    }
-  }, [paramsId, openProjectId]);
-
-  if (!(projects?.length > 0 || !animationPhase)) {
+  if (!(projects?.length > 0)) {
     return null;
   }
 
@@ -81,24 +44,24 @@ export default function Portfolio() {
       >
         {projects
           .filter((project) => project?._id)
-          .map((project) => {
-            const { _id, slug, private: isPrivate } = project;
-            const paramsId = slug?.current || _id;
+          .map((project, index) => {
+            const { _id, private: isPrivate } = project;
 
             return (
               <motion.div
                 key={`project_card_${_id}`}
-                // initial={{
-                //   opacity: 0,
-                // }}
-                // animate={{ opacity: 1 }}
-                // transition={{ duration: 0.7 }}
+                initial={{
+                  opacity: 0,
+                  x: -50,
+                }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 * (index + 2) }}
                 onClick={() => {
                   if (isDesktopOrLaptop) {
                     if (isPrivate && !token) {
                       navigate(`/connect?inquiry=${INQUIRIES.locked_projects}`);
                     } else {
-                      handleOpenProject(paramsId);
+                      handleOpenProject(project);
                     }
                   }
                 }}
@@ -107,45 +70,16 @@ export default function Portfolio() {
                     if (isPrivate && !token) {
                       navigate(`/connect?inquiry=${INQUIRIES.locked_projects}`);
                     } else {
-                      handleOpenProject(paramsId);
+                      handleOpenProject(project);
                     }
                   }
                 }}
                 className="flex flex-col items-center gap-10"
               >
-                {animationPhaseIn(
-                  ["MODAL_CLOSED", "CARD_SCALING_OPEN", "CARD_SCALING_CLOSED"],
-                  useSystemStore.getState().animationPhase,
-                ) && <ProjectCard project={project} />}
+                <ProjectCard project={project} />
               </motion.div>
             );
           })}
-
-        {/* Modal overlay (in a react portal rooted on the document body) for the expanded card */}
-        <>
-          {createPortal(
-            <AnimatePresence>
-              {animationPhase &&
-                animationPhase !== "MODAL_CLOSED" &&
-                openProjectId && (
-                  <ModalOverlayProject
-                    project={projects.find((p) => {
-                      const { slug, _id } = p;
-                      if (
-                        openProjectId &&
-                        (slug?.current === openProjectId ||
-                          _id === openProjectId)
-                      ) {
-                        return true;
-                      }
-                      return false;
-                    })}
-                  />
-                )}
-            </AnimatePresence>,
-            document.body,
-          )}
-        </>
       </motion.div>
     </>
   );
